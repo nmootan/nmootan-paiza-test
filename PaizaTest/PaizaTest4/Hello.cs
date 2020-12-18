@@ -280,6 +280,268 @@ namespace PaizaTest4
 
         }
 
+        /// <summary>
+        /// 正しい数式を表す文字列 S が与えられるので、その数式を計算した結果を出力してください。
+        /// ただし、出てくる計算は足し算・引き算のみとし、数式に出てくる数字は全て 1 桁であるものとします。
+        /// S = "4+3-2+1"   答えは 6
+        /// 1-3-5-6-2-1+9
+        /// </summary>
+        public void Test27()
+        {
+
+            Console.WriteLine(GetParseStrToIntPlusMinusResult(Console.ReadLine()));
+        }
+
+        /// <summary>
+        /// 数値を表す文字列 S , T が与えられるので、S + T の結果を表す文字列を出力してください。
+        /// 123546131325115412512543111111111111111112345151515111111111111111111124245216
+        /// 212121212121212121212121268854784674464635352424242476758767563673467333221111
+        /// 335667343446327533724664379965895785575747697575757587869878674784578457466327
+        /// </summary>
+        public void Test28()
+        {
+
+            Console.WriteLine(ExPlus(Console.ReadLine(), Console.ReadLine()));
+        }
+
+        /// <summary>
+        /// 数値を表す文字列 S と 1 桁の数値 T が与えられるので、S * T の結果を表す文字列を出力してください。
+        /// 123456789987654321123456789987654321123456789987654321123456789987654321
+        /// 5
+        /// 617283949938271605617283949938271605617283949938271605617283949938271605
+        /// 
+        /// 11111111111111111111111111111111111111111111111111111111111111111111112222222222222222222222222222222222222222222222222222333333333333333333333333333333333333333333333333344444444444444444444444444444444445555555555555555555555555555555555666666666666666666666666666666667777777777777777777777777777778888888888888888888888888888999999999999999999999999999999
+        /// 0
+        /// </summary>
+        public void Test29()
+        {
+            string str = Console.ReadLine();
+            int n = int.Parse(Console.ReadLine());
+
+            Console.WriteLine(ExMultiply1(str, n));
+        }
+
+
+
+        public string ExMultiply1(string str, int n)
+        {
+            bool isPlus = true;
+            if (str[0] == '-') 
+            {
+                str = str.Remove(0, 1);
+                isPlus = false;
+            }
+
+            str = GetMirrorStr(str);
+
+            char[] chs = GetParseStrToCharArray(str);
+            List<char> chList = new List<char>();
+            List<int> intList = new List<int>();
+            int m1 = 0;
+            int m2 = 0;
+
+
+            for (int i = 0; i < chs.Length; i++)
+            {
+                intList.Add(GetParseCharToInt(chs[i]));
+            }
+
+            for (int i = 0; i < chs.Length; i++)
+            {
+                m1 = intList[i] * n + m2;
+                m2 = m1 / 10;
+                chList.Add(GetParseIntToChar(m1 % 10));
+            }
+
+            if (m2 > 0) chList.Add(GetParseIntToChar(m2));
+
+            if (!isPlus) chList.Add('-');
+            
+
+            return GetFormatZero(GetMirrorStr(GetParseCharListToStr(chList)));
+        }
+
+
+        public string ExPlus(string str1, string str2)
+        {
+            //str1 = GetMirrorStr(str1);
+            //str2 = GetMirrorStr(str2);
+
+            char[] chs1 = GetParseStrToCharArray(GetMirrorStr(str1));
+            char[] chs2 = GetParseStrToCharArray(GetMirrorStr(str2));
+            List<char> chsList = new List<char>();
+            int exN = 0;
+            int n = 0;
+
+            if (chs1.Length>chs2.Length)
+            {
+                for (int i = 0; i < chs2.Length; i++)
+                {
+                    n = GetParseCharToInt(chs1[i]) + GetParseCharToInt(chs2[i]) + exN;
+
+                    if (n >= 10)
+                    {
+                        exN = 1;
+                        n -= 10;
+                        chsList.Add(GetParseIntToChar(n));
+                    }
+                    else
+                    {
+                        exN = 0;
+                        chsList.Add(GetParseIntToChar(n));
+                    }
+                }
+
+                for (int i = chs2.Length; i < chs1.Length; i++)
+                {
+                    n = GetParseCharToInt(chs1[i]) + exN;
+
+                    if (n >= 10)
+                    {
+                        exN = 1;
+                        n -= 10;
+                        chsList.Add(GetParseIntToChar(n));
+                    }
+                    else
+                    {
+                        exN = 0;
+                        chsList.Add(GetParseIntToChar(n));
+                    }
+                }
+            }
+            if (chs1.Length < chs2.Length)
+            {
+                for (int i = 0; i < chs1.Length; i++)
+                {
+                    n = GetParseCharToInt(chs2[i]) + GetParseCharToInt(chs1[i]) + exN;
+
+                    if (n >= 10)
+                    {
+                        exN = 1;
+                        n -= 10;
+                        chsList.Add(GetParseIntToChar(n));
+                    }
+                    else
+                    {
+                        exN = 0;
+                        chsList.Add(GetParseIntToChar(n));
+                    }
+                }
+
+                for (int i = chs1.Length; i < chs2.Length; i++)
+                {
+                    n = GetParseCharToInt(chs2[i]) + exN;
+
+                    if (n >= 10)
+                    {
+                        exN = 1;
+                        n -= 10;
+                        chsList.Add(GetParseIntToChar(n));
+                    }
+                    else
+                    {
+                        exN = 0;
+                        chsList.Add(GetParseIntToChar(n));
+                    }
+                }
+            }
+            if (chs1.Length == chs2.Length)
+            {
+                for (int i = 0; i < chs2.Length; i++)
+                {
+                    n = GetParseCharToInt(chs1[i]) + GetParseCharToInt(chs2[i]) + exN;
+
+                    if (n >= 10)
+                    {
+                        exN = 1;
+                        n -= 10;
+                        chsList.Add(GetParseIntToChar(n));
+                    }
+                    else
+                    {
+                        exN = 0;
+                        chsList.Add(GetParseIntToChar(n));
+                    }
+                }
+
+                if (exN == 1) chsList.Add(GetParseIntToChar(1));
+
+            }
+
+            return GetMirrorStr(GetParseCharListToStr(chsList));
+
+            
+        }
+
+
+        public char GetParseIntToChar(int n)
+        {
+
+            return (char)(48 + n);
+        }
+
+
+        public int GetParseCharToInt(char ch)
+        {
+
+            return ch - '0';
+        }
+
+
+        public int GetParseStrToIntPlusMinusResult(string str)
+        {
+            string[] plusStrs = GetStdStrsSplitByChar(str,'+');
+
+            //List<string> plusStrsList = new List<string>();
+            //List<int> plusNumsList = new List<int>();
+            //List<string[]> minusStrsList = new List<string[]>();
+            int n = 0;
+            int sum = 0;
+
+            for (int i = 0; i < plusStrs.Length; i++)
+            {
+                string[] strs = GetStdStrsSplitByChar(plusStrs[i],'-');
+
+                if (strs.Length > 1) 
+                {
+                    n = int.Parse(strs[0]);
+                    for (int j = 1; j < strs.Length; j++)
+                    {
+                        n -= int.Parse(strs[j]);
+                    }
+
+                    //plusNumsList.Add(n);
+                    sum += n;
+                }
+                else
+                {
+                    //plusNumsList.Add(int.Parse(plusStrs[i]));
+                    sum += int.Parse(plusStrs[i]);
+                }
+            }
+
+            return sum;
+        }
+
+/*
+        public int GetParseStrToFomula(string str)
+        {
+            char[] chs = GetParseStrToCharArray(str);
+
+            List<int> nums = new List<int>();
+            StringBuilder sb = new StringBuilder();
+            string numStr;
+
+            sb.Append(chs[0]);
+
+            for (int i = 1; i < chs.Length; i++)
+            {
+                if(chs[i]=='+') 
+            }
+
+            return 
+        }
+*/
 
         public string GetFormatZero(string str)
         {
@@ -313,7 +575,7 @@ namespace PaizaTest4
             {
                 int n = 0;
                 if (chs[0] == '-') n = 1;
-                for (int i = n; i < chs.Count; i++)
+                for (int i = n; i < chs.Count-1; i++)
                 {
 
                     if (chs[i] != '0') break;
@@ -727,6 +989,13 @@ namespace PaizaTest4
             }
 
             return iList;
+        }
+
+
+        public string[] GetStdStrsSplitByChar(string str, char ch)
+        {
+
+            return str.Trim().Split(ch);
         }
 
 

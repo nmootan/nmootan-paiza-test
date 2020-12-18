@@ -5,3 +5,10 @@ C:\Users\nmootan\source\repos\PaizaTest\PaizaTest4\obj\Debug\PaizaTest4.csprojAs
 C:\Users\nmootan\source\repos\PaizaTest\PaizaTest4\obj\Debug\PaizaTest4.csproj.CoreCompileInputs.cache
 C:\Users\nmootan\source\repos\PaizaTest\PaizaTest4\obj\Debug\PaizaTest4.exe
 C:\Users\nmootan\source\repos\PaizaTest\PaizaTest4\obj\Debug\PaizaTest4.pdb
+C:\Users\nmootan\Documents\GitHub\nmootan-paiza-test\PaizaTest\PaizaTest4\bin\Debug\PaizaTest4.exe.config
+C:\Users\nmootan\Documents\GitHub\nmootan-paiza-test\PaizaTest\PaizaTest4\bin\Debug\PaizaTest4.exe
+C:\Users\nmootan\Documents\GitHub\nmootan-paiza-test\PaizaTest\PaizaTest4\bin\Debug\PaizaTest4.pdb
+C:\Users\nmootan\Documents\GitHub\nmootan-paiza-test\PaizaTest\PaizaTest4\obj\Debug\PaizaTest4.csprojAssemblyReference.cache
+C:\Users\nmootan\Documents\GitHub\nmootan-paiza-test\PaizaTest\PaizaTest4\obj\Debug\PaizaTest4.csproj.CoreCompileInputs.cache
+C:\Users\nmootan\Documents\GitHub\nmootan-paiza-test\PaizaTest\PaizaTest4\obj\Debug\PaizaTest4.exe
+C:\Users\nmootan\Documents\GitHub\nmootan-paiza-test\PaizaTest\PaizaTest4\obj\Debug\PaizaTest4.pdb

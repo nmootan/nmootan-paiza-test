@@ -12,7 +12,7 @@ namespace PaizaTest4
         {
             Hello hello = new Hello();
 
-            hello.Test26();
+            hello.Test29();
 
             Console.ReadLine();
         }
@@ -38,23 +38,119 @@ namespace PaizaTest4
     
             Hello hello = new Hello();
     
-            hello.Test26();
+            hello.Test29();
         }
 
 
     
     
-        public void Test26()
+        /// <summary>
+        /// 数値を表す文字列 S , T が与えられるので、S + T の結果を表す文字列を出力してください。
+        /// 123546131325115412512543111111111111111112345151515111111111111111111124245216
+        /// 212121212121212121212121268854784674464635352424242476758767563673467333221111
+        /// 335667343446327533724664379965895785575747697575757587869878674784578457466327
+        /// </summary>
+        public void Test28()
+        {
+
+            Console.WriteLine(ExPlus(Console.ReadLine(), Console.ReadLine()));
+        }
+
+        /// <summary>
+        /// 数値を表す文字列 S と 1 桁の数値 T が与えられるので、S * T の結果を表す文字列を出力してください。
+        /// 123456789987654321123456789987654321123456789987654321123456789987654321
+        /// 5
+        /// 617283949938271605617283949938271605617283949938271605617283949938271605
+        /// </summary>
+        public void Test29()
         {
             string str = Console.ReadLine();
+            int n = int.Parse(Console.ReadLine());
 
-            if (JudgeIsFloat(str)) str = DistinctChar(str, '.');
-
-            Console.WriteLine(GetFormatZero(str));
-
+            Console.WriteLine(ExMultiply1(str, n));
         }
 
 
+
+        public string ExMultiply1(string str, int n)
+        {
+            bool isPlus = true;
+            if (str[0] == '-') 
+            {
+                str = str.Remove(0, 1);
+                isPlus = false;
+            }
+
+            str = GetMirrorStr(str);
+
+            char[] chs = GetParseStrToCharArray(str);
+            List<char> chList = new List<char>();
+            List<int> intList = new List<int>();
+            int m1 = 0;
+            int m2 = 0;
+
+
+            for (int i = 0; i < chs.Length; i++)
+            {
+                intList.Add(GetParseCharToInt(chs[i]));
+            }
+
+            for (int i = 0; i < chs.Length; i++)
+            {
+                m1 = intList[i] * n + m2;
+                m2 = m1 / 10;
+                chList.Add(GetParseIntToChar(m1 % 10));
+            }
+
+            if (m2 > 0) chList.Add(GetParseIntToChar(m2));
+
+            if (!isPlus) chList.Add('-');
+
+    
+            return GetFormatZero(GetMirrorStr(GetParseCharListToStr(chList)));
+        }
+    
+        public string GetMirrorStr(string str)
+        {
+            char[] cs = str.ToCharArray();
+            char[] mirror = new char[cs.Length];
+
+            int i = cs.Length-1;
+            int length = i;
+            while (i >= 0)
+            {
+                mirror[length - i] = cs[i];
+
+                i--;
+            }
+
+            return new string(mirror);
+        }
+
+        public char[] GetParseStrToCharArray(string str)
+        {
+
+            return str.ToCharArray();
+        }
+
+        public int GetParseCharToInt(char ch)
+        {
+
+            return ch - '0';
+        }
+
+        public char GetParseIntToChar(int n)
+        {
+
+            return (char)(48 + n);
+        }
+
+        public string GetParseCharListToStr(List<char> chList)
+        {
+
+            return new string(chList.ToArray());
+        }
+    
         public string GetFormatZero(string str)
         {
             List<char> chs = str.ToList<char>();
@@ -87,7 +183,7 @@ namespace PaizaTest4
             {
                 int n = 0;
                 if (chs[0] == '-') n = 1;
-                for (int i = n; i < chs.Count; i++)
+                for (int i = n; i < chs.Count-1; i++)
                 {
 
                     if (chs[i] != '0') break;
@@ -102,48 +198,13 @@ namespace PaizaTest4
 
             return new string(chs.ToArray());
         }
-
-
+    
         public bool JudgeIsFloat(string str)
         {
             if (str.Contains(".")) return true;
             else return false;
             
         }
-
-
-        public string DistinctChar(string str, char ch)
-        {
-            char[] chs = GetParseStrToCharArray(str);
-            List<char> chList = new List<char>();
-
-            for (int i = 0; i < chs.Length; i++)
-            {
-                if (chs[i] == ch && chList.Contains(ch))
-                    ;
-                else chList.Add(chs[i]);
-            }
-
-
-            return GetParseCharListToStr(chList);
-        }
-
-    
-
-        public char[] GetParseStrToCharArray(string str)
-        {
-
-            return str.ToCharArray();
-        }
-
-    
-
-        public string GetParseCharListToStr(List<char> chList)
-        {
-
-            return new string(chList.ToArray());
-        }
-
 
 
 
