@@ -8,7 +8,9 @@ namespace PaizaTest4
 {
     class Hello
     {
-
+        /// <summary>
+        /// 3行標準入力で３行標準出力
+        /// </summary>
         public void Test3()
         {
             string[] line = new string[3];
@@ -25,7 +27,9 @@ namespace PaizaTest4
             }
         }
 
-
+        /// <summary>
+        /// 標準入力で入力した行数だけ、標準入力して標準出力する
+        /// </summary>
         public void Test4()
         {
             int n = int.Parse(Console.ReadLine());
@@ -34,15 +38,22 @@ namespace PaizaTest4
         }
 
 
+        /// <summary>
+        /// 標準入力の文字列をスペースで区切って、1行ずつ標準出力する
+        /// </summary>
         public void Test5()
         {
 
-            int n = int.Parse(Console.ReadLine());
+            //int n = int.Parse(Console.ReadLine());
 
             nmootan.StdSplit();
         }
 
-
+        /// <summary>
+        /// 標準入力で、任意の文字列を入力する。
+        /// 標準入力で、int型整数を入力する。
+        /// 指定した文字列の指定した番号の文字を標準出力する
+        /// </summary>
         public void Test6()
         {
             string s = Console.ReadLine();
@@ -53,20 +64,26 @@ namespace PaizaTest4
 
         }
 
-
+        /// <summary>
+        /// 標準入力した文字列が"paiza"なら、"YES"、そうでないなら"NO"を標準出力する
+        /// </summary>
         public void Test7()
         {
             nmootan.EqualStd("paiza");
 
         }
 
-
+        /// <summary>
+        /// 標準入力した文字列の文字数を標準出力する
+        /// </summary>
         public void Test8()
         {
             Console.WriteLine(Console.ReadLine().Length);
         }
 
-
+        /// <summary>
+        /// 標準入力1行目の文字列のうち、2行目の文字列が現れる番号を標準出力する
+        /// </summary>
         public void Test9()
         {
 

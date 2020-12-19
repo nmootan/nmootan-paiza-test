@@ -453,7 +453,10 @@ namespace PaizaTest4
             return sb.ToString();
         }
 
-
+        /// <summary>
+        /// 標準入力した文字列と、指定した文字列が一致したら"YES"、不一致なら"NO"を標準出力する
+        /// </summary>
+        /// <param name="s"></param>
         public static void EqualStd(string s)
         {
 
@@ -463,19 +466,39 @@ namespace PaizaTest4
         }
 
 
+        /// <summary>
+        /// 文字列str1のうち、文字列str2が現れるインデックス番号を返す。
+        /// </summary>
+        public int GetFindStrInStr(string str1, string str2)
+        {
+
+            //string str1 = Console.ReadLine();
+            //string str2 = Console.ReadLine();
+
+            return str1.IndexOf(str2);
+        }
+
+
         public static char GetICharInString(int i, string s)
         {
             return s[i - 1];
         }
 
-
+        /// <summary>
+        /// 文字列sのi番目の文字を標準出力する
+        /// </summary>
+        /// <param name="i"></param>
+        /// <param name="s"></param>
         public static void ShowICharInString(int i, string s)
         {
             Console.WriteLine(s[i - 1]);
         }
 
 
-
+        /// <summary>
+        /// 標準入力をint型に変換して返す。
+        /// </summary>
+        /// <returns></returns>
         public static int GetStdNum()
         {
 
@@ -584,7 +607,10 @@ namespace PaizaTest4
             Console.WriteLine(line[7]);
         }
 
-
+        /// <summary>
+        /// 指定した行数だけ標準入力して、そのまま標準出力
+        /// </summary>
+        /// <param name="n"></param>
         public static void StdNLines(int n)
         {
             string[] line = new string[n];
@@ -634,7 +660,9 @@ namespace PaizaTest4
             }
         }
 
-
+        /// <summary>
+        /// 標準入力の文字列をスペースで区切って、1行ずつ標準出力する
+        /// </summary>
         public static void StdSplit()
         {
             string[] strs = System.Console.ReadLine().Trim().Split(' ');
