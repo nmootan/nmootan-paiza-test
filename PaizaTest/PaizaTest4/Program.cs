@@ -12,7 +12,7 @@ namespace PaizaTest4
         {
             Hello hello = new Hello();
 
-            hello.Test29();
+            hello.Test27();
 
             Console.ReadLine();
         }
