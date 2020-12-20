@@ -12,7 +12,7 @@ namespace PaizaTest4
         {
             Hello hello = new Hello();
 
-            hello.Test5();
+            hello.Test39();
 
             Console.ReadLine();
         }
@@ -38,162 +38,81 @@ namespace PaizaTest4
     
             Hello hello = new Hello();
     
-            hello.Test29();
+            hello.Test39();
         }
 
-
-    
     
 
+    
         /// <summary>
-        /// 数値を表す文字列 S と 1 桁の数値 T が与えられるので、S * T の結果を表す文字列を出力してください。
-        /// 123456789987654321123456789987654321123456789987654321123456789987654321
-        /// 5
-        /// 617283949938271605617283949938271605617283949938271605617283949938271605
+        /// 4 つの数値 0, 8, 1, 3 をこの順に、2 行 2 列の形で出力してください。
+        /// ただし、数値の間には半角スペースを、各行の末尾には、半角スペースの代わりに改行を入れてください。
         /// </summary>
-        public void Test29()
+        public void Test39()
         {
-            string str = Console.ReadLine();
-            int n = int.Parse(Console.ReadLine());
-
-            Console.WriteLine(ExMultiply1(str, n));
-        }
-
-
-
-        public string ExMultiply1(string str, int n)
-        {
-            bool isPlus = true;
-            if (str[0] == '-') 
+            int[][] rect22 = new int[2][];
+            for (int i = 0; i < rect22.Length; i++)
             {
-                str = str.Remove(0, 1);
-                isPlus = false;
+                rect22[i] = new int[2];
             }
 
-            str = GetMirrorStr(str);
-
-            char[] chs = GetParseStrToCharArray(str);
-            List<char> chList = new List<char>();
-            List<int> intList = new List<int>();
-            int m1 = 0;
-            int m2 = 0;
-
-
-            for (int i = 0; i < chs.Length; i++)
+            for (int i = 0; i < rect22.Length; i++)
             {
-                intList.Add(GetParseCharToInt(chs[i]));
-            }
-
-            for (int i = 0; i < chs.Length; i++)
-            {
-                m1 = intList[i] * n + m2;
-                m2 = m1 / 10;
-                chList.Add(GetParseIntToChar(m1 % 10));
-            }
-
-            if (m2 > 0) chList.Add(GetParseIntToChar(m2));
-
-            if (!isPlus) chList.Add('-');
-
-    
-            return GetFormatZero(GetMirrorStr(GetParseCharListToStr(chList)));
-        }
-    
-        public string GetMirrorStr(string str)
-        {
-            char[] cs = str.ToCharArray();
-            char[] mirror = new char[cs.Length];
-
-            int i = cs.Length-1;
-            int length = i;
-            while (i >= 0)
-            {
-                mirror[length - i] = cs[i];
-
-                i--;
-            }
-
-            return new string(mirror);
-        }
-
-        public char[] GetParseStrToCharArray(string str)
-        {
-
-            return str.ToCharArray();
-        }
-
-        public int GetParseCharToInt(char ch)
-        {
-
-            return ch - '0';
-        }
-
-        public char GetParseIntToChar(int n)
-        {
-
-            return (char)(48 + n);
-        }
-
-        public string GetParseCharListToStr(List<char> chList)
-        {
-
-            return new string(chList.ToArray());
-        }
-    
-        public string GetFormatZero(string str)
-        {
-            List<char> chs = str.ToList<char>();
-            int length = chs.Count;
-
-            if (JudgeIsFloat(str))
-            {
-                for (int i = 0; i < length; i++)
+                for (int j = 0; j < rect22.Length; j++)
                 {
-                    if (chs[length - 1 - i] != '0') break;
-                    else chs.RemoveAt(length - 1 - i);
-                }
-
-                //length = chs.Count;
-                int n=0;
-                if (chs[0] == '-') n = 1;
-                for (int i = n; i < chs.Count; i++)
-                {
-
-                    if (chs[i] != '0') break;
-                    else if (chs[i] == '0' && chs[i + 1] == '.') break;
-                    else
-                    {
-                        chs.RemoveAt(i);
-                        i--;
-                    }
-                }
-            }
-            else
-            {
-                int n = 0;
-                if (chs[0] == '-') n = 1;
-                for (int i = n; i < chs.Count-1; i++)
-                {
-
-                    if (chs[i] != '0') break;
-                    else if (chs[i] == '0')
-                    {
-                        chs.RemoveAt(i);
-                        i--;
-                    }
+                    rect22[i][j] = int.Parse(Console.ReadLine());
                 }
             }
 
+            //string[] strs = new string[rect22.Length];
 
-            return new string(chs.ToArray());
+            for (int i = 0; i < rect22.Length; i++)
+            {
+                Console.WriteLine(nmootan.GetJoinIntArrayToStrByStr(rect22[i], " "));
+
+            }
+
+
+
         }
+
+
+
+    }
+
+
     
-        public bool JudgeIsFloat(string str)
+
+    static class nmootan
+    {
+
+
+
+    
+        /// <summary>
+        /// int型配列の要素を文字列strを挟んでつないで、文字列で返す。
+        /// </summary>
+        /// <param name="ints"></param>
+        /// <returns></returns>
+        public static string GetJoinIntArrayToStrByStr(int[] ints, string str)
         {
-            if (str.Contains(".")) return true;
-            else return false;
-            
+            StringBuilder sb = new StringBuilder();
+
+            for (int i = 0; i < ints.Length-1; i++)
+            {
+                sb.Append(ints[i]);
+                sb.Append(str);
+            }
+
+            sb.Append(ints[ints.Length - 1]);
+            //sb.Append(Environment.NewLine);
+
+            return sb.ToString().Trim();
         }
+
+
+
+
 
 
 

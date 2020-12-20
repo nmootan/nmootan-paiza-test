@@ -344,13 +344,188 @@ namespace PaizaTest4
         /// </summary>
         public void Test30()
         {
+            string str = "813, 1, 2, 923874, 23648, 782356, 3256, 2342, 24324, 112";
+
+            string[] strs = nmootan.GetStrsSplitByStr(str, ", ");
+
+            for (int i = 0; i < strs.Length; i++)
+            {
+                Console.WriteLine(strs[i]);
+            }
+
+        }
+
+        /// <summary>
+        /// １から１０００までの1000個の整数値を空白区切りで、1行で標準出力する。
+        /// </summary>
+        public void Test31()
+        {
+            int[] ints = new int[10];
+
+            for (int i = 0; i < 10; i++)
+            {
+                ints[i] = i + 1;
+            }
+
+            Console.WriteLine(nmootan.GetJoinIntArrayToStrByStr(ints, ","));
+
+        }
+
+
+        public void Test32()
+        {
+            int n = 3;
+            string[] strs = new string[n];
+
+            for (int i = 0; i < n; i++)
+            {
+                strs[i]= Console.ReadLine();
+
+            }
+
+            Console.WriteLine(nmootan.GetJoinStrArrayToStrByStr(strs, "|"));
+        }
+
+
+        public void Test33()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append(Console.ReadLine().Replace(" ", ","));
+
+            //sb.Append(",");
+
+            Console.WriteLine(sb.ToString());
+
+        }
+
+
+        public void Test34()
+        {
+            string[] strs = Console.ReadLine().Trim().Split(' ');
+
+            for (int i = 0; i < strs.Length; i++)
+            {
+                Console.WriteLine(strs[i]);
+            }
+
+
+        }
+
+        public void Test35()
+        {
+            int n = 10;
+            string[] strs = new string[n];
+
+            for (int i = 0; i < n; i++)
+            {
+                strs[i] = Console.ReadLine();
+
+            }
+
+            Console.WriteLine(nmootan.GetJoinStrArrayToStrByStr(strs, " | "));
+        }
+
+
+        public void Test36()
+        {
+
+            Console.WriteLine(int.Parse(Console.ReadLine()).ToString("#,0"));
+
+        }
+
+        /// <summary>
+        /// 大きな数値を 3 けたごとにカンマ区切りで出力
+        /// 123456789
+        /// 123,456,789
+        /// </summary>
+        public void Test37()
+        {
+            string str = Console.ReadLine();
+
+            Console.WriteLine(nmootan.ExFormatCurrency(str));
 
 
         }
 
 
+        public void Test38()
+        {
+
+            string str = Console.ReadLine();
+
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append(str);
+            sb.Insert(3, ",");
+
+            Console.WriteLine(sb.ToString());
+
+        }
 
 
+        /// <summary>
+        /// 4 つの数値 0, 8, 1, 3 をこの順に、2 行 2 列の形で出力してください。
+        /// ただし、数値の間には半角スペースを、各行の末尾には、半角スペースの代わりに改行を入れてください。
+        /// </summary>
+        public void Test39()
+        {
+            int[][] rect22 = new int[2][];
+            for (int i = 0; i < rect22.Length; i++)
+            {
+                rect22[i] = new int[2];
+            }
+
+            //for (int i = 0; i < rect22.Length; i++)
+            //{
+            //    for (int j = 0; j < rect22.Length; j++)
+            //    {
+            //        rect22[i][j] = int.Parse(Console.ReadLine());
+            //    }
+            //}
+            rect22[0][0] = 0; rect22[0][1] = 8; rect22[1][0] = 1; rect22[1][1] = 3;
+
+            //string[] strs = new string[rect22.Length];
+
+            for (int i = 0; i < rect22.Length; i++)
+            {
+                Console.WriteLine(nmootan.GetJoinIntArrayToStrByStr(rect22[i], " "));
+
+            }
+
+        }
+
+
+        /// <summary>
+        /// 9 個の数値が半角スペース区切りで入力されます。この数値を 3 行 3 列の形式で出力してください。
+        /// 具体的には、入力された数値を N_1 , N_2 , N_3 , ..., N_9 とするとき、 1 行目にはN_1 からN_3 を、2 行目には N_4 から N_6 を、3 行目には N_7 から N_9 を出力してください。
+        /// ただし、数値の間には半角スペースを、各行の末尾には、半角スペースの代わりに改行を入れてください。
+        /// </summary>
+        public void Test40()
+        {
+            int[][] rect22 = new int[2][];
+            for (int i = 0; i < rect22.Length; i++)
+            {
+                rect22[i] = new int[2];
+            }
+
+            //for (int i = 0; i < rect22.Length; i++)
+            //{
+            //    for (int j = 0; j < rect22.Length; j++)
+            //    {
+            //        rect22[i][j] = int.Parse(Console.ReadLine());
+            //    }
+            //}
+            rect22[0][0] = 0; rect22[0][1] = 8; rect22[1][0] = 1; rect22[1][1] = 3;
+
+            //string[] strs = new string[rect22.Length];
+
+            for (int i = 0; i < rect22.Length; i++)
+            {
+                Console.WriteLine(nmootan.GetJoinIntArrayToStrByStr(rect22[i], " "));
+
+            }
+
+        }
 
 
     }

@@ -6,11 +6,42 @@ using System.Threading.Tasks;
 
 namespace PaizaTest4
 {
-    class nmootan
+    static class nmootan
     {
 
 
+        /// <summary>
+        /// 大きな数値を 3 けたごとにカンマ区切りで出力
+        /// 123456789
+        /// 123,456,789
+        /// </summary>
+        public static string ExFormatCurrency(string str)
+        {
 
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append(str);
+            //int mod = str.Length % 3;
+
+            for (int i = 0; i < str.Length; i++)
+            {
+                int n = str.Length - (i * 3);
+                if (n < 1) break;
+
+                if(n<str.Length) sb.Insert(n, ",");
+            }
+
+
+            return sb.ToString();
+        }
+
+
+        /// <summary>
+        /// 何桁の整数値でも掛け算できる。　str:数値の文字列　n:一桁の整数値
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="n"></param>
+        /// <returns></returns>
         public static string ExMultiply1(string str, int n)
         {
             bool isPlus = true;
@@ -49,7 +80,12 @@ namespace PaizaTest4
             return GetFormatZero(GetMirrorStr(GetParseCharListToStr(chList)));
         }
 
-
+        /// <summary>
+        /// 何桁の整数値でも足し算できる。　
+        /// </summary>
+        /// <param name="str1"></param>
+        /// <param name="str2"></param>
+        /// <returns></returns>
         public static string ExPlus(string str1, string str2)
         {
             //str1 = GetMirrorStr(str1);
@@ -161,7 +197,11 @@ namespace PaizaTest4
 
         }
 
-
+        /// <summary>
+        /// 一桁のint型整数値を文字型に変換する。
+        /// </summary>
+        /// <param name="n"></param>
+        /// <returns></returns>
         public static char GetParseIntToChar(int n)
         {
 
@@ -175,10 +215,14 @@ namespace PaizaTest4
             return ch - '0';
         }
 
-
+        /// <summary>
+        /// 文字列で与えられた数式を計算して、結果をint型で返す。（足し算、引き算のみ。int型整数値の計算のみ。）
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
         public static int GetParseStrToIntPlusMinusResult(string str)
         {
-            string[] plusStrs = nmootan.GetStdStrsSplitByChar(str, '+');
+            string[] plusStrs = nmootan.GetStrsSplitByChar(str, '+');
 
             //List<string> plusStrsList = new List<string>();
             //List<int> plusNumsList = new List<int>();
@@ -188,7 +232,7 @@ namespace PaizaTest4
 
             for (int i = 0; i < plusStrs.Length; i++)
             {
-                string[] strs = nmootan.GetStdStrsSplitByChar(plusStrs[i], '-');
+                string[] strs = nmootan.GetStrsSplitByChar(plusStrs[i], '-');
 
                 if (strs.Length > 1)
                 {
@@ -230,7 +274,11 @@ namespace PaizaTest4
                     return 
                 }
         */
-
+        /// <summary>
+        /// 文字列で与えられた数値の余分な０を消す。（整数値や小数。先頭と末尾の０）
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
         public static string GetFormatZero(string str)
         {
             List<char> chs = str.ToList<char>();
@@ -279,7 +327,11 @@ namespace PaizaTest4
             return new string(chs.ToArray());
         }
 
-
+        /// <summary>
+        /// 小数かどうかを判定する。
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
         public static bool JudgeIsFloat(string str)
         {
             if (str.Contains(".")) return true;
@@ -287,7 +339,12 @@ namespace PaizaTest4
 
         }
 
-
+        /// <summary>
+        /// 文字列に含まれる、指定した文字の重複を消す。
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="ch"></param>
+        /// <returns></returns>
         public static string DistinctChar(string str, char ch)
         {
             char[] chs = GetParseStrToCharArray(str);
@@ -304,6 +361,11 @@ namespace PaizaTest4
             return GetParseCharListToStr(chList);
         }
 
+        /// <summary>
+        /// 文字列に含まれる全ての文字の重複を消す。
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
         public static string DistinctAllChar(string str)
         {
             char[] ch = GetParseStrToCharArray(str);
@@ -318,7 +380,11 @@ namespace PaizaTest4
             return GetParseCharListToStr(chList);
         }
 
-
+        /// <summary>
+        /// 文字列で表された日付時間をDateTime型に変換する。（文字列の表現が違いすぎると変換できない。）
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
         public static DateTime GetParseStrToDateTime(string str)
         {
             str = GetReplaceStrNoIChar(str, " ", 11);
@@ -342,7 +408,11 @@ namespace PaizaTest4
             return DateTime.Parse(str);
         }
 
-
+        /// <summary>
+        /// 文字列をミラー変換して返す。（文字の並び順を逆さまにする。）
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
         public static string GetMirrorStr(string str)
         {
             char[] cs = str.ToCharArray();
@@ -367,7 +437,11 @@ namespace PaizaTest4
             return new string(chList.ToArray());
         }
 
-
+        /// <summary>
+        /// 与えられた文字列の全ての文字の大文字を小文字に、小文字を大文字に変換する。
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
         public static string GetSwithCharsInStr(string str)
         {
             //Char型の配列にする
@@ -399,7 +473,11 @@ namespace PaizaTest4
             return str.ToCharArray();
         }
 
-
+        /// <summary>
+        /// 文字列の全ての文字を小文字に変換する。
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
         public static string GetStdLowerStr(string str)
         {
 
@@ -410,7 +488,11 @@ namespace PaizaTest4
             return ti.ToLower(str);
         }
 
-
+        /// <summary>
+        /// 文字列の全ての文字を大文字に変換する。
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
         public static string GetStdUpperStr(string str)
         {
 
@@ -421,7 +503,13 @@ namespace PaizaTest4
             return ti.ToUpper(str);
         }
 
-
+        /// <summary>
+        /// 文字列strのi-1番目の一文字を文字列chで置き換える。
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="ch"></param>
+        /// <param name="i"></param>
+        /// <returns></returns>
         public static string GetReplaceStrNoIChar(string str, string ch, int i)
         {
             StringBuilder sb = new StringBuilder(str);
@@ -432,7 +520,28 @@ namespace PaizaTest4
             return sb.ToString();
         }
 
+        /// <summary>
+        /// 文字列strのインデックス番号iから長さlengthの文字列を文字列chで置き換える。
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="ch"></param>
+        /// <param name="i"></param>
+        /// <returns></returns>
+        public static string GetReplaceCharIndexIInStr(string str, string ch, int i, int length)
+        {
+            StringBuilder sb = new StringBuilder(str);
 
+            sb.Remove(i, length);
+            sb.Insert(i, ch);
+
+            return sb.ToString();
+        }
+
+        /// <summary>
+        /// n回標準入力から入力した文字列を順に全てつなぎ合わせた文字列を返す。
+        /// </summary>
+        /// <param name="n"></param>
+        /// <returns></returns>
         public static string AppendNStdStrs(int n)
         {
             List<string> strs = new List<string>();
@@ -469,7 +578,7 @@ namespace PaizaTest4
         /// <summary>
         /// 文字列str1のうち、文字列str2が現れるインデックス番号を返す。
         /// </summary>
-        public int GetFindStrInStr(string str1, string str2)
+        public static int GetFindStrInStr(string str1, string str2)
         {
 
             //string str1 = Console.ReadLine();
@@ -478,8 +587,24 @@ namespace PaizaTest4
             return str1.IndexOf(str2);
         }
 
-
+        /// <summary>
+        /// 文字列sのi番目の文字を返す。
+        /// </summary>
+        /// <param name="i"></param>
+        /// <param name="s"></param>
+        /// <returns></returns>
         public static char GetICharInString(int i, string s)
+        {
+            return s[i - 1];
+        }
+
+        /// <summary>
+        /// 文字列sのインデックス番号iの文字を返す。
+        /// </summary>
+        /// <param name="i"></param>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        public static char GetIndexICharInString(int i, string s)
         {
             return s[i - 1];
         }
@@ -557,6 +682,18 @@ namespace PaizaTest4
 
         }
 
+        /// <summary>
+        /// 文字列strのインデックス番号iから末尾までを抜き出して返す。
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="i"></param>
+        public static void SubstringIndexIToEnd(string str, int i)
+        {
+            //string str = "1 2 3 4 5 6 7";
+
+            Console.WriteLine(str.Substring(i, str.Length - i));
+
+        }
 
 
         public static int GetStdInt()
@@ -565,14 +702,11 @@ namespace PaizaTest4
             return int.Parse(Console.ReadLine());
         }
 
-
         public static void StdInt()
         {
 
             int n = int.Parse(Console.ReadLine());
         }
-
-
 
         public static void StdNLines2()
         {
@@ -590,8 +724,6 @@ namespace PaizaTest4
                 Console.WriteLine(line[i]);
             }
         }
-
-
 
         public static void StdNLines3()
         {
@@ -684,6 +816,18 @@ namespace PaizaTest4
             }
         }
 
+        /// <summary>
+        /// 文字列を','でスプリットする。
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static string[] GetStrSplitConma(string str)
+        {
+            return str.Trim().Split(',');
+
+            
+        }
+
 
 
         public static string[] GetStdStrsSplit()
@@ -707,13 +851,103 @@ namespace PaizaTest4
             return iList;
         }
 
+        /// <summary>
+        /// 文字列を空白でスプリットして、int型リストを返す。
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static List<int> GetStrSplitToIntList(string str)
+        {
+            string[] strs = str.Trim().Split(' ');
+
+            List<int> iList = new List<int>();
+
+            for (int i = 0; i < strs.Length; i++)
+            {
+                iList.Add(int.Parse(strs[i]));
+            }
+
+            return iList;
+        }
 
 
-        public static string[] GetStdStrsSplitByChar(string str, char ch)
+        /// <summary>
+        /// 文字列strを文字chでスプリットする。
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="ch"></param>
+        /// <returns></returns>
+        public static string[] GetStrsSplitByChar(string str, char ch)
         {
 
             return str.Trim().Split(ch);
         }
+
+        /// <summary>
+        /// 文字列strを文字列str2でスプリットする。
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="str2"></param>
+        /// <returns></returns>
+        public static string[] GetStrsSplitByStr(string str, string str2)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append(str);
+            sb.Replace(str2, " ");
+
+            //char[] chs = GetParseStrToCharArray(str2);
+
+            //return str.Trim().Split(chs);
+
+            return sb.ToString().Trim().Split(' ');
+        }
+
+
+        /// <summary>
+        /// int型配列の要素を文字列strを挟んでつないで、文字列で返す。
+        /// </summary>
+        /// <param name="ints"></param>
+        /// <returns></returns>
+        public static string GetJoinIntArrayToStrByStr(int[] ints, string str)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            for (int i = 0; i < ints.Length-1; i++)
+            {
+                sb.Append(ints[i]);
+                sb.Append(str);
+            }
+
+            sb.Append(ints[ints.Length - 1]);
+            //sb.Append(Environment.NewLine);
+
+            return sb.ToString().Trim();
+        }
+
+
+        /// <summary>
+        /// string型配列の要素を文字列strを挟んでつないで、文字列で返す。
+        /// </summary>
+        /// <param name="ints"></param>
+        /// <returns></returns>
+        public static string GetJoinStrArrayToStrByStr(string[] strs, string str)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            for (int i = 0; i < strs.Length-1; i++)
+            {
+                sb.Append(strs[i]);
+                sb.Append(str);
+            }
+
+            sb.Append(strs[strs.Length - 1]);
+            //sb.Append(Environment.NewLine);
+
+            return sb.ToString().Trim();
+        }
+
+
 
 
     }
