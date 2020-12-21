@@ -255,6 +255,67 @@ namespace PaizaTest4
             return sum;
         }
 
+        /// <summary>
+        /// 実数 N が入力されます。N を四捨五入して小数第 n 位まで出力
+        /// また、N の小数部が小数第 n 位に満たない場合は 0 で埋めて出力
+        /// 7.764976 4
+        /// 7.7740
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="n"></param>
+        /// <returns></returns>
+        public static string GetRoundFloatPointN(string str,int n)
+        {
+
+            str = nmootan.GetFormatZero(str);
+            char[] chs = nmootan.GetParseStrToCharArray(str);
+            StringBuilder sb = new StringBuilder();
+            sb.Append(str);
+            
+            if (JudgeIsFloat(str))
+            {
+                int point = str.IndexOf('.');
+                if (str.Length - 1 - point > n) 
+                {
+                    int r = nmootan.GetParseCharToInt(str[point + n+1]);
+                    if (r > 4) 
+                    {
+                        for (int i = 0; i < point+n+1; i++)
+                        {
+                            r = nmootan.GetParseCharToInt(str[point + n-i]) + 1;
+                            if (r == 10)
+                            {
+                                str = nmootan.GetReplaceStrIndexIChar(str, "0", point + n-i);
+                                if (str[point+n-i-1]=='.')
+                                {
+                                    i++;
+                                    //if()
+                                    //str = nmootan.GetReplaceStrIndexIChar(str, (nmootan.GetParseCharToInt(str[point + n - 1-i]) + 1).ToString(), point + n - 1);
+                                }
+                            }
+                            else
+                            {
+                                str = nmootan.GetReplaceStrIndexIChar(str, r.ToString(), point + n-i);
+                                break;
+                            }
+                        }
+                    } 
+                    str = str.Remove(point + n+1);
+                }
+
+                else 
+                {
+                    for (int i = 0; i < n - (str.Length - 1 - str.IndexOf('.')); i++)
+                    {
+                        sb.Append("0");
+                    }
+                    str = sb.ToString();
+                } 
+            }
+
+            return str;
+        }
+
         /*
                 public int GetParseStrToFomula(string str)
                 {
@@ -274,6 +335,7 @@ namespace PaizaTest4
                     return 
                 }
         */
+
         /// <summary>
         /// 文字列で与えられた数値の余分な０を消す。（整数値や小数。先頭と末尾の０）
         /// </summary>
@@ -288,7 +350,12 @@ namespace PaizaTest4
             {
                 for (int i = 0; i < length; i++)
                 {
-                    if (chs[length - 1 - i] != '0') break;
+                    if (chs[length - 1 - i] != '0')
+                    {
+                        if (chs[length - 1 - i] == '.') chs.RemoveAt(length - 1 - i);
+                        
+                        break;
+                    }
                     else chs.RemoveAt(length - 1 - i);
                 }
 
@@ -519,6 +586,25 @@ namespace PaizaTest4
 
             return sb.ToString();
         }
+
+
+        /// <summary>
+        /// 文字列strのインデックス番号iの一文字を文字列str1で置き換える。
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="ch"></param>
+        /// <param name="i"></param>
+        /// <returns></returns>
+        public static string GetReplaceStrIndexIChar(string str, string str1, int i)
+        {
+            StringBuilder sb = new StringBuilder(str);
+
+            sb.Remove(i, 1);
+            sb.Insert(i, str1);
+
+            return sb.ToString();
+        }
+
 
         /// <summary>
         /// 文字列strのインデックス番号iから長さlengthの文字列を文字列chで置き換える。
@@ -992,6 +1078,28 @@ namespace PaizaTest4
             }
 
             sb.Append(ints[ints.Length - 1]);
+            //sb.Append(Environment.NewLine);
+
+            return sb.ToString().Trim();
+        }
+
+
+        /// <summary>
+        /// int型配列のインデックス番号sIndexからeIndexの要素を文字列strを挟んでつないで、文字列で返す。
+        /// </summary>
+        /// <param name="ints"></param>
+        /// <returns></returns>
+        public static string GetJoinIntArrayToStrByStr(int[] ints, string str, int sIndex, int eIndex)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            for (int i = sIndex; i < eIndex; i++)
+            {
+                sb.Append(ints[i]);
+                sb.Append(str);
+            }
+
+            sb.Append(ints[eIndex]);
             //sb.Append(Environment.NewLine);
 
             return sb.ToString().Trim();

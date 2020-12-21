@@ -12,7 +12,7 @@ namespace PaizaTest4
         {
             Hello hello = new Hello();
 
-            hello.Test44();
+            hello.Test39();
             //nmootan.Matrix99();
 
             Console.ReadLine();
@@ -29,6 +29,7 @@ namespace PaizaTest4
     using System;
     using System.Text;
     using System.Collections.Generic;
+    using System.Linq;
 
     public class Hello{
 
@@ -39,30 +40,43 @@ namespace PaizaTest4
     
             Hello hello = new Hello();
     
-            hello.Test44();
+            hello.Test49();
         }
 
     
     
-        /// <summary>
-        /// 自然数 N と N 個の要素の数列 M が与えられます。1 ≦ i ≦ N の各 i について、i 行目には以下の数列を出力してください。
-        /// 1 以上 M_i 以下のすべての自然数を昇順、半角スペース区切りで出力してください。
-        /// </summary>
-        public void Test44()
-        {
-            int n = nmootan.GetStdInt();
-            int[] m = nmootan.GetStrSplitToIntList(Console.ReadLine()).ToArray();
-            List<int> ms = new List<int>();
 
-            for (int i = 0; i < n; i++)
+    
+    
+        /// <summary>
+        /// 実数 N、自然数 M が入力されます。N を四捨五入して小数第 M 位まで出力してください。
+        /// また、N の小数部が小数第 M 位に満たない場合は 0 で埋めて出力してください。
+        /// </summary>
+        public void Test48()
+        {
+
+            string[] strs = nmootan.GetStdStrsSplit();
+
+
+
+            Console.WriteLine(nmootan.GetRoundFloatPointN(strs[0], int.Parse( strs[1])));
+
+        }
+
+
+        /// <summary>
+        /// 自然数 Q が与えられます。Q 回以下の問題に答えてください。
+        /// 実数 N、自然数 M が入力されます。N を四捨五入して小数第 M 位まで出力してください。また、N の小数部が小数第 M 位に満たない場合は 0 で埋めて出力してください。
+        /// </summary>
+        public void Test49()
+        {
+            int q = nmootan.GetStdInt();
+
+            for (int i = 0; i < q; i++)
             {
-                for (int j = 0; j < m[i]; j++)
-                {
-                    ms.Add(j + 1);
-                }
-                Console.WriteLine(nmootan.GetJoinIntArrayToStrByStr(ms.ToArray(), " "));
-                ms.Clear();
+                Test48();
             }
+
 
         }
 
@@ -75,45 +89,7 @@ namespace PaizaTest4
 
     static class nmootan
     {
-
-
-
     
-        /// <summary>
-        /// 自然数 N が入力されます。N 行 N 列の九九表を出力してください。具体的には、出力の i 行 j 列目 (1 ≦ i, j ≦ N ) の数値は i * j になるように出力してください。
-        /// ただし、数値の間には半角スペースを、各行の末尾には、半角スペースの代わりに改行を入れてください。
-        /// </summary>
-        public static void MatrixNN()
-        {
-            int n = GetStdInt();
-            //List<int> ints = nmootan.GetStrSplitToIntList(Console.ReadLine());
-
-
-            int[][] rectNN = new int[n][];
-            for (int i = 0; i < rectNN.Length; i++)
-            {
-                rectNN[i] = new int[n];
-            }
-
-            for (int i = 0; i < rectNN.Length; i++)
-            {
-                for (int j = 0; j < rectNN[i].Length; j++)
-                {
-                    rectNN[i][j] = (i + 1) * (j + 1);
-                }
-            }
-            //rect33[0][0] = 0; rect33[0][1] = 8; rect33[1][0] = 1; rect33[1][1] = 3;
-
-            //string[] strs = new string[rect22.Length];
-
-            for (int i = 0; i < rectNN.Length; i++)
-            {
-                Console.WriteLine(nmootan.GetJoinIntArrayToStrByStr(rectNN[i], " "));
-
-            }
-
-        }
-
         public static int GetStdInt()
         {
 
@@ -122,26 +98,153 @@ namespace PaizaTest4
 
 
     
-        /// <summary>
-        /// int型配列の要素を文字列strを挟んでつないで、文字列で返す。
-        /// </summary>
-        /// <param name="ints"></param>
-        /// <returns></returns>
-        public static string GetJoinIntArrayToStrByStr(int[] ints, string str)
+        public static string[] GetStdStrsSplit()
         {
-            StringBuilder sb = new StringBuilder();
 
-            for (int i = 0; i < ints.Length-1; i++)
+            return System.Console.ReadLine().Trim().Split(' ');
+        }
+
+        /// <summary>
+        /// 実数 N が入力されます。N を四捨五入して小数第 n 位まで出力
+        /// また、N の小数部が小数第 n 位に満たない場合は 0 で埋めて出力
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="n"></param>
+        /// <returns></returns>
+        public static string GetRoundFloatPointN(string str,int n)
+        {
+
+            str = nmootan.GetFormatZero(str);
+            char[] chs = nmootan.GetParseStrToCharArray(str);
+            StringBuilder sb = new StringBuilder();
+            sb.Append(str);
+            
+            if (JudgeIsFloat(str))
             {
-                sb.Append(ints[i]);
-                sb.Append(str);
+                int point = str.IndexOf('.');
+                if (str.Length - 1 - point > n) 
+                {
+                    int r = nmootan.GetParseCharToInt(str[point + n+1]);
+                    if (r > 4) 
+                    {
+                        r = nmootan.GetParseCharToInt(str[point + n]) + 1;
+                        str = nmootan.GetReplaceStrIndexIChar(str, r.ToString(), point + n);
+                    } 
+                    str = str.Remove(point + n+1);
+                }
+
+                else 
+                {
+                    for (int i = 0; i < n - (str.Length - 1 - str.IndexOf('.')); i++)
+                    {
+                        sb.Append("0");
+                    }
+                    str = sb.ToString();
+                } 
             }
 
-            sb.Append(ints[ints.Length - 1]);
-            //sb.Append(Environment.NewLine);
-
-            return sb.ToString().Trim();
+            return str;
         }
+
+        /// <summary>
+        /// 文字列で与えられた数値の余分な０を消す。（整数値や小数。先頭と末尾の０）
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static string GetFormatZero(string str)
+        {
+            List<char> chs = str.ToList<char>();
+            int length = chs.Count;
+
+            if (JudgeIsFloat(str))
+            {
+                for (int i = 0; i < length; i++)
+                {
+                    if (chs[length - 1 - i] != '0')
+                    {
+                        if (chs[length - 1 - i] == '.') chs.RemoveAt(length - 1 - i);
+                        
+                        break;
+                    }
+                    else chs.RemoveAt(length - 1 - i);
+                }
+
+                //length = chs.Count;
+                int n = 0;
+                if (chs[0] == '-') n = 1;
+                for (int i = n; i < chs.Count; i++)
+                {
+
+                    if (chs[i] != '0') break;
+                    else if (chs[i] == '0' && chs[i + 1] == '.') break;
+                    else
+                    {
+                        chs.RemoveAt(i);
+                        i--;
+                    }
+                }
+            }
+            else
+            {
+                int n = 0;
+                if (chs[0] == '-') n = 1;
+                for (int i = n; i < chs.Count - 1; i++)
+                {
+
+                    if (chs[i] != '0') break;
+                    else if (chs[i] == '0')
+                    {
+                        chs.RemoveAt(i);
+                        i--;
+                    }
+                }
+            }
+
+
+            return new string(chs.ToArray());
+        }
+
+        /// <summary>
+        /// 小数かどうかを判定する。
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static bool JudgeIsFloat(string str)
+        {
+            if (str.Contains(".")) return true;
+            else return false;
+
+        }
+
+        public static char[] GetParseStrToCharArray(string str)
+        {
+
+            return str.ToCharArray();
+        }
+
+        public static int GetParseCharToInt(char ch)
+        {
+
+            return ch - '0';
+        }
+
+        /// <summary>
+        /// 文字列strのインデックス番号iの一文字を文字列str1で置き換える。
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="ch"></param>
+        /// <param name="i"></param>
+        /// <returns></returns>
+        public static string GetReplaceStrIndexIChar(string str, string str1, int i)
+        {
+            StringBuilder sb = new StringBuilder(str);
+
+            sb.Remove(i, 1);
+            sb.Insert(i, str1);
+
+            return sb.ToString();
+        }
+
 
 
 

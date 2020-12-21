@@ -637,13 +637,90 @@ namespace PaizaTest4
 
         /// <summary>
         /// 自然数 N, M と N 個の自然数からなる数列 A と M 個の自然数からなる数列 B が与えられます。1 行目には数列 A の最初の B_1 個の値を出力し、 2 行目にはその次から B_2 個の値を出力します。このように、i 行目には数列 A の 1 + B_1 + B_2 + ... + B_{i - 1} 番目の値から B_i 個の値を出力してください。言い換えると、数列 A の値を B_1 個、B_2個、... B_M 個で分割し、それぞれの数列を改行区切りで出力してください。
+        /// 10 4
+        /// 1 2 3 4 5 6 7 8 9 10
+        /// 2 6 1 1
         /// </summary>
         public void Test45()
         {
+            Console.ReadLine();
+            int[] ns = nmootan.GetStrSplitToIntList(Console.ReadLine()).ToArray();
+            int[] ms = nmootan.GetStrSplitToIntList(Console.ReadLine()).ToArray();
+            string str;
+            //StringBuilder sb = new StringBuilder();
 
+            Console.WriteLine( nmootan.GetJoinIntArrayToStrByStr(ns, " ", 0, ms[0] - 1));
+            int sum = ms[0];
+            
+            for (int i = 1; i < ms.Length; i++)
+            {
+                Console.WriteLine( nmootan.GetJoinIntArrayToStrByStr(ns, " ", sum, sum+ ms[i]-1));
+
+                sum += ms[i];
+            }
+        }
+
+
+        /// <summary>
+        /// 実数Nが入力されます。Nをそのまま出力してください。
+        /// なお、末尾に余分な 0 を出力しないでください。
+        /// </summary>
+        public void Test46()
+        {
+            Console.WriteLine(nmootan.GetFormatZero(Console.ReadLine()));
 
         }
 
+
+        /// <summary>
+        /// 実数 N が入力されます。N を四捨五入して小数第 3 位まで出力してください。
+        /// また、N の小数部が小数第 3 位に満たない場合は 0 で埋めて出力してください。
+        /// </summary>
+        public void Test47()
+        {
+            string str = Console.ReadLine();
+
+            Console.WriteLine(nmootan.GetRoundFloatPointN(str, 3));
+
+        }
+
+
+        /// <summary>
+        /// 実数 N、自然数 M が入力されます。N を四捨五入して小数第 M 位まで出力してください。
+        /// また、N の小数部が小数第 M 位に満たない場合は 0 で埋めて出力してください。
+        /// </summary>
+        public void Test48()
+        {
+
+            string[] strs = nmootan.GetStdStrsSplit();
+
+
+
+            Console.WriteLine(nmootan.GetRoundFloatPointN(strs[0], int.Parse( strs[1])));
+
+        }
+
+
+        /// <summary>
+        /// 自然数 Q が与えられます。Q 回以下の問題に答えてください。
+        /// 実数 N、自然数 M が入力されます。N を四捨五入して小数第 M 位まで出力してください。また、N の小数部が小数第 M 位に満たない場合は 0 で埋めて出力してください。
+        /// </summary>
+        //public void Test49()
+        //{
+        //    int q = nmootan.GetStdInt();
+        //    string[][] strs = new string[q][];
+
+        //    //for (int i = 0; i < q; i++)
+        //    //{
+        //    //    strs[i] = nmootan.GetStdStrsSplit();
+        //    //}
+
+        //    //for (int i = 0; i < q; i++)
+        //    //{
+        //    //    Console.WriteLine(nmootan.GetRoundFloatPointN(strs[i][0], int.Parse(strs[i][1])));
+        //    //}
+
+        //}
 
 
 
