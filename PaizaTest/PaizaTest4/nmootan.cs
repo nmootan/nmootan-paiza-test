@@ -278,7 +278,8 @@ namespace PaizaTest4
                 if (str.Length - 1 - point > n) 
                 {
                     int r = nmootan.GetParseCharToInt(str[point + n+1]);
-                    if (r > 4) 
+                    str = str.Remove(point + n + 1);
+                    if (r > 4)
                     {
                         for (int i = 0; i < point+n+1; i++)
                         {
@@ -286,7 +287,12 @@ namespace PaizaTest4
                             if (r == 10)
                             {
                                 str = nmootan.GetReplaceStrIndexIChar(str, "0", point + n-i);
-                                if (str[point+n-i-1]=='.')
+                                if(point + n - i == 0) 
+                                {
+                                    str= str.Insert(0, "1");
+                                    break;
+                                }
+                                else if (str[point+n-i-1]=='.')
                                 {
                                     i++;
                                     //if()
@@ -300,7 +306,7 @@ namespace PaizaTest4
                             }
                         }
                     } 
-                    str = str.Remove(point + n+1);
+                    //str = str.Remove(point + n+1);
                 }
 
                 else 

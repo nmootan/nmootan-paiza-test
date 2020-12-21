@@ -705,22 +705,22 @@ namespace PaizaTest4
         /// 自然数 Q が与えられます。Q 回以下の問題に答えてください。
         /// 実数 N、自然数 M が入力されます。N を四捨五入して小数第 M 位まで出力してください。また、N の小数部が小数第 M 位に満たない場合は 0 で埋めて出力してください。
         /// </summary>
-        //public void Test49()
-        //{
-        //    int q = nmootan.GetStdInt();
-        //    string[][] strs = new string[q][];
+        public void Test49()
+        {
+            int q = nmootan.GetStdInt();
+            string[][] strs = new string[q][];
 
-        //    //for (int i = 0; i < q; i++)
-        //    //{
-        //    //    strs[i] = nmootan.GetStdStrsSplit();
-        //    //}
+            for (int i = 0; i < q; i++)
+            {
+                strs[i] = nmootan.GetStdStrsSplit();
+            }
 
-        //    //for (int i = 0; i < q; i++)
-        //    //{
-        //    //    Console.WriteLine(nmootan.GetRoundFloatPointN(strs[i][0], int.Parse(strs[i][1])));
-        //    //}
+            for (int i = 0; i < q; i++)
+            {
+                Console.WriteLine(nmootan.GetRoundFloatPointN(strs[i][0], int.Parse(strs[i][1])));
+            }
 
-        //}
+        }
 
 
 
