@@ -12,7 +12,8 @@ namespace PaizaTest4
         {
             Hello hello = new Hello();
 
-            hello.Test39();
+            hello.Test44();
+            //nmootan.Matrix99();
 
             Console.ReadLine();
         }
@@ -38,41 +39,30 @@ namespace PaizaTest4
     
             Hello hello = new Hello();
     
-            hello.Test39();
+            hello.Test44();
         }
 
     
-
     
         /// <summary>
-        /// 4 つの数値 0, 8, 1, 3 をこの順に、2 行 2 列の形で出力してください。
-        /// ただし、数値の間には半角スペースを、各行の末尾には、半角スペースの代わりに改行を入れてください。
+        /// 自然数 N と N 個の要素の数列 M が与えられます。1 ≦ i ≦ N の各 i について、i 行目には以下の数列を出力してください。
+        /// 1 以上 M_i 以下のすべての自然数を昇順、半角スペース区切りで出力してください。
         /// </summary>
-        public void Test39()
+        public void Test44()
         {
-            int[][] rect22 = new int[2][];
-            for (int i = 0; i < rect22.Length; i++)
-            {
-                rect22[i] = new int[2];
-            }
+            int n = nmootan.GetStdInt();
+            int[] m = nmootan.GetStrSplitToIntList(Console.ReadLine()).ToArray();
+            List<int> ms = new List<int>();
 
-            for (int i = 0; i < rect22.Length; i++)
+            for (int i = 0; i < n; i++)
             {
-                for (int j = 0; j < rect22.Length; j++)
+                for (int j = 0; j < m[i]; j++)
                 {
-                    rect22[i][j] = int.Parse(Console.ReadLine());
+                    ms.Add(j + 1);
                 }
+                Console.WriteLine(nmootan.GetJoinIntArrayToStrByStr(ms.ToArray(), " "));
+                ms.Clear();
             }
-
-            //string[] strs = new string[rect22.Length];
-
-            for (int i = 0; i < rect22.Length; i++)
-            {
-                Console.WriteLine(nmootan.GetJoinIntArrayToStrByStr(rect22[i], " "));
-
-            }
-
-
 
         }
 
@@ -86,6 +76,49 @@ namespace PaizaTest4
     static class nmootan
     {
 
+
+
+    
+        /// <summary>
+        /// 自然数 N が入力されます。N 行 N 列の九九表を出力してください。具体的には、出力の i 行 j 列目 (1 ≦ i, j ≦ N ) の数値は i * j になるように出力してください。
+        /// ただし、数値の間には半角スペースを、各行の末尾には、半角スペースの代わりに改行を入れてください。
+        /// </summary>
+        public static void MatrixNN()
+        {
+            int n = GetStdInt();
+            //List<int> ints = nmootan.GetStrSplitToIntList(Console.ReadLine());
+
+
+            int[][] rectNN = new int[n][];
+            for (int i = 0; i < rectNN.Length; i++)
+            {
+                rectNN[i] = new int[n];
+            }
+
+            for (int i = 0; i < rectNN.Length; i++)
+            {
+                for (int j = 0; j < rectNN[i].Length; j++)
+                {
+                    rectNN[i][j] = (i + 1) * (j + 1);
+                }
+            }
+            //rect33[0][0] = 0; rect33[0][1] = 8; rect33[1][0] = 1; rect33[1][1] = 3;
+
+            //string[] strs = new string[rect22.Length];
+
+            for (int i = 0; i < rectNN.Length; i++)
+            {
+                Console.WriteLine(nmootan.GetJoinIntArrayToStrByStr(rectNN[i], " "));
+
+            }
+
+        }
+
+        public static int GetStdInt()
+        {
+
+            return int.Parse(Console.ReadLine());
+        }
 
 
     
@@ -109,7 +142,6 @@ namespace PaizaTest4
 
             return sb.ToString().Trim();
         }
-
 
 
 

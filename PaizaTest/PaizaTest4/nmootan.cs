@@ -673,6 +673,78 @@ namespace PaizaTest4
             //}
         }
 
+        /// <summary>
+        /// 九九表を表示する。
+        /// </summary>
+        public static void Matrix99()
+        {
+
+            //List<int> ints = nmootan.GetStrSplitToIntList(Console.ReadLine());
+
+
+            int[][] rect99 = new int[9][];
+            for (int i = 0; i < rect99.Length; i++)
+            {
+                rect99[i] = new int[9];
+            }
+
+            //int k = 0;
+            for (int i = 0; i < rect99.Length; i++)
+            {
+                for (int j = 0; j < rect99[i].Length; j++)
+                {
+                    rect99[i][j] = (i+1)*(j+1);
+                }
+            }
+            //rect33[0][0] = 0; rect33[0][1] = 8; rect33[1][0] = 1; rect33[1][1] = 3;
+
+            //string[] strs = new string[rect22.Length];
+
+            for (int i = 0; i < rect99.Length; i++)
+            {
+                Console.WriteLine(nmootan.GetJoinIntArrayToStrByStr(rect99[i], " "));
+
+            }
+
+        }
+
+
+
+        /// <summary>
+        /// 自然数 N が入力されます。N 行 N 列の九九表を出力してください。具体的には、出力の i 行 j 列目 (1 ≦ i, j ≦ N ) の数値は i * j になるように出力してください。
+        /// ただし、数値の間には半角スペースを、各行の末尾には、半角スペースの代わりに改行を入れてください。
+        /// </summary>
+        public static void MatrixNN()
+        {
+            int n = GetStdInt();
+            //List<int> ints = nmootan.GetStrSplitToIntList(Console.ReadLine());
+
+
+            int[][] rectNN = new int[n][];
+            for (int i = 0; i < rectNN.Length; i++)
+            {
+                rectNN[i] = new int[n];
+            }
+
+            for (int i = 0; i < rectNN.Length; i++)
+            {
+                for (int j = 0; j < rectNN[i].Length; j++)
+                {
+                    rectNN[i][j] = (i + 1) * (j + 1);
+                }
+            }
+            //rect33[0][0] = 0; rect33[0][1] = 8; rect33[1][0] = 1; rect33[1][1] = 3;
+
+            //string[] strs = new string[rect22.Length];
+
+            for (int i = 0; i < rectNN.Length; i++)
+            {
+                Console.WriteLine(nmootan.GetJoinIntArrayToStrByStr(rectNN[i], " "));
+
+            }
+
+        }
+
 
         public static void SubstringTest()
         {

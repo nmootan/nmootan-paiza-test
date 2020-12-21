@@ -502,30 +502,150 @@ namespace PaizaTest4
         /// </summary>
         public void Test40()
         {
-            int[][] rect22 = new int[2][];
-            for (int i = 0; i < rect22.Length; i++)
+            List<int> ints = nmootan.GetStrSplitToIntList(Console.ReadLine());
+
+            int[][] rect33 = new int[3][];
+            for (int i = 0; i < rect33.Length; i++)
             {
-                rect22[i] = new int[2];
+                rect33[i] = new int[3];
             }
 
-            //for (int i = 0; i < rect22.Length; i++)
-            //{
-            //    for (int j = 0; j < rect22.Length; j++)
-            //    {
-            //        rect22[i][j] = int.Parse(Console.ReadLine());
-            //    }
-            //}
-            rect22[0][0] = 0; rect22[0][1] = 8; rect22[1][0] = 1; rect22[1][1] = 3;
+            //int k = 0;
+            for (int i = 0; i < rect33.Length; i++)
+            {
+                for (int j = 0; j < rect33[i].Length; j++)
+                {
+                    rect33[i][j] = ints[i*3+j];
+                }
+            }
+            //rect33[0][0] = 0; rect33[0][1] = 8; rect33[1][0] = 1; rect33[1][1] = 3;
 
             //string[] strs = new string[rect22.Length];
 
-            for (int i = 0; i < rect22.Length; i++)
+            for (int i = 0; i < rect33.Length; i++)
             {
-                Console.WriteLine(nmootan.GetJoinIntArrayToStrByStr(rect22[i], " "));
+                Console.WriteLine(nmootan.GetJoinIntArrayToStrByStr(rect33[i], " "));
 
             }
 
         }
+
+
+        /// <summary>
+        /// 偶数 N が入力されます。まず、 1 行目には 1 以上 N / 2 以下の数値を半角スペース区切りですべて出力してください。次に、 2 行目には N / 2 + 1 以上 N 以下の数値を半角スペース区切りですべて出力してください。
+        /// 各行の末尾には、半角スペースの代わりに改行を入れてください。
+        /// </summary>
+        public void Test41()
+        {
+            int n = nmootan.GetStdInt();
+            //int[] ns = new int[n/2];
+            List<int> nList = new List<int>();
+
+            for (int i = 0; i < n/2; i++)
+            {
+                nList.Add(i + 1);
+            }
+
+            Console.WriteLine( nmootan.GetJoinIntArrayToStrByStr(nList.ToArray(), " "));
+
+            nList.Clear();
+
+            for (int i = 0; i < n/2; i++)
+            {
+                nList.Add(i + n / 2 + 1);
+            }
+
+            Console.WriteLine( nmootan.GetJoinIntArrayToStrByStr(nList.ToArray(), " "));
+        }
+
+
+        /// <summary>
+        /// 自然数 N, M が与えられます。1 行目には 1 以上 N 以下の数値を半角スペース区切りで出力してください。また、2 行目には 1 以上 M 以下の数値を半角スペース区切りで出力してください。
+        /// さらに、各行の末尾には、半角スペースの代わりに改行を入れてください。
+        /// </summary>
+        public void Test42()
+        {
+            int[] ns = nmootan.GetStdIntSplit().ToArray();
+            int n = ns[0];
+            int m = ns[1];
+            //int[] ns = new int[n/2];
+            List<int> nList = new List<int>();
+
+            for (int i = 0; i < n; i++)
+            {
+                nList.Add(i + 1);
+            }
+
+            Console.WriteLine(nmootan.GetJoinIntArrayToStrByStr(nList.ToArray(), " "));
+
+            nList.Clear();
+
+            for (int i = 0; i < m; i++)
+            {
+                nList.Add(i + 1);
+            }
+
+            Console.WriteLine(nmootan.GetJoinIntArrayToStrByStr(nList.ToArray(), " "));
+        }
+
+
+        /// <summary>
+        /// 自然数 N が与えられます。1 ≦ i ≦ N の各 i について、i 行目には以下の数列を出力してください。
+        ///  1 以上 i 以下の数値をすべて、半角スペース区切りで出力してください
+        /// </summary>
+        public void Test43()
+        {
+            int n = nmootan.GetStdInt();
+            int[][] ns = new int[n][];
+
+            for (int i = 0; i < n; i++)
+            {
+                ns[i] = new int[i + 1];
+                for (int j = 0; j < i+1; j++)
+                {
+                    ns[i][j] = j + 1;
+                }
+
+                Console.WriteLine(nmootan.GetJoinIntArrayToStrByStr(ns[i], " "));
+            }
+
+        }
+
+
+        /// <summary>
+        /// 自然数 N と N 個の要素の数列 M が与えられます。1 ≦ i ≦ N の各 i について、i 行目には以下の数列を出力してください。
+        /// 1 以上 M_i 以下のすべての自然数を昇順、半角スペース区切りで出力してください。
+        /// </summary>
+        public void Test44()
+        {
+            int n = nmootan.GetStdInt();
+            int[] m = nmootan.GetStrSplitToIntList(Console.ReadLine()).ToArray();
+            List<int> ms = new List<int>();
+
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < m[i]; j++)
+                {
+                    ms.Add(j + 1);
+                }
+                Console.WriteLine(nmootan.GetJoinIntArrayToStrByStr(ms.ToArray(), " "));
+                ms.Clear();
+            }
+
+        }
+
+
+        /// <summary>
+        /// 自然数 N, M と N 個の自然数からなる数列 A と M 個の自然数からなる数列 B が与えられます。1 行目には数列 A の最初の B_1 個の値を出力し、 2 行目にはその次から B_2 個の値を出力します。このように、i 行目には数列 A の 1 + B_1 + B_2 + ... + B_{i - 1} 番目の値から B_i 個の値を出力してください。言い換えると、数列 A の値を B_1 個、B_2個、... B_M 個で分割し、それぞれの数列を改行区切りで出力してください。
+        /// </summary>
+        public void Test45()
+        {
+
+
+        }
+
+
+
 
 
     }
