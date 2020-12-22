@@ -401,6 +401,40 @@ namespace PaizaTest4
         }
 
         /// <summary>
+        /// n桁になるように数値の先頭に空白を加える。
+        /// </summary>
+        /// <param name="n"></param>
+        /// <returns></returns>
+        public static string GetFormatWithSpace(string str, int n)
+        {
+            int m = n - str.Length;
+            for (int i = 0; i < m; i++)
+            {
+                str= str.Insert(0, " ");
+            }
+
+            return str;
+        }
+
+
+        /// <summary>
+        /// n桁になるように数値の先頭に文字chを加える。
+        /// </summary>
+        /// <param name="n"></param>
+        /// <returns></returns>
+        public static string GetFormatWithChar(string str, int n, char ch)
+        {
+            int m = n - str.Length;
+            for (int i = 0; i < m; i++)
+            {
+                str = str.Insert(0, ch.ToString());
+            }
+
+            return str;
+        }
+
+
+        /// <summary>
         /// 小数かどうかを判定する。
         /// </summary>
         /// <param name="str"></param>

@@ -723,6 +723,117 @@ namespace PaizaTest4
         }
 
 
+        /// <summary>
+        /// 自然数 N が与えられます。N が 3 けたになるよう数値の前に半角スペースを埋めて出力してください。
+        /// </summary>
+        public void Test50()
+        {
+            Console.WriteLine( nmootan.GetFormatWithSpace(Console.ReadLine(), 3));
+        }
+
+
+        /// <summary>
+        /// 自然数 N が与えられます。N が 3 けたになるよう数値の前に 0 を埋めて出力してください。
+        /// </summary>
+        public void Test51()
+        {
+
+            Console.WriteLine(nmootan.GetFormatWithChar(Console.ReadLine(), 3,'0'));
+
+        }
+
+
+        /// <summary>
+        /// 自然数 N が与えられます。N 個の自然数が与えられるので、それぞれを数値 M_i について以下の処理を行ってください。
+        /// M_i が 3 けたになるよう数値の前に半角スペースを埋めて出力してください。
+        /// </summary>
+        public void Test52()
+        {
+            int n = int.Parse(Console.ReadLine());
+            for (int i = 0; i < n; i++)
+            {
+                Console.WriteLine(nmootan.GetFormatWithChar(Console.ReadLine(), 3, ' '));
+            }
+
+        }
+
+
+        /// <summary>
+        /// 自然数 N, M が与えられます。N が M けたになるよう数値の前に半角スペースを埋めて出力してください。
+        /// N M
+        /// </summary>
+        public void Test53()
+        {
+            int[] nm = nmootan.GetStdIntSplit().ToArray();
+
+            Console.WriteLine(nmootan.GetFormatWithChar(nm[0].ToString(), nm[1], ' '));
+
+        }
+
+
+        /// <summary>
+        /// 自然数 N, M と N 個の自然数 A_1, A_2, ..., A_N が与えられます。それぞれの数値が M けたになるよう数値の前に半角スペースを埋めて、改行区切りで出力してください。
+        /// </summary>
+        public void Test54()
+        {
+            int[] nm = nmootan.GetStdIntSplit().ToArray();
+
+            for (int i = 0; i < nm[0]; i++)
+            {
+                Console.WriteLine(nmootan.GetFormatWithChar(Console.ReadLine(), nm[1], ' '));
+            }
+
+        }
+
+
+        /// <summary>
+        /// 文字列 S, T が与えられます。S + T = ST という形式で文字列を出力してください。
+        /// </summary>
+        public void Test55()
+        {
+            string s = Console.ReadLine();
+            string t = Console.ReadLine();
+            string[] st = { s, t };
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append(nmootan.GetJoinStrArrayToStrByStr(st, " + "));
+            sb.Append(" = ");
+            sb.Append(s);
+            sb.Append(t);
+
+            Console.WriteLine(sb.ToString());
+        }
+
+
+        /// <summary>
+        /// 自然数 N, A, B が与えられます。(A, B) という形式の文字列を N 回、カンマと半角スペース区切りで出力してください。
+        /// N A B
+        /// </summary>
+        public void Test56()
+        {
+            int[] nab = nmootan.GetStdIntSplit().ToArray();
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append("(");
+            sb.Append(nab[1].ToString());
+            sb.Append(", ");
+            sb.Append(nab[2].ToString());
+            sb.Append(")");
+
+            string str = sb.ToString();
+
+            for (int i = 0; i < nab[0]-1; i++)
+            {
+                sb.Append(", ");
+                sb.Append(str);
+            }
+
+            str = sb.ToString();
+
+            Console.WriteLine(str);
+        }
+
+
 
 
     }
