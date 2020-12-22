@@ -872,6 +872,54 @@ namespace PaizaTest4
         }
 
 
+        /// <summary>
+        /// 九九表を、横の数値間では | (半角スペース 2 つとバーティカルライン)、縦の数値間では = で区切って出力。
+        /// ただし、数値を出力する際は 2 けたになるよう半角スペース埋めで出力します。また、縦の数値間で = を出力する際は、その上の行と文字数が等しくなるように出力します。
+        ///  3 |  6 |  9 | 12 | 15 | 
+        ///  = |  = |  = | == | == | 
+        ///  4 |  8 | 12 | 16 | 20 | 
+        /// </summary>
+        /// <param name="n"></param>
+        /// <param name="str1"></param>
+        /// <param name="str2"></param>
+        public static void MatrixNNRestoreFormat(int n, int m, string str1, string str2)
+        {
+            //int n = GetStdInt();
+            //List<int> ints = nmootan.GetStrSplitToIntList(Console.ReadLine());
+
+
+            int[][] rectNN = new int[n][];
+            string[][] rectStrNN = new string[n][]; 
+            for (int i = 0; i < rectNN.Length; i++)
+            {
+                rectNN[i] = new int[n];
+                rectStrNN[i] = new string[n];
+            }
+
+            for (int i = 0; i < rectNN.Length; i++)
+            {
+                for (int j = 0; j < rectNN[i].Length; j++)
+                {
+                    rectNN[i][j] = (i + 1) * (j + 1);
+                    rectStrNN[i][j] = GetFormatWithChar(rectNN[i][j].ToString(), m, ' ');
+                }
+            }
+            //rect33[0][0] = 0; rect33[0][1] = 8; rect33[1][0] = 1; rect33[1][1] = 3;
+
+            string[] strs = new string[n*2-1];
+
+            for (int i = 0; i < rectNN.Length; i++)
+            {
+
+
+                strs[i * 2] = nmootan.GetJoinStrArrayToStrByStr(rectStrNN[i], " | ");
+                strs[i*2+1]= 
+
+            }
+
+        }
+
+
         public static void SubstringTest()
         {
             string str = "1 2 3 4 5 6 7";

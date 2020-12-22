@@ -834,6 +834,26 @@ namespace PaizaTest4
         }
 
 
+        /// <summary>
+        /// 九九表を、横の数値間では | (半角スペース 2 つとバーティカルライン)、縦の数値間では = で区切って出力してください。
+        /// ただし、数値を出力する際は 2 けたになるよう半角スペース埋めで出力します。また、縦の数値間で = を出力する際は、その上の行と文字数が等しくなるように出力します。
+        ///  3 |  6 |  9 | 12 | 15 | 
+        ///  = |  = |  = | == | == | 
+        ///  4 |  8 | 12 | 16 | 20 | 
+        /// </summary>
+        public void Test57()
+        {
+
+            int[] nm = nmootan.GetStdIntSplit().ToArray();
+
+            for (int i = 0; i < nm[0]; i++)
+            {
+                Console.WriteLine(nmootan.GetFormatWithChar(Console.ReadLine(), nm[1], ' '));
+            }
+
+        }
+
+
 
 
     }
