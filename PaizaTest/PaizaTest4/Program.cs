@@ -12,8 +12,8 @@ namespace PaizaTest4
         {
             Hello hello = new Hello();
 
-            hello.Test56();
-            //nmootan.Matrix99();
+            hello.Test58();
+            //nmootan.RegexNormalizeTest();
 
             Console.ReadLine();
         }
@@ -30,6 +30,7 @@ namespace PaizaTest4
     using System.Text;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text.RegularExpressions;
 
     public class Hello{
 
@@ -40,7 +41,7 @@ namespace PaizaTest4
     
             Hello hello = new Hello();
     
-            hello.Test56();
+            hello.Test57();
         }
 
     
@@ -49,29 +50,18 @@ namespace PaizaTest4
     
     
         /// <summary>
-        /// 自然数 N, A, B が与えられます。(A, B) という形式の文字列を N 回、カンマと半角スペース区切りで出力してください。
-        /// N A B
+        /// 九九表を、横の数値間では | (半角スペース 2 つとバーティカルライン)、縦の数値間では = で区切って出力してください。
+        /// ただし、数値を出力する際は 2 けたになるよう半角スペース埋めで出力します。また、縦の数値間で = を出力する際は、その上の行と文字数が等しくなるように出力します。
+        ///  3 |  6 |  9 | 12 | 15 | 
+        ///  = |  = |  = | == | == | 
+        ///  4 |  8 | 12 | 16 | 20 | 
         /// </summary>
-        public void Test56()
+        public void Test57()
         {
-            int[] nab = nmootan.GetStdIntSplit().ToArray();
-            StringBuilder sb = new StringBuilder();
 
-            sb.Append("(");
-            sb.Append(nab[1].ToString());
-            sb.Append(", ");
-            sb.Append(nab[2].ToString());
-            sb.Append(")");
-
-            string str = sb.ToString();
-
-            for (int i = 0; i < nab[0]; i++)
-            {
-                Console.WriteLine(str);
-            }
+            nmootan.MatrixNNRestoreFormat2(9, 2, " | ", "=");
 
         }
-
 
     }
 
@@ -81,25 +71,100 @@ namespace PaizaTest4
     static class nmootan
     {
     
-        public static List<int> GetStdIntSplit()
+        /// <summary>
+        /// n行n列の九九表を、横の数値間ではstr1、縦の数値間ではstr2で区切って出力。
+        /// ただし、数値を出力する際は m けたになるよう半角スペース埋めで出力します。また、縦の数値間でstr2を出力する際は、その上の行と文字数が等しくなるように出力します。
+        ///  3 |  6 |  9 | 12 | 15 | 
+        /// ======================== 
+        ///  4 |  8 | 12 | 16 | 20 | 
+        /// </summary>
+        /// <param name="n"></param>
+        /// <param name="str1"></param>
+        /// <param name="str2"></param>
+        public static void MatrixNNRestoreFormat2(int n, int m, string str1, string str2)
         {
-            string[] strs = GetStdStrsSplit();
+            //int n = GetStdInt();
+            //List<int> ints = nmootan.GetStrSplitToIntList(Console.ReadLine());
+            //str1 = "=";
+            //str2 = " | ";
 
-            List<int> iList = new List<int>();
-
-            for (int i = 0; i < strs.Length; i++)
+            int[][] rectNN = new int[n][];
+            string[][] rectStrNN = new string[n * 2][];
+            for (int i = 0; i < rectNN.Length; i++)
             {
-                iList.Add(int.Parse(strs[i]));
+                rectNN[i] = new int[n];
+                rectStrNN[i * 2] = new string[n];
+                rectStrNN[i * 2 + 1] = new string[n];
             }
 
-            return iList;
+            for (int i = 0; i < rectNN.Length; i++)
+            {
+                for (int j = 0; j < rectNN[i].Length; j++)
+                {
+                    rectNN[i][j] = (i + 1) * (j + 1);
+                    rectStrNN[i * 2][j] = GetFormatWithChar(rectNN[i][j].ToString(), m, ' ');
+                    //rectStrNN[i * 2 + 1][j] = GetFormatWithChar(rectNN[i][j].ToString(), m, ' ');
+                    //rectStrNN[i * 2 + 1][j] = Regex.Replace(rectNN[i][j].ToString(), ".", str2);
+                }
+            }
+            //rect33[0][0] = 0; rect33[0][1] = 8; rect33[1][0] = 1; rect33[1][1] = 3;
+
+            string[] strs = new string[n * 2];
+
+            for (int i = 0; i < rectNN.Length; i++)
+            {
+
+
+                strs[i * 2] = nmootan.GetJoinStrArrayToStrByStr(rectStrNN[i * 2], str1);
+                Console.WriteLine(strs[i * 2]);
+                if (i == rectNN.Length - 1) break;
+                strs[i * 2 + 1] = Regex.Replace(strs[i * 2], ".", str2);
+                Console.WriteLine(strs[i * 2 + 1]);
+            }
+
+
+
         }
 
-    
-        public static string[] GetStdStrsSplit()
-        {
 
-            return System.Console.ReadLine().Trim().Split(' ');
+
+        }
+
+        /// <summary>
+        /// n桁になるように数値の先頭に文字chを加える。
+        /// </summary>
+        /// <param name="n"></param>
+        /// <returns></returns>
+        public static string GetFormatWithChar(string str, int n, char ch)
+        {
+            int m = n - str.Length;
+            for (int i = 0; i < m; i++)
+            {
+                str = str.Insert(0, ch.ToString());
+            }
+
+            return str;
+        }
+
+        /// <summary>
+        /// string型配列の要素を文字列strを挟んでつないで、文字列で返す。
+        /// </summary>
+        /// <param name="ints"></param>
+        /// <returns></returns>
+        public static string GetJoinStrArrayToStrByStr(string[] strs, string str)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            for (int i = 0; i < strs.Length-1; i++)
+            {
+                sb.Append(strs[i]);
+                sb.Append(str);
+            }
+
+            sb.Append(strs[strs.Length - 1]);
+            //sb.Append(Environment.NewLine);
+
+            return sb.ToString().Trim();
         }
 
 

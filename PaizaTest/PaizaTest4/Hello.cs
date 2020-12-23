@@ -844,12 +844,35 @@ namespace PaizaTest4
         public void Test57()
         {
 
-            int[] nm = nmootan.GetStdIntSplit().ToArray();
+            nmootan.MatrixNNRestoreFormat2(9, 2, " | ", "=");
 
-            for (int i = 0; i < nm[0]; i++)
+        }
+
+
+        /// <summary>
+        /// 自然数 H, W, A, B が与えられます。縦に H 行、横に W 列で計 H * W 個の (A, B) という形式の文字列を出力してください。ただし、横は | (半角スペース 2 つとバーティカルライン) 区切りで、縦は = で区切って出力してください。また、縦の文字列間で = を出力する際は、その上の行と文字数が等しくなるように出力します。
+        /// </summary>
+        public void Test58()
+        {
+            string[] hwab = new string[4];
+
+            string vec = nmootan.GetParseIntToVector2(hwab[2], hwab[3]);
+
+            int h = int.Parse(hwab[0]);
+            int w = int.Parse(hwab[1]);
+
+            string[][] strs = new string[h][];
+            for (int i = 0; i < h; i++)
             {
-                Console.WriteLine(nmootan.GetFormatWithChar(Console.ReadLine(), nm[1], ' '));
+                strs[i] = new string[w];
+
+                for (int j = 0; j < w; j++)
+                {
+                    strs[i][j] = vec;
+                }
             }
+
+            nmootan.MatrixStrArrayFormat(strs, " | ", "=");
 
         }
 
