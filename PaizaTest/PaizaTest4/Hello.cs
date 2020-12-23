@@ -854,7 +854,7 @@ namespace PaizaTest4
         /// </summary>
         public void Test58()
         {
-            string[] hwab = new string[4];
+            string[] hwab = nmootan.GetStdStrsSplit();
 
             string vec = nmootan.GetParseIntToVector2(hwab[2], hwab[3]);
 
