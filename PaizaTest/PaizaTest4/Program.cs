@@ -12,7 +12,7 @@ namespace PaizaTest4
         {
             Hello hello = new Hello();
 
-            hello.Test58();
+            hello.Test72();
             //nmootan.RegexNormalizeTest();
 
             Console.ReadLine();
@@ -41,7 +41,7 @@ namespace PaizaTest4
     
             Hello hello = new Hello();
     
-            hello.Test57();
+            hello.Test72();
         }
 
     
@@ -50,18 +50,35 @@ namespace PaizaTest4
     
     
         /// <summary>
-        /// 九九表を、横の数値間では | (半角スペース 2 つとバーティカルライン)、縦の数値間では = で区切って出力してください。
-        /// ただし、数値を出力する際は 2 けたになるよう半角スペース埋めで出力します。また、縦の数値間で = を出力する際は、その上の行と文字数が等しくなるように出力します。
-        ///  3 |  6 |  9 | 12 | 15 | 
-        ///  = |  = |  = | == | == | 
-        ///  4 |  8 | 12 | 16 | 20 | 
+        /// 配列 A の要素数 N とその要素 A_i (1 ≦ i ≦ N) が与えられるので、A についてのかけ算表 B を出力してください。かけ算表は N * N の二次元配列の形式とし、B の i 行 j 列の要素 B_ij について、B_ij = Ai * Aj (1 ≦ i , j ≦ N) が成り立つものとします。
+        /// ・ 1 行目では配列 A の要素数 N が与えられます。
+        /// ・ 2 行目では、A の各要素 A_i(1 ≦ i ≦ N) が半角スペース区切りで与えられます。
         /// </summary>
-        public void Test57()
+        public void Test72()
         {
+            int n = int.Parse(Console.ReadLine());
+            int[] aArray = nmootan.GetStdIntSplit().ToArray();
+            int[][] matrix = new int[n][];
 
-            nmootan.MatrixNNRestoreFormat2(9, 2, " | ", "=");
+            for (int i = 0; i < n; i++)
+            {
+                matrix[i] = new int[n];
+                for (int j = 0; j < n; j++)
+                {
+                    matrix[i][j] = aArray[i] * aArray[j];
+                }
+            }
 
+            for (int i = 0; i < n; i++)
+            {
+                Console.WriteLine(nmootan.GetJoinIntArrayToStrByStr(matrix[i], " "));
+            }
         }
+
+
+
+
+
 
     }
 
@@ -70,103 +87,118 @@ namespace PaizaTest4
 
     static class nmootan
     {
+
     
-        /// <summary>
-        /// n行n列の九九表を、横の数値間ではstr1、縦の数値間ではstr2で区切って出力。
-        /// ただし、数値を出力する際は m けたになるよう半角スペース埋めで出力します。また、縦の数値間でstr2を出力する際は、その上の行と文字数が等しくなるように出力します。
-        ///  3 |  6 |  9 | 12 | 15 | 
-        /// ======================== 
-        ///  4 |  8 | 12 | 16 | 20 | 
-        /// </summary>
-        /// <param name="n"></param>
-        /// <param name="str1"></param>
-        /// <param name="str2"></param>
-        public static void MatrixNNRestoreFormat2(int n, int m, string str1, string str2)
+        public static int[][] GetTranspose(int[][] matrix)
         {
-            //int n = GetStdInt();
-            //List<int> ints = nmootan.GetStrSplitToIntList(Console.ReadLine());
-            //str1 = "=";
-            //str2 = " | ";
+            int[][] matrixCopy = new int[matrix[0].Length][];
 
-            int[][] rectNN = new int[n][];
-            string[][] rectStrNN = new string[n * 2][];
-            for (int i = 0; i < rectNN.Length; i++)
+            for (int i = 0; i < matrix[0].Length; i++)
             {
-                rectNN[i] = new int[n];
-                rectStrNN[i * 2] = new string[n];
-                rectStrNN[i * 2 + 1] = new string[n];
+                matrixCopy[i] = new int[matrix.Length];
             }
 
-            for (int i = 0; i < rectNN.Length; i++)
+            for (int i = 0; i < matrix.Length; i++)
             {
-                for (int j = 0; j < rectNN[i].Length; j++)
+                for (int j = 0; j < matrix[i].Length; j++)
                 {
-                    rectNN[i][j] = (i + 1) * (j + 1);
-                    rectStrNN[i * 2][j] = GetFormatWithChar(rectNN[i][j].ToString(), m, ' ');
-                    //rectStrNN[i * 2 + 1][j] = GetFormatWithChar(rectNN[i][j].ToString(), m, ' ');
-                    //rectStrNN[i * 2 + 1][j] = Regex.Replace(rectNN[i][j].ToString(), ".", str2);
+                    matrixCopy[j][i] = matrix[i][j];
                 }
-            }
-            //rect33[0][0] = 0; rect33[0][1] = 8; rect33[1][0] = 1; rect33[1][1] = 3;
 
-            string[] strs = new string[n * 2];
-
-            for (int i = 0; i < rectNN.Length; i++)
-            {
-
-
-                strs[i * 2] = nmootan.GetJoinStrArrayToStrByStr(rectStrNN[i * 2], str1);
-                Console.WriteLine(strs[i * 2]);
-                if (i == rectNN.Length - 1) break;
-                strs[i * 2 + 1] = Regex.Replace(strs[i * 2], ".", str2);
-                Console.WriteLine(strs[i * 2 + 1]);
             }
 
-
-
-        }
-
-
-
+            return matrixCopy;
         }
 
         /// <summary>
-        /// n桁になるように数値の先頭に文字chを加える。
+        /// n行の標準入力から、マトリックスを得る。
         /// </summary>
         /// <param name="n"></param>
         /// <returns></returns>
-        public static string GetFormatWithChar(string str, int n, char ch)
+        public static string[][] GetStdMatrix(int n)
         {
-            int m = n - str.Length;
-            for (int i = 0; i < m; i++)
+            string[][] strs = new string[n][];
+
+            for (int i = 0; i < n; i++)
             {
-                str = str.Insert(0, ch.ToString());
+                strs[i] = nmootan.GetStdStrsSplit();
             }
 
-            return str;
+            //nmootan.MatrixStrArrayFormat(strs, " ", "");
+            //for (int i = 0; i < n; i++)
+            //{
+            //    Console.WriteLine(nmootan.GetJoinStrArrayToStrByStr(strs[i], " "));
+            //}
+
+
+            return strs;
+        }
+    
+        public static List<int> GetStdIntSplit()
+        {
+            string[] strs = GetStdStrsSplit();
+
+            List<int> iList = new List<int>();
+
+            for (int i = 0; i < strs.Length; i++)
+            {
+                iList.Add(int.Parse(strs[i]));
+            }
+
+            return iList;
         }
 
+
         /// <summary>
-        /// string型配列の要素を文字列strを挟んでつないで、文字列で返す。
+        /// int型配列の要素を文字列strを挟んでつないで、文字列で返す。
         /// </summary>
         /// <param name="ints"></param>
         /// <returns></returns>
-        public static string GetJoinStrArrayToStrByStr(string[] strs, string str)
+        public static string GetJoinIntArrayToStrByStr(int[] ints, string str)
         {
             StringBuilder sb = new StringBuilder();
 
-            for (int i = 0; i < strs.Length-1; i++)
+            for (int i = 0; i < ints.Length-1; i++)
             {
-                sb.Append(strs[i]);
+                sb.Append(ints[i]);
                 sb.Append(str);
             }
 
-            sb.Append(strs[strs.Length - 1]);
+            sb.Append(ints[ints.Length - 1]);
             //sb.Append(Environment.NewLine);
 
             return sb.ToString().Trim();
         }
+    
+        public static string[] GetStdStrsSplit()
+        {
 
+            return System.Console.ReadLine().Trim().Split(' ');
+        }
+    
+        /// <summary>
+        /// n行の標準入力から、マトリックスを得る。
+        /// </summary>
+        /// <param name="n"></param>
+        /// <returns></returns>
+        public static int[][] GetStdIntMatrix(int n)
+        {
+            int[][] ns = new int[n][];
+
+            for (int i = 0; i < n; i++)
+            {
+                ns[i] = nmootan.GetStdIntSplit().ToArray();
+            }
+
+            //nmootan.MatrixStrArrayFormat(strs, " ", "");
+            //for (int i = 0; i < n; i++)
+            //{
+            //    Console.WriteLine(nmootan.GetJoinStrArrayToStrByStr(strs[i], " "));
+            //}
+
+
+            return ns;
+        }
 
 
 

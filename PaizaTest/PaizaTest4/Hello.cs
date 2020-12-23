@@ -877,6 +877,361 @@ namespace PaizaTest4
         }
 
 
+        /// <summary>
+        /// 自然数 H, W, A, B が与えられます。縦に H 行、横に W 行で計 H * W 個の (A, B) という形式で文字列を出力してください。ただし、横は | (半角スペース 2 つとバーティカルライン) 区切りで、縦は = で区切って出力してください。また、縦の文字列間で = を出力する際は、その上の行と文字数がそろうように出力します。また、A と B は 9 けたになるように半角スペース埋めで出力してください。
+        /// </summary>
+        public void Test59()
+        {
+
+            string[] hwab = nmootan.GetStdStrsSplit();
+
+            hwab[2] = nmootan.GetFormatWithChar(hwab[2], 9, ' ');
+            hwab[3] = nmootan.GetFormatWithChar(hwab[3], 9, ' ');
+
+            string vec = nmootan.GetParseIntToVector2(hwab[2], hwab[3]);
+
+            int h = int.Parse(hwab[0]);
+            int w = int.Parse(hwab[1]);
+
+            string[][] strs = new string[h][];
+            for (int i = 0; i < h; i++)
+            {
+                strs[i] = new string[w];
+
+                for (int j = 0; j < w; j++)
+                {
+                    strs[i][j] = vec;
+                }
+            }
+
+            nmootan.MatrixStrArrayFormat(strs, " | ", "=");
+
+
+        }
+
+
+        /// <summary>
+        /// 正の整数 N が与えられるので、1 〜 N の整数を 1 から順に半角スペース区切りで 1 行で出力してください。
+        /// </summary>
+        public void Test60()
+        {
+            int[] ns = new int[int.Parse( Console.ReadLine())];
+            for (int i = 0; i < ns.Length; i++)
+            {
+                ns[i] = i + 1;
+            }
+
+            Console.WriteLine(nmootan.GetJoinIntArrayToStrByStr(ns, " "));
+
+        }
+
+
+        /// <summary>
+        /// 正の整数 N が与えられるので、1 〜 N の整数を 1 から順に改行区切りで N 行で出力してください。
+        /// </summary>
+        public void Test61()
+        {
+            int[] ns = new int[int.Parse(Console.ReadLine())];
+            for (int i = 0; i < ns.Length; i++)
+            {
+                ns[i] = i + 1;
+            }
+
+            Console.WriteLine(nmootan.GetJoinIntArrayToStrByStr(ns, "\n"));
+
+        }
+
+
+        /// <summary>
+        /// 整数 N が与えられるので、 1 から 5 までの数字を半角スペース区切りしたもの
+        /// "1 2 3 4 5" を N 行出力してください。
+        /// </summary>
+        public void Test62()
+        {
+            int n = int.Parse(Console.ReadLine());
+            int[] ns = new int[5];
+            for (int i = 0; i < 5; i++)
+            {
+                ns[i] = i + 1;
+            }
+
+            string str = nmootan.GetJoinIntArrayToStrByStr(ns, " ");
+
+            for (int i = 0; i < n; i++)
+            {
+                Console.WriteLine(str);
+            }
+
+        }
+
+
+        /// <summary>
+        /// 整数 N , K が与えられるので、 1 から N までの数字を半角スペース区切りしたもの
+        /// "1 2 ... (N-1) N" を K 行出力してください。
+        /// </summary>
+        public void Test63()
+        {
+            int[] nk = nmootan.GetStdIntSplit().ToArray();
+
+            int[] ns = new int[nk[0]];
+            for (int i = 0; i < nk[0]; i++)
+            {
+                ns[i] = i + 1;
+            }
+
+            string str = nmootan.GetJoinIntArrayToStrByStr(ns, " ");
+
+            for (int i = 0; i < nk[1]; i++)
+            {
+                Console.WriteLine(str);
+            }
+
+
+        }
+
+
+        /// <summary>
+        /// 整数 N , K と N 行 K 列 の二次元配列 A が与えられるので、その配列をそのまま出力してください。
+        /// </summary>
+        public void Test64()
+        {
+            int[] nk = nmootan.GetStdIntSplit().ToArray();
+
+            string[][] strs = new string[nk[0]][];
+
+            for (int i = 0; i < nk[0]; i++)
+            {
+                strs[i] = nmootan.GetStdStrsSplit();
+            }
+
+            //nmootan.MatrixStrArrayFormat(strs, " ", "");
+            for (int i = 0; i < nk[0]; i++)
+            {
+                Console.WriteLine(nmootan.GetJoinStrArrayToStrByStr(strs[i], " "));
+            }
+        }
+
+
+        /// <summary>
+        /// 整数 N , K と N 行 K 列 の二次元配列 A が与えられます。 A の要素のうち、1 要素だけ 1 になっている要素があるので、その要素の行と列を出力してください。
+        /// </summary>
+        public void Test65()
+        {
+            int[] nk = nmootan.GetStdIntSplit().ToArray();
+
+            string[][] strs = nmootan.GetStdMatrix(nk[0]);
+            int foundI = -1, foundK = -1;
+
+            for (int i = 0; i < nk[0]; i++)
+            {
+                foundK = Array.IndexOf(strs[i], "1");
+                if(foundK>=0)
+                {
+                    foundI = i;
+                    break;
+                }
+            }
+
+            nk[0] = foundI + 1;
+            nk[1] = foundK + 1;
+
+            Console.WriteLine(nmootan.GetJoinIntArrayToStrByStr(nk, " "));
+        }
+
+
+        /// <summary>
+        /// 整数 N , K と N 行 K 列 の二次元配列 A が与えられます。 A の要素のうち、最大の要素の値を出力してください。
+        /// </summary>
+        public void Test66()
+        {
+            int[] nk = nmootan.GetStdIntSplit().ToArray();
+
+            int[][] ns = nmootan.GetStdIntMatrix(nk[0]);
+
+            //int[] max = new int[nk[0]];
+            int[] max = new int[nk[0]];
+            for (int i = 0; i < nk[0]; i++)
+            {
+                max[i] = ns[i].Max();
+            }
+
+            Console.WriteLine(max.Max());
+        }
+
+
+        /// <summary>
+        /// 整数 N , K と N 行 K 列 の二次元配列 A が与えられるので、 A の行ごとの和を出力してください。
+        /// </summary>
+        public void Test67()
+        {
+            int[] nk = nmootan.GetStdIntSplit().ToArray();
+
+            int[][] ns = nmootan.GetStdIntMatrix(nk[0]);
+
+            //int[] max = new int[nk[0]];
+            int[] sum = new int[nk[0]];
+
+            for (int i = 0; i < nk[0]; i++)
+            {
+                Console.WriteLine( ns[i].Sum());
+
+            }
+
+        }
+
+
+        /// <summary>
+        /// 整数 N が与えられるので、次の処理を N 回してください。
+        ///・ 配列のサイズ K とその要素 A1 ... AK が与えられるので、全ての要素の和を求めて出力してください。
+        ///N
+        ///K1 A1_1 A1_2...A1_K1
+        ///...
+        ///KN AN_1 AN_2...AN_KN
+        /// </summary>
+        public void Test68()
+        {
+            int n = int.Parse(Console.ReadLine());
+
+            List<int> ks;
+            for (int i = 0; i < n; i++)
+            {
+                ks = nmootan.GetStdIntSplit();
+                ks.RemoveAt(0);
+                Console.WriteLine(ks.Sum());
+            }
+
+        }
+
+
+        /// <summary>
+        /// 整数 N が与えられるので、次の規則に従って N 行の出力をしてください。
+        ///・ N 行のうち、 i 行目では、1 から i までの数字を半角スペース区切りで出力してください。
+        ///例として、 N = 3 のとき、出力は次の通りになります。
+        /// </summary>
+        public void Test69()
+        {
+            int n = int.Parse(Console.ReadLine());
+
+            for (int i = 0; i < n; i++)
+            {
+                int[] ns = new int[i + 1];
+                for (int j = 0; j < i+1; j++)
+                {
+                    ns[j] = j + 1;
+                }
+
+                Console.WriteLine(nmootan.GetJoinIntArrayToStrByStr(ns, " "));
+            }
+
+        }
+
+
+        /// <summary>
+        /// 配列 A と B についての情報が与えられるので、(A の 1 つの要素) × (B の 1 つの要素) の最大値を求めてください。
+        /// ・ 1 行目では、配列 A の要素数を表す整数 N と配列 B の要素数を表す整数 K が半角スペース区切りで与えられます。
+        /// ・ 2 行目では、配列 A の各要素が半角スペース区切りで与えられます。
+        /// ・ 3 行目では、配列 B の各要素が半角スペース区切りで与えられます。
+        /// </summary>
+        public void Test70()
+        {
+            int[] nk = nmootan.GetStdIntSplit().ToArray();
+
+            int[] ns = nmootan.GetStdIntSplit().ToArray();
+            int[] ks = nmootan.GetStdIntSplit().ToArray();
+
+            //int[] max = new int[nk[0]];
+            int[][] multi = new int[nk[0]][];
+            int[] max = new int[nk[0]];
+
+            for (int i = 0; i < nk[0]; i++)
+            {
+                multi[i] = new int[nk[1]];
+                for (int j = 0; j < nk[1]; j++)
+                {
+                    multi[i][j] = ns[i] * ks[j];
+                }
+                max[i] = multi[i].Max();
+            }
+
+            Console.WriteLine(max.Max());
+        }
+
+
+        /// <summary>
+        /// N 行 K 列の行列 A の i 行 j 列 の要素 A_ij を A_ji とした K 行 N 列の行列を元の配列 A の転置行列と言います。
+        /// 行列 A についての情報が与えられるので、A の転置行列を出力してください。
+        /// ・ 1 行目では行列の行数 N と列数 K が半角スペース区切りで与えられます。
+        /// ・ 続く N 行では、A の各要素 A_ij(1 ≦ j ≦ Ki) が半角スペース区切りで与えられます。
+        /// </summary>
+        public void Test71()
+        {
+            int[] nk = nmootan.GetStdIntSplit().ToArray();
+
+            int[][] matrix = nmootan.GetStdIntMatrix(nk[0]);
+            //int[][] nsCopy = ns;
+
+            ////int[] max = new int[nk[0]];
+            ////int[] sum = new int[nk[0]];
+
+            //for (int i = 0; i < nk[0]; i++)
+            //{
+            //    for (int j = 0; j < nk[1]; j++)
+            //    {
+            //        nsCopy[j][i] = ns[i][j];
+            //    }
+
+            //}
+
+            matrix = nmootan.GetTranspose(matrix);
+
+            for (int i = 0; i < matrix.Length; i++)
+            {
+                Console.WriteLine(nmootan.GetJoinIntArrayToStrByStr(matrix[i], " "));
+            }
+
+        }
+
+
+        /// <summary>
+        /// 配列 A の要素数 N とその要素 A_i (1 ≦ i ≦ N) が与えられるので、A についてのかけ算表 B を出力してください。かけ算表は N * N の二次元配列の形式とし、B の i 行 j 列の要素 B_ij について、B_ij = Ai * Aj (1 ≦ i , j ≦ N) が成り立つものとします。
+        /// ・ 1 行目では配列 A の要素数 N が与えられます。
+        /// ・ 2 行目では、A の各要素 A_i(1 ≦ i ≦ N) が半角スペース区切りで与えられます。
+        /// </summary>
+        public void Test72()
+        {
+            int n = int.Parse(Console.ReadLine());
+            int[] aArray = nmootan.GetStdIntSplit().ToArray();
+            int[][] matrix = new int[n][];
+
+            for (int i = 0; i < n; i++)
+            {
+                matrix[i] = new int[n];
+                for (int j = 0; j < n; j++)
+                {
+                    matrix[i][j] = aArray[i] * aArray[j];
+                }
+            }
+
+            for (int i = 0; i < n; i++)
+            {
+                Console.WriteLine(nmootan.GetJoinIntArrayToStrByStr(matrix[i], " "));
+            }
+        }
+
+
+        /// <summary>
+        /// 整数 N が与えられるので、2 以上 N 以下の素数の個数を求めてください。
+        /// 素数とはの約数が 1 と X のみであるような整数 X のことを指します。
+        /// </summary>
+        public void Test73()
+        {
+            int n = int.Parse(Console.ReadLine());
+
+
+
+        }
+
+
 
 
     }

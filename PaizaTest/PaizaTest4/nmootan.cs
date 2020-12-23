@@ -1337,6 +1337,114 @@ namespace PaizaTest4
             return sb.ToString().Trim().Split(' ');
         }
 
+        /// <summary>
+        /// n行の標準入力から、マトリックスを得る。
+        /// </summary>
+        /// <param name="n"></param>
+        /// <returns></returns>
+        public static string[][] GetStdMatrix(int n)
+        {
+            string[][] strs = new string[n][];
+
+            for (int i = 0; i < n; i++)
+            {
+                strs[i] = nmootan.GetStdStrsSplit();
+            }
+
+            //nmootan.MatrixStrArrayFormat(strs, " ", "");
+            //for (int i = 0; i < n; i++)
+            //{
+            //    Console.WriteLine(nmootan.GetJoinStrArrayToStrByStr(strs[i], " "));
+            //}
+
+
+            return strs;
+        }
+
+        /// <summary>
+        /// n行の標準入力から、マトリックスを得る。
+        /// </summary>
+        /// <param name="n"></param>
+        /// <returns></returns>
+        public static int[][] GetStdIntMatrix(int n)
+        {
+            int[][] ns = new int[n][];
+
+            for (int i = 0; i < n; i++)
+            {
+                ns[i] = nmootan.GetStdIntSplit().ToArray();
+            }
+
+            //nmootan.MatrixStrArrayFormat(strs, " ", "");
+            //for (int i = 0; i < n; i++)
+            //{
+            //    Console.WriteLine(nmootan.GetJoinStrArrayToStrByStr(strs[i], " "));
+            //}
+
+
+            return ns;
+        }
+
+        /// <summary>
+        /// マトリックスの逆行列を得る。
+        /// </summary>
+        /// <param name="matrix"></param>
+        /// <returns></returns>
+        public static int[][] GetTranspose(int[][] matrix)
+        {
+            int[][] matrixCopy = new int[matrix[0].Length][];
+
+            for (int i = 0; i < matrix[0].Length; i++)
+            {
+                matrixCopy[i] = new int[matrix.Length];
+            }
+
+            for (int i = 0; i < matrix.Length; i++)
+            {
+                for (int j = 0; j < matrix[i].Length; j++)
+                {
+                    matrixCopy[j][i] = matrix[i][j];
+                }
+
+            }
+
+            return matrixCopy;
+        }
+
+        /// <summary>
+        /// 自然数nの素数を得る。（nは２以上）
+        /// </summary>
+        /// <param name="n"></param>
+        /// <returns></returns>
+        public static int[] GetPrimeNum(int n)
+        {
+            List<int> primes = new List<int>();
+
+            if (n == 2)
+            {
+                primes.Add(2);
+                return primes.ToArray();
+            }
+            else
+            {
+                primes.Add(2);
+                primes.Add(3);
+                if(n==3) return primes.ToArray();
+            }
+
+            for (int i = 4; i < n; i++)
+            {
+                for (int j = 2; j < i; j++)
+                {
+                    i/j
+                }
+
+
+            }
+
+            return 
+        }
+
 
         /// <summary>
         /// int型配列の要素を文字列strを挟んでつないで、文字列で返す。
