@@ -1436,13 +1436,13 @@ namespace PaizaTest4
             {
                 for (int j = 2; j < i; j++)
                 {
-                    i/j
+                    if (i % j == 0) break;
+                    if (j == i - 1) primes.Add(i);
                 }
-
 
             }
 
-            return 
+            return primes.ToArray();
         }
 
 

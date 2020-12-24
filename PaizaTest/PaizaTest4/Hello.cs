@@ -1227,7 +1227,7 @@ namespace PaizaTest4
         {
             int n = int.Parse(Console.ReadLine());
 
-
+            Console.WriteLine(nmootan.GetPrimeNum(n).Length);
 
         }
 

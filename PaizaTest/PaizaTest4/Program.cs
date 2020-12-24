@@ -12,7 +12,7 @@ namespace PaizaTest4
         {
             Hello hello = new Hello();
 
-            hello.Test72();
+            hello.Test73();
             //nmootan.RegexNormalizeTest();
 
             Console.ReadLine();
