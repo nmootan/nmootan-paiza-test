@@ -12,7 +12,7 @@ namespace PaizaTest4
         {
             Hello hello = new Hello();
 
-            hello.Test73();
+            hello.Test74();
             //nmootan.RegexNormalizeTest();
 
             Console.ReadLine();
@@ -41,7 +41,7 @@ namespace PaizaTest4
     
             Hello hello = new Hello();
     
-            hello.Test72();
+            hello.Test74();
         }
 
     
@@ -50,32 +50,13 @@ namespace PaizaTest4
     
     
         /// <summary>
-        /// 配列 A の要素数 N とその要素 A_i (1 ≦ i ≦ N) が与えられるので、A についてのかけ算表 B を出力してください。かけ算表は N * N の二次元配列の形式とし、B の i 行 j 列の要素 B_ij について、B_ij = Ai * Aj (1 ≦ i , j ≦ N) が成り立つものとします。
-        /// ・ 1 行目では配列 A の要素数 N が与えられます。
-        /// ・ 2 行目では、A の各要素 A_i(1 ≦ i ≦ N) が半角スペース区切りで与えられます。
+        /// 整数 N が与えられるので、1 × 2 × ... × (N-1) × N を最大で何回 2 で割ることができるかを求めてください。
         /// </summary>
-        public void Test72()
+        public void Test74()
         {
-            int n = int.Parse(Console.ReadLine());
-            int[] aArray = nmootan.GetStdIntSplit().ToArray();
-            int[][] matrix = new int[n][];
 
-            for (int i = 0; i < n; i++)
-            {
-                matrix[i] = new int[n];
-                for (int j = 0; j < n; j++)
-                {
-                    matrix[i][j] = aArray[i] * aArray[j];
-                }
-            }
-
-            for (int i = 0; i < n; i++)
-            {
-                Console.WriteLine(nmootan.GetJoinIntArrayToStrByStr(matrix[i], " "));
-            }
+            Console.WriteLine(Math.Log(double.Parse(Console.ReadLine()), 2));
         }
-
-
 
 
 
@@ -89,26 +70,40 @@ namespace PaizaTest4
     {
 
     
-        public static int[][] GetTranspose(int[][] matrix)
+        /// <summary>
+        /// 自然数nの素数を得る。（nは２以上）
+        /// </summary>
+        /// <param name="n"></param>
+        /// <returns></returns>
+        public static int[] GetPrimeNum(int n)
         {
-            int[][] matrixCopy = new int[matrix[0].Length][];
+            List<int> primes = new List<int>();
 
-            for (int i = 0; i < matrix[0].Length; i++)
+            if (n == 2)
             {
-                matrixCopy[i] = new int[matrix.Length];
+                primes.Add(2);
+                return primes.ToArray();
+            }
+            else
+            {
+                primes.Add(2);
+                primes.Add(3);
+                if(n==3) return primes.ToArray();
             }
 
-            for (int i = 0; i < matrix.Length; i++)
+            for (int i = 4; i <= n; i++)
             {
-                for (int j = 0; j < matrix[i].Length; j++)
+                for (int j = 2; j < i; j++)
                 {
-                    matrixCopy[j][i] = matrix[i][j];
+                    if (i % j == 0) break;
+                    if (j == i - 1) primes.Add(i);
                 }
 
             }
 
-            return matrixCopy;
+            return primes.ToArray();
         }
+
 
         /// <summary>
         /// n行の標準入力から、マトリックスを得る。

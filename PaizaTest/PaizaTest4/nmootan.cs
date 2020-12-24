@@ -36,6 +36,47 @@ namespace PaizaTest4
             return sb.ToString();
         }
 
+        /// <summary>
+        /// 何桁でもLogをとれる。（未完成）
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="num"></param>
+        /// <returns></returns>
+        public static string ExLog(string str,double num)
+        {
+
+
+            return str;
+        }
+
+
+        /// <summary>
+        /// 何桁でも掛け算する。
+        /// 4629375*578765932
+        /// </summary>
+        /// <param name="str1"></param>
+        /// <param name="str2"></param>
+        /// <returns></returns>
+        public static string ExMultiply(string str1, string str2)
+        {
+            int[] nums1 = GetParseStrToIntArray(str1);
+            int[] nums2 = GetParseStrToIntArray(str2);
+            string result = "0";
+            string str3;
+
+            for (int i = 0; i < str2.Length; i++)
+            {
+                str3 = ExMultiply1(str1, nums2[i]);
+                for (int j = 0; j < i; j++)
+                {
+                    str3 = ExMultiply10(str3);
+                }
+                result = ExPlus(result, str3);
+            }
+
+            return result;
+        }
+
 
         /// <summary>
         /// 何桁の整数値でも掛け算できる。　str:数値の文字列　n:一桁の整数値
@@ -80,6 +121,17 @@ namespace PaizaTest4
 
             return GetFormatZero(GetMirrorStr(GetParseCharListToStr(chList)));
         }
+
+        /// <summary>
+        /// 何桁でも１０倍する。
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static string ExMultiply10(string str)
+        {
+            return str.Insert(str.Length - 1, "0");
+        }
+
 
         /// <summary>
         /// 何桁の整数値でも足し算できる。　
@@ -536,6 +588,19 @@ namespace PaizaTest4
             }
 
             return new string(mirror);
+        }
+
+
+        public static int[] GetParseStrToIntArray(string str)
+        {
+            int[] nums = new int[str.Length];
+
+            for (int i = 0; i < str.Length; i++)
+            {
+                nums[i] = int.Parse(str[i].ToString());
+            }
+
+            return nums;
         }
 
 
@@ -1432,7 +1497,7 @@ namespace PaizaTest4
                 if(n==3) return primes.ToArray();
             }
 
-            for (int i = 4; i < n; i++)
+            for (int i = 4; i <= n; i++)
             {
                 for (int j = 2; j < i; j++)
                 {
@@ -1443,6 +1508,22 @@ namespace PaizaTest4
             }
 
             return primes.ToArray();
+        }
+
+        /// <summary>
+        /// 階乗を得る。
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static string GetFact(string str)
+        {
+            string fact = "1";
+            for (int i = 1; i <= int.Parse(str); i++)
+            {
+                fact = ExMultiply(fact, i.ToString());
+            }
+
+            return fact;
         }
 
 

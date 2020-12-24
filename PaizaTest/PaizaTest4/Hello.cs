@@ -1232,6 +1232,20 @@ namespace PaizaTest4
         }
 
 
+        /// <summary>
+        /// 整数 N が与えられるので、1 × 2 × ... × (N-1) × N を最大で何回 2 で割ることができるかを求めてください。
+        /// </summary>
+        public void Test74()
+        {
+            int count = 0;
+            while (double.Parse(nmootan.GetFact(Console.ReadLine()))%2==0)
+            {
+                count++;
+            }
+            //Console.WriteLine(Math.Log(double.Parse(nmootan.GetFact(Console.ReadLine())), 2));
+        }
+
+
 
 
     }
