@@ -51,6 +51,130 @@ namespace PaizaTest4
 
 
         /// <summary>
+        /// str1をstr2で割った余りを得る。（その商も参照可能。）（未完成）
+        /// </summary>
+        /// <param name="str1"></param>
+        /// <param name="str2"></param>
+        /// <returns></returns>
+        public static string ExMod(string str1, string str2, out string syou)
+        {
+            //StringBuilder sb1 = new StringBuilder(str1);
+            StringBuilder sb = new StringBuilder();
+            string str, subStr, s;
+            syou = "";
+
+            str = str1.Substring(0, str1.Length);
+            for (int i = 0; i < str1.Length; i++)
+            {
+                subStr = str.Substring(0, str2.Length);
+                if (subStr.CompareTo(str2) == -1) 
+                {
+                    if (str.Length == str2.Length) return str;
+                    else subStr = str.Substring(0, str2.Length + 1);
+                } 
+
+                str = str.Remove(0, subStr.Length);
+
+                for (int j = 1; j <= 9; j++)
+                {
+                    s = ExMultiply1(str2, j);
+                    if (ExCompareTo(subStr, s )==-1)
+                    {
+                        subStr = ExMinus(subStr, ExMultiply1(str2, j - 1));
+                        str = str.Insert(0, subStr);
+                        sb.Append(j - 1);
+                        syou = sb.ToString();
+                        break;
+                    }
+                }
+            }
+
+            //syou = str1;
+
+            return str;
+        }
+
+        /// <summary>
+        /// str1をstr2で割った余りを得る。（その商も参照可能。）（未完成）
+        /// </summary>
+        /// <param name="str1"></param>
+        /// <param name="str2"></param>
+        /// <returns></returns>
+        public static string ExMod(string str1, string str2)
+        {
+            //StringBuilder sb1 = new StringBuilder(str1);
+            StringBuilder sb = new StringBuilder();
+            string str, subStr, s;
+            //syou = "";
+
+            str = str1.Substring(0, str1.Length);
+            for (int i = 0; i < str1.Length; i++)
+            {
+                subStr = str.Substring(0, str2.Length);
+                if (subStr.CompareTo(str2) == -1)
+                {
+                    if (str.Length == str2.Length) return str;
+                    else subStr = str.Substring(0, str2.Length + 1);
+                }
+
+                str = str.Remove(0, subStr.Length);
+
+                for (int j = 1; j <= 9; j++)
+                {
+                    s = ExMultiply1(str2, j);
+                    if (ExCompareTo(subStr, s) == -1)
+                    {
+                        subStr = ExMinus(subStr, ExMultiply1(str2, j - 1));
+                        str = str.Insert(0, subStr);
+                        //sb.Append(j - 1);
+                        //syou = sb.ToString();
+                        break;
+                    }
+                }
+            }
+
+            //syou = str1;
+
+            return str;
+
+        }
+
+        /// <summary>
+        /// 何桁でも整数値の大小比較を行う。
+        /// </summary>
+        /// <param name="str1"></param>
+        /// <param name="str2"></param>
+        /// <returns></returns>
+        public static int ExCompareTo(string str1, string str2)
+        {
+            if (str1[0] == '-')
+            {
+                if (str2[0] == '-')
+                {
+                    str1 = str1.Remove(0, 1);
+                    str2 = str2.Remove(0, 1);
+
+                    if (str1.Length > str2.Length) return -1;
+                    else if (str1.Length == str2.Length) return str1.CompareTo(str2) * -1;
+                    else return 1;
+                }
+                else return -1;
+            }
+            else
+            {
+                if (str2[0] == '-') return 1;
+                else
+                {
+                    if (str1.Length > str2.Length) return 1;
+                    else if (str1.Length == str2.Length) return str1.CompareTo(str2);
+                    else return -1;
+                }
+            }
+
+        }
+
+
+        /// <summary>
         /// 何桁でも掛け算する。
         /// 4629375*578765932
         /// </summary>
@@ -66,14 +190,15 @@ namespace PaizaTest4
 
             for (int i = 0; i < str2.Length; i++)
             {
-                str3 = ExMultiply1(str1, nums2[i]);
+                str3 = ExMultiply1(str1, nums2[str2.Length- i-1]);
                 for (int j = 0; j < i; j++)
                 {
                     str3 = ExMultiply10(str3);
+                    //Console.WriteLine("i={0}, j={1}, str3={2}", i, j, str3);
                 }
                 result = ExPlus(result, str3);
             }
-
+            //Console.WriteLine("result={0}", result);
             return result;
         }
 
@@ -129,7 +254,11 @@ namespace PaizaTest4
         /// <returns></returns>
         public static string ExMultiply10(string str)
         {
-            return str.Insert(str.Length - 1, "0");
+            StringBuilder sb = new StringBuilder(str);
+
+            return sb.Append('0').ToString();
+
+            //return str.Insert(str.Length - 1, "0");
         }
 
 
@@ -242,6 +371,225 @@ namespace PaizaTest4
                 }
 
                 if (exN == 1) chsList.Add(GetParseIntToChar(1));
+
+            }
+
+            return GetMirrorStr(GetParseCharListToStr(chsList));
+
+
+        }
+
+        /// <summary>
+        /// 何桁の整数値でも引き算できる。　
+        /// </summary>
+        /// <param name="str1"></param>
+        /// <param name="str2"></param>
+        /// <returns></returns>
+        public static string ExMinus(string str1, string str2)
+        {
+            //str1 = GetMirrorStr(str1);
+            //str2 = GetMirrorStr(str2);
+
+            char[] chs1 = GetParseStrToCharArray(GetMirrorStr(str1));
+            char[] chs2 = GetParseStrToCharArray(GetMirrorStr(str2));
+            List<char> chsList = new List<char>();
+            int exN = 0;
+            int n = 0;
+            int num1, num2;
+
+            if (chs1.Length > chs2.Length)
+            {
+                for (int i = 0; i < chs2.Length; i++)
+                {
+                    num1 = GetParseCharToInt(chs1[i]) - exN;
+                    num2 = GetParseCharToInt(chs2[i]);
+                    if (num1 < 0) 
+                    {
+                        num1 = 9;
+                        n = num1 - num2;
+                        chsList.Add(GetParseIntToChar(n));
+                        exN = 1;
+                    } 
+
+                    else if (num1 < num2) 
+                    {
+                        n = 10 + num1 - num2;
+                        chsList.Add(GetParseIntToChar(n));
+                        //n = GetParseCharToInt(chs1[i]) + GetParseCharToInt(chs2[i]) - exN;
+                        exN = 1;
+                    }
+
+                    //if (n >= 10)
+                    //{
+                    //    exN = 1;
+                    //    n -= 10;
+                    //    chsList.Add(GetParseIntToChar(n));
+                    //}
+                    else
+                    {
+                        n = num1 - num2;
+                        chsList.Add(GetParseIntToChar(n));
+                        exN = 0;
+                    }
+                }
+
+                for (int i = chs2.Length; i < chs1.Length; i++)
+                {
+                    num1 = GetParseCharToInt(chs1[i]) - exN;
+                    //num2 = GetParseCharToInt(chs2[i]);
+
+                    if(num1<0)
+                    {
+                        chsList.Add('9');//1000-2=998
+                        exN = 1;
+                    }
+                    else if (num1 == 0)
+                    {
+                        exN = 0;
+                        if (i == chs1.Length - 1) break;
+                        else chsList.Add('0');
+                        //break;10010-2=10008 //1000-2=998
+                        //exN = 1;
+                        //n -= 10;
+                        //chsList.RemoveAt(i);
+                    }
+                    else
+                    {
+                        exN = 0;
+                        chsList.Add(GetParseIntToChar(num1));
+                    }
+                }
+            }
+            if (chs1.Length < chs2.Length)
+            {
+                int num3, num4;
+                for (int i = 0; i < chs1.Length; i++)
+                {
+                    num3 = GetParseCharToInt(chs2[i]) - exN;
+                    num4 = GetParseCharToInt(chs1[i]);
+                    if (num3 < 0)
+                    {
+                        num3 = 9;
+                        n = num3 - num4;
+                        chsList.Add(GetParseIntToChar(n));
+                        exN = 1;
+                    }
+
+                    else if (num3 < num4)
+                    {
+                        n = 10 + num3 - num4;
+                        chsList.Add(GetParseIntToChar(n));
+                        exN = 1;
+                    }
+
+                    else
+                    {
+                        n = num3 - num4;
+                        chsList.Add(GetParseIntToChar(n));
+                        exN = 0;
+                    }
+                }
+
+                for (int i = chs1.Length; i < chs2.Length; i++)
+                {
+                    num3 = GetParseCharToInt(chs2[i]) - exN;
+                    //num4 = GetParseCharToInt(chs1[i]);
+
+                    if (num3 < 0)
+                    {
+                        chsList.Add('9');//1000-2=998
+                        exN = 1;
+                    }
+                    else if (num3 == 0)
+                    {
+                        exN = 0;
+                        if (i == chs2.Length - 1) break;
+                        else chsList.Add('0');
+                        //break;10010-2=10008 //1000-2=998
+                        //exN = 1;
+                        //n -= 10;
+                        //chsList.RemoveAt(i);
+                    }
+                    else
+                    {
+                        exN = 0;
+                        chsList.Add(GetParseIntToChar(num3));
+                    }
+                }
+
+                chsList.Add('-');
+            }
+            if (chs1.Length == chs2.Length)
+            {
+                if(str1.CompareTo(str2) == 1)
+                {
+
+                    for (int i = 0; i < chs2.Length; i++)
+                    {
+                        num1 = GetParseCharToInt(chs1[i]) - exN;
+                        num2 = GetParseCharToInt(chs2[i]);
+                        if (num1 < 0)
+                        {
+                            num1 = 9;
+                            n = num1 - num2;
+                            chsList.Add(GetParseIntToChar(n));
+                            exN = 1;
+                        }
+
+                        else if (num1 < num2)
+                        {
+                            n = 10 + num1 - num2;
+                            chsList.Add(GetParseIntToChar(n));
+                            //n = GetParseCharToInt(chs1[i]) + GetParseCharToInt(chs2[i]) - exN;
+                            exN = 1;
+                        }
+
+                        else
+                        {
+                            n = num1 - num2;
+                            chsList.Add(GetParseIntToChar(n));
+                            exN = 0;
+                        }
+                    }
+
+                }
+                else if (str1.CompareTo(str2)==-1)
+                {
+                    int num3, num4;
+                    for (int i = 0; i < chs1.Length; i++)
+                    {
+                        num3 = GetParseCharToInt(chs2[i]) - exN;
+                        num4 = GetParseCharToInt(chs1[i]);
+                        if (num3 < 0)
+                        {
+                            num3 = 9;
+                            n = num3 - num4;
+                            chsList.Add(GetParseIntToChar(n));
+                            exN = 1;
+                        }
+
+                        else if (num3 < num4)
+                        {
+                            n = 10 + num3 - num4;
+                            chsList.Add(GetParseIntToChar(n));
+                            exN = 1;
+                        }
+
+                        else
+                        {
+                            n = num3 - num4;
+                            chsList.Add(GetParseIntToChar(n));
+                            exN = 0;
+                        }
+                    }
+
+                    chsList.Add('-');
+
+                }
+                else
+                {
+                    chsList.Add('0');
+                }
 
             }
 
@@ -1518,9 +1866,11 @@ namespace PaizaTest4
         public static string GetFact(string str)
         {
             string fact = "1";
-            for (int i = 1; i <= int.Parse(str); i++)
+            ulong n = ulong.Parse(str);
+            for (ulong i = 1; i <= n; i++)
             {
                 fact = ExMultiply(fact, i.ToString());
+                //Console.WriteLine("i={0}, fact={1}",i,fact);
             }
 
             return fact;
