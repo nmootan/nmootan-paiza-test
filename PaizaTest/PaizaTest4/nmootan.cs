@@ -49,6 +49,27 @@ namespace PaizaTest4
             return str;
         }
 
+        /// <summary>
+        /// 自然数strに含まれる素因数primeの個数を得る。
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static string GetPrimeCount(string str, string prime)
+        {
+            string count = "0";
+            string strCopy = str.Substring(0);
+            string syou;
+
+            while (ExMod(strCopy, prime, out syou) == "0" && syou!="0")
+            {
+                strCopy = syou.Substring(0);
+                count = ExPlus(count, "1");
+                Console.WriteLine("count={0}, strCopy={1}, syou={2}", count, strCopy,syou);
+            }
+
+            return count;
+        }
+
 
         /// <summary>
         /// str1をstr2で割った余りを得る。（その商も参照可能。）（未完成）
@@ -62,15 +83,30 @@ namespace PaizaTest4
             StringBuilder sb = new StringBuilder();
             string str, subStr, s;
             syou = "";
+            sb.Append(syou);
 
             str = str1.Substring(0, str1.Length);
+            if (ExCompareTo(str, str2) == -1)
+            {
+                syou = "0";
+                return str;
+            }
+
             for (int i = 0; i < str1.Length; i++)
             {
-                subStr = str.Substring(0, str2.Length);
+                if (i + 1 > str.Length) subStr=str.Substring(0,str.Length);
+                else subStr = str.Substring(0, i+1);
+
                 if (subStr.CompareTo(str2) == -1) 
                 {
-                    if (str.Length == str2.Length) return str;
-                    else subStr = str.Substring(0, str2.Length + 1);
+                    if (str.Length == str2.Length) 
+                    {
+                        sb.Append("0");
+                        syou = GetFormatZero( sb.ToString());
+                        Console.WriteLine("syou={0}, str={1}, subStr={2}", syou,str,subStr);
+                        return str;
+                    } 
+                    //else subStr = str.Substring(0, str2.Length + 1);
                 } 
 
                 str = str.Remove(0, subStr.Length);
@@ -82,8 +118,10 @@ namespace PaizaTest4
                     {
                         subStr = ExMinus(subStr, ExMultiply1(str2, j - 1));
                         str = str.Insert(0, subStr);
+                        str = GetFormatZero(str);
                         sb.Append(j - 1);
-                        syou = sb.ToString();
+                        syou = GetFormatZero( sb.ToString());
+                        Console.WriteLine("j-1={0}, syou={1}, str={2}, subStr={3}, i={4}", j - 1, syou,str,subStr,i);
                         break;
                     }
                 }
@@ -95,7 +133,8 @@ namespace PaizaTest4
         }
 
         /// <summary>
-        /// str1をstr2で割った余りを得る。（その商も参照可能。）（未完成）
+        /// str1をstr2で割った余りを得る。
+        /// ExMod("1023", "4")="143"
         /// </summary>
         /// <param name="str1"></param>
         /// <param name="str2"></param>
@@ -113,6 +152,7 @@ namespace PaizaTest4
                 subStr = str.Substring(0, str2.Length);
                 if (subStr.CompareTo(str2) == -1)
                 {
+                    //Console.WriteLine("subStr={0}, str={1}, i={2}", subStr, str,i);
                     if (str.Length == str2.Length) return str;
                     else subStr = str.Substring(0, str2.Length + 1);
                 }
@@ -126,6 +166,7 @@ namespace PaizaTest4
                     {
                         subStr = ExMinus(subStr, ExMultiply1(str2, j - 1));
                         str = str.Insert(0, subStr);
+                        //Console.WriteLine("j={0}, subStr={1}, str={2}", j, subStr, str);
                         //sb.Append(j - 1);
                         //syou = sb.ToString();
                         break;
@@ -134,7 +175,7 @@ namespace PaizaTest4
             }
 
             //syou = str1;
-
+            //Console.WriteLine("End");
             return str;
 
         }
@@ -380,7 +421,7 @@ namespace PaizaTest4
         }
 
         /// <summary>
-        /// 何桁の整数値でも引き算できる。　
+        /// 何桁の整数値でも引き算できる。　（未完成）
         /// </summary>
         /// <param name="str1"></param>
         /// <param name="str2"></param>
@@ -445,6 +486,7 @@ namespace PaizaTest4
                     }
                     else if (num1 == 0)
                     {
+                        //Console.WriteLine("num1={0}", num1);
                         exN = 0;
                         if (i == chs1.Length - 1) break;
                         else chsList.Add('0');
@@ -455,6 +497,7 @@ namespace PaizaTest4
                     }
                     else
                     {
+                        //Console.WriteLine("num1={0}", num1);
                         exN = 0;
                         chsList.Add(GetParseIntToChar(num1));
                     }
@@ -547,6 +590,7 @@ namespace PaizaTest4
                         else
                         {
                             n = num1 - num2;
+                            //if (n == 0 && i == str1.Length - 1) break;
                             chsList.Add(GetParseIntToChar(n));
                             exN = 0;
                         }
@@ -593,7 +637,7 @@ namespace PaizaTest4
 
             }
 
-            return GetMirrorStr(GetParseCharListToStr(chsList));
+            return GetFormatZero( GetMirrorStr(GetParseCharListToStr(chsList)));
 
 
         }
@@ -1863,15 +1907,21 @@ namespace PaizaTest4
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>
-        public static string GetFact(string str)
+        public static string ExFact(string str)
         {
             string fact = "1";
-            ulong n = ulong.Parse(str);
-            for (ulong i = 1; i <= n; i++)
+            //ulong n = ulong.Parse(str);
+            string numStr = "0";
+
+            while (ExCompareTo(str,numStr)>0)
             {
-                fact = ExMultiply(fact, i.ToString());
+                numStr = ExPlus(numStr, "1");
+                fact = ExMultiply(fact, numStr);
                 //Console.WriteLine("i={0}, fact={1}",i,fact);
             }
+            //for (ulong i = 1; i <= n; i++)
+            //{
+            //}
 
             return fact;
         }

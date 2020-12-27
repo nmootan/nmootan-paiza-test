@@ -1238,9 +1238,13 @@ namespace PaizaTest4
         /// </summary>
         public void Test74()
         {
-            Console.WriteLine(nmootan.ExMod("10023", "4"));
+            //Console.WriteLine(nmootan.GetPrimeCount(nmootan.ExFact(Console.ReadLine()), "2"));
+
+            //Console.WriteLine(nmootan.ExMod("1023", "4"));
             //Console.WriteLine(nmootan.ExMultiply("234", "100"));
-            //Console.WriteLine(nmootan.ExMinus("34", "34"));
+            //Console.WriteLine(nmootan.ExMinus("1022", "20"));
+            //Console.WriteLine(nmootan.ExFact(Console.ReadLine()));
+            Console.WriteLine(nmootan.GetPrimeCount(Console.ReadLine(), Console.ReadLine()));
             //int count = 0;
             //ulong n = ulong.Parse(nmootan.GetFact(Console.ReadLine()));
             //ulong m = n % 2;
