@@ -1238,13 +1238,19 @@ namespace PaizaTest4
         /// </summary>
         public void Test74()
         {
+            Console.WriteLine(nmootan.ExPrimeCount(ulong.Parse(Console.ReadLine()), (ulong)2));
             //Console.WriteLine(nmootan.GetPrimeCount(nmootan.ExFact(Console.ReadLine()), "2"));
 
+            //Console.WriteLine(nmootan.ExPlus("999", "1"));
+            //Console.WriteLine(nmootan.GetFormatZero("00"));
+            //string syou;
+            //Console.WriteLine("mod={0}, syou={1}", nmootan.ExMod(Console.ReadLine(), Console.ReadLine(), out syou), syou);
             //Console.WriteLine(nmootan.ExMod("1023", "4"));
             //Console.WriteLine(nmootan.ExMultiply("234", "100"));
+            //Console.WriteLine(nmootan.ExCompareTo("100", "101"));
             //Console.WriteLine(nmootan.ExMinus("1022", "20"));
             //Console.WriteLine(nmootan.ExFact(Console.ReadLine()));
-            Console.WriteLine(nmootan.GetPrimeCount(Console.ReadLine(), Console.ReadLine()));
+            //Console.WriteLine(nmootan.GetPrimeCount(Console.ReadLine(), Console.ReadLine()));
             //int count = 0;
             //ulong n = ulong.Parse(nmootan.GetFact(Console.ReadLine()));
             //ulong m = n % 2;
@@ -1258,6 +1264,320 @@ namespace PaizaTest4
             ////Console.WriteLine(Math.Log(double.Parse(nmootan.GetFact(Console.ReadLine())), 2));
         }
 
+
+        /// <summary>
+        /// 普通の鳩時計は 1 時間に 1 回しか鳴かないのでつまらないと思ったあなたは、鳩時計を改造してスーパー鳩時計を作りました。このスーパー鳩時計は時刻が x 時 y 分のとき x + y が 3の倍数のとき"FIZZ"、5 の倍数のとき"BUZZ", 3の倍数かつ5の倍数のとき "FIZZBUZZ" と鳴き、これらのいずれにも当てはまらなかった場合は鳴きません。なお、0 は 3 の倍数かつ 5 の倍数であるとします。 0 時 0 分　〜 23 時 59 分 の各分のスーパー鳩時計の様子を出力してください。
+        /// 0 時 0 分の鳩時計の鳴き声
+        /// 0 時 1 分の鳩時計の鳴き声
+        /// ...
+        /// 23 時 58 分の鳩時計の鳴き声
+        /// 23 時 59 分の鳩時計の鳴き声
+        /// 0 時 0 分から 23 時 59 分までの各分の鳩時計の鳴き声を以上の形式で出力してください。
+        /// 何も鳴かない時間は改行のみを出力してください。
+        /// </summary>
+        public void Test75()
+        {
+            const string STR3 = "FIZZ";
+            const string STR5 = "BUZZ";
+            const string STR35 = "FIZZBUZZ";
+            //DateTime dateTime;
+
+            for (int i = 0; i < 24; i++)
+            {
+                for (int j = 0; j < 60; j++)
+                {
+                    if ((i + j) % 3 == 0)
+                    {
+                        if((i + j) % 5 == 0)
+                        {
+                            Console.WriteLine(STR35);
+                        }
+                        else
+                        {
+                            Console.WriteLine(STR3);
+                        }
+                    }
+                    else if ((i + j) % 5 == 0)
+                    {
+                        Console.WriteLine(STR5);
+                    }
+                    else
+                    {
+                        Console.WriteLine("");
+                    }
+                }
+            }
+
+        }
+
+
+
+        /// <summary>
+        /// x + y < 100 かつ (x ^ 3) + (y ^ 3) < 100000 が成り立つような正の整数 x , y について x × y の最大値を求めてください。
+        /// ・ ヒント
+        /// 2 つの式を連立不等式として解きたくなりますが、x + y< 100 に注目すると、(x, y) のとりうる値は(1,1) , (1,2) , (1,98) , (2,1)... (98,1) のいずれかであり、これらは高々 98 + 97 + ... + 1 = 99 × 44 = 4356 通り（等差数列の和の公式を利用）であるため、全ての組を調べても実行時間制限に間に合います。
+        /// </summary>
+        public void Test76()
+        {
+            List<int> results = new List<int>();
+
+            for (int i = 0; i < 100; i++)
+            {
+                for (int j = 0; j < 100; j++)
+                {
+                    if (i+j<100 && i*i*i+j*j*j< 100000)
+                    {
+                        results.Add(i * j);
+                    }
+                }
+            }
+
+            Console.WriteLine(results.Max().ToString());
+
+        }
+
+
+
+        /// <summary>
+        /// paiza国では、1 円と X 円と Y 円の 3 種類の硬貨しかありません。ちょうど Z 円を支払うとき、支払う硬貨の枚数が最小になるように支払ったときの硬貨の枚数を求めてください。ただし、支払う各硬貨の枚数に制限は無いものとします。
+        /// </summary>
+        public void Test77()
+        {
+            List<int> zs = new List<int>();
+            int[] xyz = nmootan.GetStdIntSplit().ToArray();
+
+
+            for (int i = 0; i <= xyz[2]; i++)
+            {
+                for (int j = 0; j*xyz[0] <= xyz[2]; j++)
+                {
+                    for (int k = 0; k*xyz[1] <= xyz[2]; k++)
+                    {
+                        if (i+j*xyz[0]+k*xyz[1]==xyz[2])
+                        {
+                            //Console.WriteLine("{0},{1},{2}",i, j, k);
+                            zs.Add(i + j + k);
+                        }
+                    }
+                }
+            }
+
+            Console.WriteLine(zs.Min().ToString());
+
+        }
+
+
+
+        /// <summary>
+        /// 整数 N が与えられるので、三角形の三辺の長さの和が N であり、全ての辺の長さが整数であるような直角三角形が存在するかどうかを判定してください。なお、直角三角形の斜辺 a と他の二辺 b , c の間には次のような三平方の定理が成り立ちます。
+        /// 三辺の長さの和が N であるような全ての三角形の三辺 a , b , c の組み合わせのうち、三平方の定理を満たすものが 1 つでもあれば "YES" , それ以外の場合は "NO" が答えとなります。全ての三辺の場合を全列挙することができれば三平方の定理を満たすかの判定をすることで答えを求めることができます。
+        /// </summary>
+        public string Test78()
+        {
+            int n = int.Parse(Console.ReadLine());
+
+            for (int i = 1; i < n; i++)
+            {
+                for (int j = 1; j < n; j++)
+                {
+                    for (int k = 1; k < n; k++)
+                    {
+                        if (i + j + k == n)
+                        {
+                            if (i*i==j*j+k*k)
+                            {
+                                return "YES";
+                            }
+                        }
+                    }
+                }
+            }
+
+            return "NO";
+
+        }
+
+
+        /// <summary>
+        /// 配列 A の要素数 N と整数 K, 配列 A の各要素 A_1, A_2, ..., A_N が与えられるので、配列 A に K がいくつ含まれるか数えてください。
+        /// ・1 行目では、配列 A の要素数 N と整数 K が半角スペース区切りで与えられます。
+        /// ・続く N 行では、配列 A の要素が先頭から順に与えられます。
+        /// </summary>
+        public void Test79()
+        {
+            int[] nk = nmootan.GetStdIntSplit().ToArray();
+            //int[] a = new int[nk[0]];
+            int count = 0;
+            for (int i = 0; i < nk[0]; i++)
+            {
+                if (int.Parse(Console.ReadLine()) == nk[1]) count++;
+
+            }
+
+            //int found = 0;
+            //while (found<=nk[0])
+            //{
+            //    found = Array.IndexOf(a, nk[1], found+1);
+            //    count++;
+            //}
+
+            Console.WriteLine(count);
+
+        }
+
+
+        /// <summary>
+        /// 配列 A の要素数 N と配列 A の各要素 A_1, A_2, ..., A_N が整数として与えられるので、配列 A の全ての要素の和を求めてください。
+        /// ・1 行目では、配列 A の要素数 N が与えられます。
+        /// ・続く N 行では、配列 A の要素が先頭から順に与えられます。
+        /// </summary>
+        public void Test80()
+        {
+            int n = int.Parse(Console.ReadLine());
+            int[] a = new int[n];
+
+            for (int i = 0; i < n; i++)
+            {
+                a[i] = int.Parse(Console.ReadLine());
+            }
+
+            Console.WriteLine(a.Sum());
+
+        }
+
+
+        /// <summary>
+        /// 配列 A の要素数 N と配列 A の各要素である整数 A_1, A_2, ..., A_N が与えられるので、配列 A の要素の最大値 max を求めてください。
+        /// ・1 行目では、配列 A の要素数 N が与えられます。
+        /// ・続く N 行では、配列 A の要素が先頭から順に与えられます。
+        /// </summary>
+        public void Test81()
+        {
+            int n = int.Parse(Console.ReadLine());
+            int[] a = new int[n];
+
+            for (int i = 0; i < n; i++)
+            {
+                a[i] = int.Parse(Console.ReadLine());
+            }
+
+            Console.WriteLine(a.Max());
+
+        }
+
+
+        /// <summary>
+        /// 配列 A の要素数 N と整数 K , 配列 A の各要素 A_1, A_2, ..., A_N が与えられるので、A に K が 1 つでも含まれている場合は Yes を、含まれていない場合は No を出力してください。
+        /// </summary>
+        public void Test82()
+        {
+            int[] nk = nmootan.GetStdIntSplit().ToArray();
+            int[] a = new int[nk[0]];
+
+            for (int i = 0; i < nk[0]; i++)
+            {
+                a[i] = int.Parse(Console.ReadLine());
+            }
+
+            if (a.Contains(nk[1])) Console.WriteLine("Yes");
+            else Console.WriteLine("No");
+
+
+        }
+
+
+        /// <summary>
+        /// 配列 A の要素数 N と整数 K , 配列 A の各要素 A_1, A_2, ..., A_N が与えられるので、K であるような A の要素のうち、要素番号が最小のものを出力してください。
+        /// A に K が含まれない場合は -1 を出力してください。
+        /// </summary>
+        public void Test83()
+        {
+            int[] nk = nmootan.GetStdIntSplit().ToArray();
+            int[] a = new int[nk[0]];
+
+            for (int i = 0; i < nk[0]; i++)
+            {
+                a[i] = int.Parse(Console.ReadLine());
+            }
+
+            int index = Array.IndexOf(a, nk[1]);
+            if (index == -1) Console.WriteLine("-1");
+            else Console.WriteLine( Array.IndexOf(a, nk[1])+1);
+            //if (index == -1) Console.WriteLine("-1");
+            //else Console.WriteLine(a[index]);
+
+
+        }
+
+
+        /// <summary>
+        /// 配列 A の要素数 N と配列 A の各要素 A_1, A_2, ..., A_N が与えられるので、配列 A には何種類の値が含まれているかを求めてください。
+        /// </summary>
+        public void Test84()
+        {
+            int[] nk = nmootan.GetStdIntSplit().ToArray();
+            int[] a = new int[nk[0]];
+
+            for (int i = 0; i < nk[0]; i++)
+            {
+                a[i] = int.Parse(Console.ReadLine());
+            }
+
+            HashSet<int> hs = new HashSet<int>(a);
+            //int[] results = new int[hs.Count];
+            //hs.CopyTo(results, 0);
+            Console.WriteLine(hs.Count);
+
+
+        }
+
+
+        /// <summary>
+        /// 配列 A の要素数 N と整数 K, 配列 A の各要素 A_1, A_2, ..., A_N が与えられるので、配列 A の全ての要素を + K した後の A の各要素を出力してください。
+        /// </summary>
+        public void Test85()
+        {
+            int[] nk = nmootan.GetStdIntSplit().ToArray();
+            int[] a = new int[nk[0]];
+
+            for (int i = 0; i < nk[0]; i++)
+            {
+                a[i] = int.Parse(Console.ReadLine());
+                a[i] += nk[1];
+            }
+
+            for (int i = 0; i < nk[0]; i++)
+            {
+                Console.WriteLine(a[i]);
+            }
+
+        }
+
+
+        /// <summary>
+        /// 配列 A の要素数 N と配列 A の各要素 A_1, A_2, ..., A_N が与えられるので、A の要素の順序を逆にした配列 B を作成し、出力してください。
+        /// ・1 行目では、配列 A の要素数 N が与えられます。
+        /// ・続く N 行では、配列 A の要素が先頭から順に与えられます。
+        /// </summary>
+        public void Test86()
+        {
+            int n = int.Parse(Console.ReadLine());
+            int[] a = new int[n];
+
+            for (int i = 0; i < n; i++)
+            {
+                a[i] = int.Parse(Console.ReadLine());
+            }
+
+            int[] b = a.Reverse<int>();
+
+            for (int i = 0; i < b.Length; i++)
+            {
+                Console.WriteLine(b[i]);
+            }
+
+
+        }
 
 
 

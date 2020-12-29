@@ -64,7 +64,7 @@ namespace PaizaTest4
             {
                 strCopy = syou.Substring(0);
                 count = ExPlus(count, "1");
-                Console.WriteLine("count={0}, strCopy={1}, syou={2}", count, strCopy,syou);
+                //Console.WriteLine("count={0}, strCopy={1}, syou={2}", count, strCopy,syou);
             }
 
             return count;
@@ -80,10 +80,12 @@ namespace PaizaTest4
         public static string ExMod(string str1, string str2, out string syou)
         {
             //StringBuilder sb1 = new StringBuilder(str1);
-            StringBuilder sb = new StringBuilder();
+            StringBuilder syouSb = new StringBuilder();
+            //StringBuilder strSb = new StringBuilder();
+            StringBuilder subSb = new StringBuilder();
             string str, subStr, s;
             syou = "";
-            sb.Append(syou);
+            syouSb.Append(syou);
 
             str = str1.Substring(0, str1.Length);
             if (ExCompareTo(str, str2) == -1)
@@ -91,37 +93,47 @@ namespace PaizaTest4
                 syou = "0";
                 return str;
             }
+            //Console.WriteLine("str={0}, syou={1}", str, syou);
 
             for (int i = 0; i < str1.Length; i++)
             {
-                if (i + 1 > str.Length) subStr=str.Substring(0,str.Length);
-                else subStr = str.Substring(0, i+1);
+                subStr = subSb.Append(str[i]).ToString();
+                subStr = GetFormatZero(subStr);
+                subSb.Remove(0, subSb.Length);
 
-                if (subStr.CompareTo(str2) == -1) 
-                {
-                    if (str.Length == str2.Length) 
-                    {
-                        sb.Append("0");
-                        syou = GetFormatZero( sb.ToString());
-                        Console.WriteLine("syou={0}, str={1}, subStr={2}", syou,str,subStr);
-                        return str;
-                    } 
-                    //else subStr = str.Substring(0, str2.Length + 1);
-                } 
+                //if (i + 1 > str.Length) subStr=str.Substring(0,str.Length);
+                //else subStr = str.Substring(0, i+1);
+                //Console.WriteLine("i={0}, str={1}, syou={2}, subStr={3}", i, str, syou, subStr);
 
-                str = str.Remove(0, subStr.Length);
+                //if (subStr.CompareTo(str2) == -1)
+                //{
+                //    if (str.Length == str2.Length)
+                //    {
+                //        syouSb.Append("0");
+                //        syou = GetFormatZero(syouSb.ToString());
+                //        Console.WriteLine("syou={0}, str={1}, subStr={2}", syou, str, subStr);
+                //        return str;
+                //    }
+                //    //else subStr = str.Substring(0, str2.Length + 1);
+                //}
+                //else i = -1;
 
-                for (int j = 1; j <= 9; j++)
+                //str = str.Remove(0, subStr.Length);
+                //Console.WriteLine("str={0}, subStr={1}, i={2}", str, subStr, i);
+                for (int j = 1; ; j++)
                 {
                     s = ExMultiply1(str2, j);
                     if (ExCompareTo(subStr, s )==-1)
                     {
-                        subStr = ExMinus(subStr, ExMultiply1(str2, j - 1));
-                        str = str.Insert(0, subStr);
-                        str = GetFormatZero(str);
-                        sb.Append(j - 1);
-                        syou = GetFormatZero( sb.ToString());
-                        Console.WriteLine("j-1={0}, syou={1}, str={2}, subStr={3}, i={4}", j - 1, syou,str,subStr,i);
+                        //subStr = ExMinus(subStr, ExMultiply1(str2, j - 1));
+                        
+                        subSb.Append( ExMinus(subStr, ExMultiply1(str2, j - 1)));
+
+                        //str = str.Insert(0, subStr);
+                        //str = GetFormatZero(str);
+                        syouSb.Append(j - 1);
+                        syou = GetFormatZero( syouSb.ToString());
+                        //Console.WriteLine("j-1={0}, syou={1}, str={2}, subStr={3}, i={4}", j - 1, syou,str,subStr,i);
                         break;
                     }
                 }
@@ -129,7 +141,7 @@ namespace PaizaTest4
 
             //syou = str1;
 
-            return str;
+            return subSb.ToString();
         }
 
         /// <summary>
@@ -188,6 +200,7 @@ namespace PaizaTest4
         /// <returns></returns>
         public static int ExCompareTo(string str1, string str2)
         {
+            //Console.ReadLine();
             if (str1[0] == '-')
             {
                 if (str2[0] == '-')
@@ -303,6 +316,24 @@ namespace PaizaTest4
         }
 
 
+
+        public static ulong ExPrimeCount(ulong num1, ulong num2)
+        {
+            ulong count = 0;
+            for (ulong i = 2; i < num1+1; i++)
+            {
+                ulong dev = i;
+                while (dev%num2==0)
+                {
+                    dev /= 2;
+                    count++;
+                }
+            }
+
+            return count;
+        }
+
+
         /// <summary>
         /// 何桁の整数値でも足し算できる。　
         /// </summary>
@@ -355,6 +386,7 @@ namespace PaizaTest4
                         chsList.Add(GetParseIntToChar(n));
                     }
                 }
+                if (exN == 1) chsList.Add('1');
             }
             if (chs1.Length < chs2.Length)
             {
@@ -391,6 +423,7 @@ namespace PaizaTest4
                         chsList.Add(GetParseIntToChar(n));
                     }
                 }
+                if (exN == 1) chsList.Add('1');
             }
             if (chs1.Length == chs2.Length)
             {
@@ -411,7 +444,7 @@ namespace PaizaTest4
                     }
                 }
 
-                if (exN == 1) chsList.Add(GetParseIntToChar(1));
+                if (exN == 1) chsList.Add('1');
 
             }
 
