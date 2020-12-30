@@ -1569,7 +1569,7 @@ namespace PaizaTest4
                 a[i] = int.Parse(Console.ReadLine());
             }
 
-            int[] b = a.Reverse<int>();
+            int[] b = a.Reverse().ToArray();
 
             for (int i = 0; i < b.Length; i++)
             {
@@ -1577,6 +1577,300 @@ namespace PaizaTest4
             }
 
 
+        }
+
+
+        /// <summary>
+        /// 整数型の変数を 2 つ宣言して整数 X, Y を格納したのち、2 つの変数の中身を入れ替えた後の 2 つの変数の値を出力してください。
+        /// ・1 行で、整数 X, Y が半角スペース区切りで入力されます。
+        /// </summary>
+        public void Test87()
+        {
+            int[] xy = nmootan.GetStdIntSplit().ToArray();
+
+            int[] yx = xy.Reverse().ToArray();
+
+            Console.WriteLine(nmootan.GetJoinIntArrayToStrByStr(yx, " "));
+
+        }
+
+
+        /// <summary>
+        /// 配列 A の要素数 N と配列 A の各要素 A_1, A_2, ..., A_N , 交換する A の要素番号　X, Y が与えられるので、A_X と A_Y を入れ替えた後の A を出力してください。
+        /// ・1 行目では、配列 A の要素数 N が与えられます。
+        /// ・続く N 行では、配列 A の要素が先頭の A_1 から順に与えられます。
+        /// ・最後の 1 行で、X, Y が半角スペース区切りで与えられます。
+        /// </summary>
+        public void Test88()
+        {
+            int n = int.Parse(Console.ReadLine());
+            int[] a = new int[n];
+
+            for (int i = 0; i < n; i++)
+            {
+                a[i] = int.Parse(Console.ReadLine());
+            }
+
+            int[] xy = nmootan.GetStdIntSplit().ToArray();
+
+            a = nmootan.GetReplaceMembersInIntArray(a, xy[0]-1, xy[1]-1);
+
+            for (int i = 0; i < n; i++)
+            {
+                Console.WriteLine(a[i]);
+            }
+        }
+
+
+        /// <summary>
+        /// 配列 A と追加する要素 B が与えられるので、B を A の末尾に追加したのち、A の全ての要素を出力してください。
+        /// ・1 行目では、配列 A の要素数 N が与えられます。
+        /// ・続く N 行では、配列 A の要素が先頭の A_1 から順に与えられます。
+        /// ・最後の行では、末尾に追加する値 B が与えられます。
+        /// </summary>
+        public void Test89()
+        {
+            int n = int.Parse(Console.ReadLine());
+            List<int> a = new List<int>();
+
+            for (int i = 0; i < n; i++)
+            {
+                a.Add( int.Parse(Console.ReadLine()));
+            }
+
+            a.Add(int.Parse(Console.ReadLine()));
+
+            for (int i = 0; i < a.Count; i++)
+            {
+                Console.WriteLine(a[i]);
+            }
+
+        }
+
+
+        /// <summary>
+        /// 配列 A と追加する位置 n と追加する要素 B が与えられるので、B を A_n の後ろに追加した後の A を出力してください。
+        /// ・1 行目では、配列 A の要素数 N が与えられます。
+        /// ・続く N 行では、配列 A の要素が先頭(A_1)から順に与えられます。
+        /// ・最後の行では、数値を追加する要素番号 n と、追加する値 B が与えられます。
+        /// </summary>
+        public void Test90()
+        {
+            int n = int.Parse(Console.ReadLine());
+            List<int> a = new List<int>();
+
+            for (int i = 0; i < n; i++)
+            {
+                a.Add(int.Parse(Console.ReadLine()));
+            }
+
+            int[] nb = nmootan.GetStdIntSplit().ToArray();
+
+            a.Insert(nb[0], nb[1]);
+
+            for (int i = 0; i < a.Count; i++)
+            {
+                Console.WriteLine(a[i]);
+            }
+
+        }
+
+
+        /// <summary>
+        /// 配列 A とその要素数 N と削除する要素の番号 n が与えられるので、A から A_n を削除し、A を要素数 N - 1 の配列とした後の A の各要素を出力してください。
+        /// 1 行目では、配列 A の要素数 N が与えられます。
+        /// 続く N 行では、配列 A の要素が先頭の A_1 から順に与えられます。
+        /// 最後の行では、数値を削除する要素番号 n が与えられます。
+        /// </summary>
+        public void Test91()
+        {
+            int n = int.Parse(Console.ReadLine());
+            List<int> a = new List<int>();
+
+            for (int i = 0; i < n; i++)
+            {
+                a.Add(int.Parse(Console.ReadLine()));
+            }
+
+            int nr = int.Parse(Console.ReadLine());
+
+            a.RemoveAt(nr - 1);
+
+            for (int i = 0; i < a.Count; i++)
+            {
+                Console.WriteLine(a[i]);
+            }
+
+
+        }
+
+
+        /// <summary>
+        /// 期待する出力にあるような、九九表を出力してください。
+        /// </summary>
+        public void Test92()
+        {
+            nmootan.Matrix99();
+
+        }
+
+
+        /// <summary>
+        /// 配列 A の要素数 N と配列 A の各要素 A_1, A_2, ..., A_N が与えられるので、A の要素の全てのペアについてのかけ算の結果を出力してください。
+        /// ・1 行目では、配列 A の要素数 N が与えられます。
+        /// ・続く N 行では、配列 A の要素が先頭から順に与えられます。
+        /// </summary>
+        public void Test93()
+        {
+            int n = int.Parse(Console.ReadLine());
+            int[] a = new int[n];
+
+            for (int i = 0; i < n; i++)
+            {
+                a[i] = int.Parse(Console.ReadLine());
+            }
+
+            for (int i = 1; i < a.Length; i++)
+            {
+                for (int j = 0; j < i; j++)
+                {
+                    Console.WriteLine(a[i] * a[j]);
+                }
+            }
+
+
+        }
+
+
+        /// <summary>
+        /// 配列 A の要素数 N と新たに作成する配列のサイズ n , 配列 A の各要素 A_1 ... A_N が与えられるので、配列 A の先頭から n 要素を順に保持する配列を作成してください。新たに作成する配列の要素数が A の要素数よりも大きい時は、サイズが合うように 0 を A の要素の末尾に追加してください。
+        /// ・ 1 行目では、配列 A の要素数 N と新たに作成する配列の要素数 n が半角スペース区切りで与えられます。
+        /// ・ 続く N 行では、配列 A の要素が先頭から順に与えられます。
+        /// </summary>
+        public void Test94()
+        {
+            int[] nn = nmootan.GetStdIntSplit().ToArray();
+
+            List<int> a = new List<int>();
+
+            for (int i = 0; i < nn[0]; i++)
+            {
+                a.Add(int.Parse(Console.ReadLine()));
+            }
+
+            if (nn[0] < nn[1])
+            {
+                for (int i = 0; i < nn[1] - nn[0]; i++)
+                {
+                    a.Add(0);
+                }
+
+                for (int i = 0; i < a.Count; i++)
+                {
+                    Console.WriteLine(a[i]);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < nn[1]; i++)
+                {
+                    Console.WriteLine(a[i]);
+                }
+            }
+
+
+
+        }
+
+
+        /// <summary>
+        /// 配列 A の要素数 N と配列 A の各要素 A_1, A_2, ..., A_N が与えられるので、同じ値の要素が 2 つ以上含まれないように A を加工した新たな配列 B を作成してください。
+        /// ただし、 A に同じ値の要素が 2 つ以上あった場合、それらのうち先頭の要素を B に採用するものとします。
+        /// ・ 1 行目では、配列 A の要素数 N が与えられます。
+        /// ・ 続く N 行では、配列 A の要素が先頭から順に与えられます。
+        /// </summary>
+        public void Test95()
+        {
+            int n = int.Parse(Console.ReadLine());
+            //int[] nk = nmootan.GetStdIntSplit().ToArray();
+            int[] a = new int[n];
+
+            for (int i = 0; i < n; i++)
+            {
+                a[i] = int.Parse(Console.ReadLine());
+            }
+
+            HashSet<int> hs = new HashSet<int>(a);
+            int[] b = new int[hs.Count];
+            hs.CopyTo(b, 0);
+
+            for (int i = 0; i < b.Length; i++)
+            {
+                Console.WriteLine(b[i]);
+            }
+
+        }
+
+
+        /// <summary>
+        /// 配列 A の要素数 N と整数 K , 配列 A の各要素 A_1 ... A_N が与えられるので、K 以上であるような配列 A の要素のみを要素として持つ配列 B を作成し、その要素を出力してください。 B の要素の順は A と同じにしてください。
+        /// </summary>
+        public void Test96()
+        {
+            int[] nk = nmootan.GetStdIntSplit().ToArray();
+            //int[] nk = nmootan.GetStdIntSplit().ToArray();
+            int[] a = new int[nk[0]];
+
+            for (int i = 0; i < nk[0]; i++)
+            {
+                a[i] = int.Parse(Console.ReadLine());
+            }
+
+            List<int> b = new List<int>();
+
+            for (int i = 0; i < nk[0]; i++)
+            {
+                if (a[i] >= nk[1]) b.Add(a[i]);
+            }
+
+            for (int i = 0; i < b.Count; i++)
+            {
+                Console.WriteLine(b[i]);
+            }
+
+
+        }
+
+
+        /// <summary>
+        /// paiza の入社試験では 科目 1 〜 5 の 5 科目のテストが課せられており、それぞれの科目には重みが設定されています。受験者の得点は各科目の (とった点数) * (科目の重み) となります。 5 科目の得点の合計が最も高かった受験者の得点を求めてください。
+        /// ・1 行目では、受験者の人数を表す整数 N が与えられます。
+        /// ・2 行目では、1 〜 5 の各科目の重みを表す整数 M_1 〜 M_5 が半角スペース区切りで与えられます。
+        /// ・続く N 行のうち i 行目では i 番目の受験者が各科目でとった点数を表す整数 A_ { i,1} 〜 A_{i,5}
+        /// が半角スペース区切りで与えられます。
+        /// </summary>
+        public void Test97()
+        {
+            int n = int.Parse(Console.ReadLine());
+
+            int[] ms = nmootan.GetStdIntSplit().ToArray();
+
+            int[][] a = new int[n][];
+            for (int i = 0; i < n; i++)
+            {
+                a[i] = nmootan.GetStdIntSplit().ToArray();
+            }
+
+            int[] sums = new int[n];
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < 5; j++)
+                {
+                    sums[i] += a[i][j] * ms[j];
+                }
+            }
+
+            Console.WriteLine(sums.Max());
         }
 
 

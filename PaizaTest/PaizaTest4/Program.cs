@@ -14,7 +14,7 @@ namespace PaizaTest4
         {
             Hello hello = new Hello();
 
-            hello.Test86();
+            hello.Test94();
             //nmootan.RegexNormalizeTest();
 
             Console.ReadLine();
@@ -43,37 +43,42 @@ namespace PaizaTest4
     
             Hello hello = new Hello();
     
-            hello.Test86();
+            hello.Test97();
             //Console.WriteLine( hello.Test78());
         }
 
     
     
-
     
         /// <summary>
-        /// 配列 A の要素数 N と配列 A の各要素 A_1, A_2, ..., A_N が与えられるので、A の要素の順序を逆にした配列 B を作成し、出力してください。
-        /// ・1 行目では、配列 A の要素数 N が与えられます。
-        /// ・続く N 行では、配列 A の要素が先頭から順に与えられます。
+        /// paiza の入社試験では 科目 1 〜 5 の 5 科目のテストが課せられており、それぞれの科目には重みが設定されています。受験者の得点は各科目の (とった点数) * (科目の重み) となります。 5 科目の得点の合計が最も高かった受験者の得点を求めてください。
+        /// ・1 行目では、受験者の人数を表す整数 N が与えられます。
+        /// ・2 行目では、1 〜 5 の各科目の重みを表す整数 M_1 〜 M_5 が半角スペース区切りで与えられます。
+        /// ・続く N 行のうち i 行目では i 番目の受験者が各科目でとった点数を表す整数 A_ { i,1} 〜 A_{i,5}
+        /// が半角スペース区切りで与えられます。
         /// </summary>
-        public void Test86()
+        public void Test97()
         {
             int n = int.Parse(Console.ReadLine());
-            int[] a = new int[n];
 
+            int[] ms = nmootan.GetStdIntSplit().ToArray();
+
+            int[][] a = new int[n][];
             for (int i = 0; i < n; i++)
             {
-                a[i] = int.Parse(Console.ReadLine());
+                a[i] = nmootan.GetStdIntSplit().ToArray();
             }
 
-            int[] b = a.Reverse();
-
-            for (int i = 0; i < b.Length; i++)
+            int[] sums = new int[n];
+            for (int i = 0; i < n; i++)
             {
-                Console.WriteLine(b[i]);
+                for (int j = 0; j < 5; j++)
+                {
+                    sums[i] += a[i][j] * ms[j];
+                }
             }
 
-
+            Console.WriteLine(sums.Max());
         }
 
 
@@ -83,6 +88,27 @@ namespace PaizaTest4
 
     static class nmootan
     {
+
+    
+        /// <summary>
+        /// int配列の指定した２つのインデックス番号の要素を入れ替える。
+        /// </summary>
+        /// <param name="array"></param>
+        /// <param name="index1"></param>
+        /// <param name="index2"></param>
+        /// <returns></returns>
+        public static int[] GetReplaceMembersInIntArray(int[] array, int index1, int index2)
+        {
+            int[] xy = { array[index1], array[index2] };
+            //int[] xy = nmootan.GetStdIntSplit().ToArray();
+            int[] copy = new int[array.Length];
+            array.CopyTo(copy, 0);
+
+            copy[index2] = array[index1];
+            copy[index1] = array[index2];
+
+            return copy;
+        }
 
     
         public static List<int> GetStdIntSplit()
@@ -104,6 +130,30 @@ namespace PaizaTest4
 
             return System.Console.ReadLine().Trim().Split(' ');
         }
+
+    
+        /// <summary>
+        /// int型配列の要素を文字列strを挟んでつないで、文字列で返す。
+        /// </summary>
+        /// <param name="ints"></param>
+        /// <returns></returns>
+        public static string GetJoinIntArrayToStrByStr(int[] ints, string str)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            for (int i = 0; i < ints.Length-1; i++)
+            {
+                sb.Append(ints[i]);
+                sb.Append(str);
+            }
+
+            sb.Append(ints[ints.Length - 1]);
+            //sb.Append(Environment.NewLine);
+
+            return sb.ToString().Trim();
+        }
+
+
 
 
     }

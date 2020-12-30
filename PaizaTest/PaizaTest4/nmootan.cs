@@ -1983,6 +1983,33 @@ namespace PaizaTest4
 
 
         /// <summary>
+        /// int配列の指定した２つのインデックス番号の要素を入れ替える。
+        /// </summary>
+        /// <param name="array"></param>
+        /// <param name="index1"></param>
+        /// <param name="index2"></param>
+        /// <returns></returns>
+        public static int[] GetReplaceMembersInIntArray(int[] array, int index1, int index2)
+        {
+            //int[] xy = { array[index1], array[index2] };
+            //int[] xy = nmootan.GetStdIntSplit().ToArray();
+            int[] copy = new int[array.Length];
+            array.CopyTo(copy, 0);
+
+            //for (int i = 0; i < copy.Length; i++)
+            //{
+            //    Console.WriteLine(copy[i]);
+            //}
+            //Console.ReadLine();
+
+            copy[index2] = array[index1];
+            copy[index1] = array[index2];
+
+            return copy;
+        }
+
+
+        /// <summary>
         /// int型配列のインデックス番号sIndexからeIndexの要素を文字列strを挟んでつないで、文字列で返す。
         /// </summary>
         /// <param name="ints"></param>
