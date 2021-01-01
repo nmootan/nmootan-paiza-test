@@ -14,7 +14,7 @@ namespace PaizaTest4
         {
             Hello hello = new Hello();
 
-            hello.Test94();
+            hello.Test103();
             //nmootan.RegexNormalizeTest();
 
             Console.ReadLine();
@@ -43,7 +43,7 @@ namespace PaizaTest4
     
             Hello hello = new Hello();
     
-            hello.Test97();
+            hello.Test104();
             //Console.WriteLine( hello.Test78());
         }
 
@@ -51,43 +51,87 @@ namespace PaizaTest4
     
     
         /// <summary>
-        /// paiza の入社試験では 科目 1 〜 5 の 5 科目のテストが課せられており、それぞれの科目には重みが設定されています。受験者の得点は各科目の (とった点数) * (科目の重み) となります。 5 科目の得点の合計が最も高かった受験者の得点を求めてください。
-        /// ・1 行目では、受験者の人数を表す整数 N が与えられます。
-        /// ・2 行目では、1 〜 5 の各科目の重みを表す整数 M_1 〜 M_5 が半角スペース区切りで与えられます。
-        /// ・続く N 行のうち i 行目では i 番目の受験者が各科目でとった点数を表す整数 A_ { i,1} 〜 A_{i,5}
-        /// が半角スペース区切りで与えられます。
+        /// 西暦yが与えられるので、閏年ならYesを、平年ならばNoを出力してください。
+        /// 閏年か平年かは次のような条件によって判定することができます。
+        /// ・西暦が4で割り切れる年は閏年
+        /// ・ただし、100で割り切れる年は平年
+        /// ・ただし、400で割り切れる年は閏年
+        /// ・西暦が4で割り切れない年は平年
+        /// 整数yが1行で入力されます。
         /// </summary>
-        public void Test97()
+        public void Test104()
         {
-            int n = int.Parse(Console.ReadLine());
+            nmootan.GetIsLeapYear(int.Parse(Console.ReadLine()));
 
-            int[] ms = nmootan.GetStdIntSplit().ToArray();
-
-            int[][] a = new int[n][];
-            for (int i = 0; i < n; i++)
-            {
-                a[i] = nmootan.GetStdIntSplit().ToArray();
-            }
-
-            int[] sums = new int[n];
-            for (int i = 0; i < n; i++)
-            {
-                for (int j = 0; j < 5; j++)
-                {
-                    sums[i] += a[i][j] * ms[j];
-                }
-            }
-
-            Console.WriteLine(sums.Max());
         }
-
 
 
     }
 
 
+
+
     static class nmootan
     {
+    
+        /// <summary>
+        /// うるう年かどうか（うるう年：true）
+        /// </summary>
+        /// <param name="year"></param>
+        /// <returns></returns>
+        public static bool GetIsLeapYear(int year)
+        {
+            if (year%4==0)
+            {
+                if (year%100==0)
+                {
+                    if (year%400==0)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+
+    
+        /// <summary>
+        /// intリストの指定した２つのインデックス番号の要素を入れ替える。
+        /// </summary>
+        /// <param name="list"></param>
+        /// <param name="index1"></param>
+        /// <param name="index2"></param>
+        /// <returns></returns>
+        public static List<int> GetReplaceMembersInIntList(List<int> list, int index1, int index2)
+        {
+            //int[] xy = { array[index1], array[index2] };
+            //int[] xy = nmootan.GetStdIntSplit().ToArray();
+            List<int> copy = new List<int>();
+            copy.AddRange(list);
+
+            //for (int i = 0; i < copy.Length; i++)
+            //{
+            //    Console.WriteLine(copy[i]);
+            //}
+            //Console.ReadLine();
+
+            copy[index2] = list[index1];
+            copy[index1] = list[index2];
+
+            return copy;
+        }
 
     
         /// <summary>

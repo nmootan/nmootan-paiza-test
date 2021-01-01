@@ -1874,6 +1874,250 @@ namespace PaizaTest4
         }
 
 
+        /// <summary>
+        /// 人事のあなたは、N 人の中から採用者を決定します。N 人のテストの点数はそれぞれ A_i (1 ≦ i ≦ N)です。テストの点数が K 点以上の人全員を採用したいのですが、得点の高い方から M 人に辞退されてしまいました。あなたの採用することのできる最大の人数を答えてください。採用できる人数が 0 人の場合もあることに気をつけてください。
+        /// ・1 行目では、テストを受けた人数 N と、テストのボーダーの点数 K , 辞退された人数 M が半角スペース区切りで与えられます。
+        /// ・続く N 行では、N 人のテストの点数 A_i(1 ≦ i ≦ N)が改行区切りで与えられます。
+        /// </summary>
+        public void Test98()
+        {
+            int[] nkm = nmootan.GetStdIntSplit().ToArray();
+            int[] a = new int[nkm[0]];
+            for (int i = 0; i < nkm[0]; i++)
+            {
+                a[i] = int.Parse(Console.ReadLine());
+            }
+
+            List<int> b = a.ToList();
+            b.Sort();
+
+            b.RemoveRange(nkm[0] - nkm[2], nkm[2]);
+
+            int count = 0;
+            for (int i = 0; i < b.Count; i++)
+            {
+                if (b[i] >= nkm[1]) count++;
+            }
+
+            Console.WriteLine(count);
+        }
+
+
+        /// <summary>
+        /// データ構造の queue と同様の働きをするロボットがあります。ロボットは指示に応じて配列 A に対して 2 種類の仕事を行います、仕事の内容は以下の通りです。
+        /// ・in n と指示された場合、A の末尾に n を追加してください。
+        /// ・out と指示された場合、A の先頭の要素を削除してください。ただし、A が既に空の場合、何も行わないでください。
+        /// ロボットに与えられる指示の回数 N と、各指示の内容 S_i が与えられるので、ロボットが全ての処理を順に行った後の A の各要素を出力してください。
+        /// なお、初め配列 A は空であるものとします。
+        /// </summary>
+        public void Test99()
+        {
+            int n = int.Parse(Console.ReadLine());
+            //int[] a = new int[n];
+            List<int> a = new List<int>();
+            string s;
+            string[] t=new string[2];
+            for (int i = 0; i < n; i++)
+            {
+                s = Console.ReadLine();
+                if (s=="out")
+                {
+                    if(a.Count > 0) a.RemoveAt(0);
+                }
+                else
+                {
+                    t = nmootan.GetStrsSplitByChar(s,' ');
+                    //Console.WriteLine("t[0]={0}, t[1]={1}", t[0], t[1]);
+                    a.Add(int.Parse(t[1]));
+                }
+            }
+
+            for (int i = 0; i < a.Count; i++)
+            {
+                Console.WriteLine(a[i]);
+            }
+
+
+        }
+
+
+        /// <summary>
+        /// 生徒の身長が A_1, ...., A_N であるような N 人のクラスで二人三脚の代表を決めることにしました。代表には、身長の差が最も小さいような 2 人を選出することにしました。選ばれた 2 人の身長を昇順に出力してください。
+        /// ・1 行目では、クラスの人数 N が半角スペース区切りで与えられます。
+        /// ・続く N 行では、クラスメイト N 人の身長が与えられます。
+        /// </summary>
+        public void Test100()
+        {
+            int n = int.Parse(Console.ReadLine());
+            List<int> a = new List<int>();
+            for (int i = 0; i < n; i++)
+            {
+                a.Add(int.Parse(Console.ReadLine()));
+            }
+
+            a.Sort();
+            int sub=a[1]-a[0];
+            int[] b=new int[2];
+            for (int i = 1; i < a.Count-1; i++)
+            {
+                if (a[i + 1] - a[i] < sub)
+                {
+                    b[0] = a[i];
+                    b[1] = a[i + 1];
+                }
+            }
+
+            for (int i = 0; i < b.Length; i++)
+            {
+                Console.WriteLine(b[i]);
+            }
+
+        }
+
+
+        /// <summary>
+        /// 開店直後に店に入るために、番号 1 〜 N の N 人が開店前に店の前にブルーシートを合計 K 枚置きました。ブルーシートの先頭は A_1 , 最後尾は A_K です。しかし、店側は先頭から F 枚のブルーシートを撤去しました。
+        /// 1 〜 N 番の人々は次のルールに従って店に並びます。
+        /// ・自分のブルーシートが 1 枚以上残っているとき、自分のブルーシートのうち、最も先頭に近いブルーシートの位置に並ぶ。
+        /// ・自分のブルーシートが 1 枚も残っていないとき、並ぶことなく帰宅する。
+        /// 全員が並び終わった後に待機列にいる人の番号を先頭から順に答えてください。
+        /// ・1 行目では、並びの人数 N とブルーシートの合計枚数 K と先頭から撤去されるブルーシートの枚数 F が半角スペース区切りで与えられます。
+        /// ・続く K 行では、ブルーシートの所有者の番号 A_i(1 ≦ i ≦ N) が先頭から順に与えられます。
+        /// </summary>
+        public void Test101()
+        {
+            int[] nkf = nmootan.GetStdIntSplit().ToArray();
+            List<int> a = new List<int>();
+            for (int i = 0; i < nkf[2]; i++)
+            {
+                Console.ReadLine();
+            }
+            for (int i = nkf[2]; i < nkf[1]; i++)
+            {
+                a.Add(int.Parse(Console.ReadLine()));
+            }
+            HashSet<int> hs = new HashSet<int>(a);
+            int[] b = hs.ToArray();
+
+            for (int i = 0; i < b.Length; i++)
+            {
+                Console.WriteLine(b[i]);
+            }
+
+        }
+
+
+        /// <summary>
+        /// あなたはボウリングをしています。フレームの 1 投目を投げ終わったあなたは、次に狙うピンの番号と残っているピンの本数を知りたくなりました。ピンの情報が与えられるので、狙うべきピンの番号と残っているピンの本数を求めてください。
+        /// 狙うピンの決め方は次の通りとします。
+        /// - 残っているピンのうち、先頭(P_1側) のピンを狙います。ただし、同じ列に複数ピンがある場合は、それらのうちピン番号が最も小さいピンを狙います。
+        /// ・4 行でピンの情報が与えられます。ピン番号は以上の通りです。
+        /// ・P_1 が先頭のピンです。
+        /// ・P_i(1 ≦ i ≦ 10) が 0 のとき、その位置にはピンがないことを、1 のときその位置にピンが残っていることを表します。
+        /// P_10 P_9 P_8 P_7
+        /// P_6 P_5 P_4
+        /// P_3 P_2
+        /// P_1
+        /// </summary>
+        public void Test102()
+        {
+            //int[][] p = new int[4][];
+            List<int> p = new List<int>();
+            for (int i = 0; i < 4; i++)
+            {
+                p.AddRange(nmootan.GetStdIntSplit());
+                //p[i] = nmootan.GetStdIntSplit().ToArray();
+            }
+
+            //int[] q = new int[10];
+
+            for (int i = 0; i < 10; i++)
+            {
+                if (p[9 - i] == 1)
+                {
+                    Console.WriteLine(i + 1);
+                    break;
+                }
+            }
+
+            int count = 0;
+            for (int i = 0; i < 10; i++)
+            {
+                if (p[i] == 1) count++;
+            }
+
+            Console.WriteLine(count);
+        }
+
+
+        /// <summary>
+        /// あなたは集団行動のリーダーです。次のような指示を出すことで様々な列の操作ができます。
+        /// ・swap A B
+        /// 先頭から A 番目の人と、先頭から B 番目の人の位置を入れ替える。
+        /// ・reverse
+        /// 列の前後を入れ替える。
+        /// ・resize C
+        /// 先頭から C 人を列に残し、それ以外の人を全員列から離れさせる。ただし、列が既に C 人以下の場合、何も行わない。
+        /// 初め、列には番号 1 〜 N の N 人がおり、先頭から番号の昇順に並んでいます。(1, 2 , 3, ..., N)
+        /// あなたの出した指示の回数 Q とその指示の内容 S_i(1 ≦ i ≦ Q) が順に与えられるので、全ての操作を順に行った後の列を出力してください。
+        /// ・1 行目では、初めの列の人数 N と、指示の回数 Q が半角スペース区切りで与えられます。
+        /// ・以降の N 行では指示の内容を表す S_i(1 ≦ i ≦ N) が与えられます。
+        /// </summary>
+        public void Test103()
+        {
+            int[] nq = nmootan.GetStdIntSplit().ToArray();
+            List<int> a = new List<int>();
+            for (int i = 0; i < nq[0]; i++)
+            {
+                //a[i] = i + 1;
+                a.Add(i + 1);
+            }
+
+            List<string> q = new List<string>();
+            for (int i = 0; i < nq[1]; i++)
+            {
+                q = nmootan.GetStdStrsSplit().ToList();
+                switch (q[0])
+                {
+                    case "swap":
+                        a = nmootan.GetReplaceMembersInIntList(a, int.Parse(q[1])-1, int.Parse(q[2])-1);
+                        break;
+                    case "reverse":
+                        a.Reverse();
+                        break;
+                    case "resize":
+                        if (a.Count > int.Parse(q[1])) a.RemoveRange(int.Parse(q[1]), a.Count - int.Parse(q[1]));
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            for (int i = 0; i < a.Count; i++)
+            {
+                Console.WriteLine(a[i]);
+            }
+        }
+
+
+        /// <summary>
+        /// 西暦yが与えられるので、閏年ならYesを、平年ならばNoを出力してください。
+        /// 閏年か平年かは次のような条件によって判定することができます。
+        /// ・西暦が4で割り切れる年は閏年
+        /// ・ただし、100で割り切れる年は平年
+        /// ・ただし、400で割り切れる年は閏年
+        /// ・西暦が4で割り切れない年は平年
+        /// 整数yが1行で入力されます。
+        /// </summary>
+        public void Test104()
+        {
+            if (nmootan.GetIsLeapYear(int.Parse(Console.ReadLine()))) Console.WriteLine("Yes");
+            else Console.WriteLine("No");
+            
+
+        }
+
+
 
     }
 }

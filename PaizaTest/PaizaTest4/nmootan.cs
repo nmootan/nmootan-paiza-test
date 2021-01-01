@@ -2010,6 +2010,34 @@ namespace PaizaTest4
 
 
         /// <summary>
+        /// intリストの指定した２つのインデックス番号の要素を入れ替える。
+        /// </summary>
+        /// <param name="list"></param>
+        /// <param name="index1"></param>
+        /// <param name="index2"></param>
+        /// <returns></returns>
+        public static List<int> GetReplaceMembersInIntList(List<int> list, int index1, int index2)
+        {
+            //int[] xy = { array[index1], array[index2] };
+            //int[] xy = nmootan.GetStdIntSplit().ToArray();
+            List<int> copy = new List<int>();
+            copy.AddRange(list);
+
+            //for (int i = 0; i < copy.Length; i++)
+            //{
+            //    Console.WriteLine(copy[i]);
+            //}
+            //Console.ReadLine();
+
+            copy[index2] = list[index1];
+            copy[index1] = list[index2];
+
+            return copy;
+        }
+
+
+
+        /// <summary>
         /// int型配列のインデックス番号sIndexからeIndexの要素を文字列strを挟んでつないで、文字列で返す。
         /// </summary>
         /// <param name="ints"></param>
@@ -2067,6 +2095,39 @@ namespace PaizaTest4
 
 
             return sb.ToString();
+        }
+
+
+        /// <summary>
+        /// うるう年かどうか（うるう年：true）
+        /// </summary>
+        /// <param name="year"></param>
+        /// <returns></returns>
+        public static bool GetIsLeapYear(int year)
+        {
+            if (year%4==0)
+            {
+                if (year%100==0)
+                {
+                    if (year%400==0)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                return false;
+            }
+
         }
 
 
