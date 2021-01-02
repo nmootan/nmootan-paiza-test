@@ -14,7 +14,7 @@ namespace PaizaTest4
         {
             Hello hello = new Hello();
 
-            hello.Test103();
+            hello.Test106();
             //nmootan.RegexNormalizeTest();
 
             Console.ReadLine();
@@ -43,7 +43,7 @@ namespace PaizaTest4
     
             Hello hello = new Hello();
     
-            hello.Test104();
+            hello.Test106();
             //Console.WriteLine( hello.Test78());
         }
 
@@ -51,19 +51,19 @@ namespace PaizaTest4
     
     
         /// <summary>
-        /// 西暦yが与えられるので、閏年ならYesを、平年ならばNoを出力してください。
-        /// 閏年か平年かは次のような条件によって判定することができます。
-        /// ・西暦が4で割り切れる年は閏年
-        /// ・ただし、100で割り切れる年は平年
-        /// ・ただし、400で割り切れる年は閏年
-        /// ・西暦が4で割り切れない年は平年
-        /// 整数yが1行で入力されます。
+        /// 西暦年y、月m、日付dが与えられるので、和暦で表示してください。
+        /// ・Gは"明治"、"大正"、"昭和"、"平成"、"令和"のいずれかの元号で、和暦のxは元号の年です。
+        /// ・xは2より大きな整数か、"元"です。和暦が1年になる場合は、元年となることに注意してください。
         /// </summary>
-        public void Test104()
+        public void Test106()
         {
-            nmootan.GetIsLeapYear(int.Parse(Console.ReadLine()));
+            int[] ymd = nmootan.GetStdIntSplit().ToArray();
+
+            Console.WriteLine(nmootan.GetParseADToJPYear(ymd[0], ymd[1], ymd[2]));
 
         }
+
+
 
 
     }
@@ -75,35 +75,127 @@ namespace PaizaTest4
     {
     
         /// <summary>
-        /// うるう年かどうか（うるう年：true）
+        /// 西暦から和暦に変換する。
+        /// ・明治は1868年1月25日から1912年7月29日まで
+        /// ・大正は1912年7月30日から1926年12月24日まで
+        /// ・昭和は1926年12月25日から1989年1月7日まで
+        /// ・平成は1989年1月8日から2019年4月30日まで
+        /// ・令和は2019年5月1日から
+        /// </summary>
+        /// <returns></returns>
+        public static string GetParseADToJPYear(int year, int month, int day)
+        {
+            string gengou = GetGengouFromAD(year, month, day);
+            int y=0;
+
+            switch (gengou)
+            {
+                case "明治":
+                    y = year - 1867;
+                    break;
+                case "大正":
+                    y = year - 1911;
+                    break;
+                case "昭和":
+                    y = year - 1925;
+                    break;
+                case "平成":
+                    y = year - 1988;
+                    break;
+                case "令和":
+                    y = year - 2018;
+                    break;
+                default:
+                    break;
+            }
+
+            string nen;
+            if (y == 1) nen = "元";
+            else nen = y.ToString();
+
+            return gengou + nen + "年" + month.ToString() + "月" + day.ToString() + "日";
+        }
+
+
+        /// <summary>
+        /// 西暦から和暦元号を得る。
         /// </summary>
         /// <param name="year"></param>
+        /// <param name="month"></param>
+        /// <param name="day"></param>
         /// <returns></returns>
-        public static bool GetIsLeapYear(int year)
+        public static string GetGengouFromAD(int year, int month, int day)
         {
-            if (year%4==0)
+            string gengou = "";
+            
+            if (year>=2019)
             {
-                if (year%100==0)
+                if (month>=5)
                 {
-                    if (year%400==0)
+                    gengou = "令和";
+                }
+                else
+                {
+                    gengou = "平成";
+                }
+            }
+            else if (year>=1989)
+            {
+                if (month>=2)
+                {
+                    gengou = "平成";
+                }
+                else if(day>=8)
+                {
+                    gengou = "平成";
+                }
+                else
+                {
+                    gengou = "昭和";
+                }
+            }
+            else if (year>=1926)
+            {
+                if (month==12)
+                {
+                    if (day>=25)
                     {
-                        return true;
+                        gengou = "昭和";
                     }
                     else
                     {
-                        return false;
+                        gengou = "大正";
                     }
                 }
                 else
                 {
-                    return true;
+                    gengou = "大正";
+                }
+            }
+            else if (year>=1912)
+            {
+                if (month>=7)
+                {
+                    if (day>=30)
+                    {
+                        gengou = "大正";
+                    }
+                    else
+                    {
+                        gengou = "明治";
+                    }
+                }
+                else
+                {
+                    gengou = "明治";
                 }
             }
             else
             {
-                return false;
+                gengou = "明治";
             }
 
+            return gengou;
         }
 
     

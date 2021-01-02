@@ -2118,6 +2118,41 @@ namespace PaizaTest4
         }
 
 
+        /// <summary>
+        /// 西暦年y、月m、日付dが与えられるので、和暦の元号を表示してください。
+        /// 和暦は、以下の条件を確認し、西暦から変換してください。
+        /// ・明治は1912年7月29日まで
+        /// ・大正は1912年7月30日から1926年12月24日まで
+        /// ・昭和は1926年12月25日から1989年1月7日まで
+        /// ・平成は1989年1月8日から2019年4月30日まで
+        /// ・令和は2019年5月1日から
+        /// ※元号一覧_(日本)#明治時代以降（近代・現代）
+        /// 整数y m dが次のように、スペース区切りで1行で入力されます。
+        /// 令和年5月1日
+        /// </summary>
+        public void Test105()
+        {
+            int[] ymd = nmootan.GetStdIntSplit().ToArray();
+
+            Console.WriteLine(nmootan.GetGengouFromAD(ymd[0], ymd[1], ymd[2])+"年"+ymd[1]+"月"+ymd[2]+"日");
+
+        }
+
+
+        /// <summary>
+        /// 西暦年y、月m、日付dが与えられるので、和暦で表示してください。
+        /// ・Gは"明治"、"大正"、"昭和"、"平成"、"令和"のいずれかの元号で、和暦のxは元号の年です。
+        /// ・xは2より大きな整数か、"元"です。和暦が1年になる場合は、元年となることに注意してください。
+        /// </summary>
+        public void Test106()
+        {
+            int[] ymd = nmootan.GetStdIntSplit().ToArray();
+
+            Console.WriteLine(nmootan.GetParseADToJPYear(ymd[0], ymd[1], ymd[2]));
+
+        }
+
+
 
     }
 }
