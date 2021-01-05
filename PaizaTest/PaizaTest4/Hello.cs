@@ -104,11 +104,11 @@ namespace PaizaTest4
 
         public void Test11()
         {
-            string std= Console.ReadLine();
+            string std = Console.ReadLine();
 
             List<int> iList = nmootan.GetStdIntSplit();
 
-            Console.WriteLine(std.Substring(iList[0]-1, iList[1] - iList[0] + 1));
+            Console.WriteLine(std.Substring(iList[0] - 1, iList[1] - iList[0] + 1));
 
 
         }
@@ -178,7 +178,7 @@ namespace PaizaTest4
 
         public void Test19()
         {
-            string str1= Console.ReadLine();
+            string str1 = Console.ReadLine();
 
             if (str1.Contains(Console.ReadLine())) Console.WriteLine("YES");
             else Console.WriteLine("NO");
@@ -200,7 +200,7 @@ namespace PaizaTest4
 
             if (Equals(mirror, std)) Console.WriteLine("YES");
             else Console.WriteLine("NO");
-            
+
         }
 
 
@@ -234,7 +234,7 @@ namespace PaizaTest4
                 //    return;
                 //}
 
-                if ((i + 1) * 7 > str.Length) length=str.Length-i*7;
+                if ((i + 1) * 7 > str.Length) length = str.Length - i * 7;
 
                 strs.Add(str.Substring(i * 7, length));
                 //Console.WriteLine(strs[i]);
@@ -279,7 +279,7 @@ namespace PaizaTest4
 
             for (int i = 0; i < n; i++)
             {
-                if (passTable.ContainsKey(i+1)) sb.Append(passTable[i+1]);
+                if (passTable.ContainsKey(i + 1)) sb.Append(passTable[i + 1]);
                 else sb.Append(c);
             }
 
@@ -379,7 +379,7 @@ namespace PaizaTest4
 
             for (int i = 0; i < n; i++)
             {
-                strs[i]= Console.ReadLine();
+                strs[i] = Console.ReadLine();
 
             }
 
@@ -515,7 +515,7 @@ namespace PaizaTest4
             {
                 for (int j = 0; j < rect33[i].Length; j++)
                 {
-                    rect33[i][j] = ints[i*3+j];
+                    rect33[i][j] = ints[i * 3 + j];
                 }
             }
             //rect33[0][0] = 0; rect33[0][1] = 8; rect33[1][0] = 1; rect33[1][1] = 3;
@@ -541,21 +541,21 @@ namespace PaizaTest4
             //int[] ns = new int[n/2];
             List<int> nList = new List<int>();
 
-            for (int i = 0; i < n/2; i++)
+            for (int i = 0; i < n / 2; i++)
             {
                 nList.Add(i + 1);
             }
 
-            Console.WriteLine( nmootan.GetJoinIntArrayToStrByStr(nList.ToArray(), " "));
+            Console.WriteLine(nmootan.GetJoinIntArrayToStrByStr(nList.ToArray(), " "));
 
             nList.Clear();
 
-            for (int i = 0; i < n/2; i++)
+            for (int i = 0; i < n / 2; i++)
             {
                 nList.Add(i + n / 2 + 1);
             }
 
-            Console.WriteLine( nmootan.GetJoinIntArrayToStrByStr(nList.ToArray(), " "));
+            Console.WriteLine(nmootan.GetJoinIntArrayToStrByStr(nList.ToArray(), " "));
         }
 
 
@@ -601,7 +601,7 @@ namespace PaizaTest4
             for (int i = 0; i < n; i++)
             {
                 ns[i] = new int[i + 1];
-                for (int j = 0; j < i+1; j++)
+                for (int j = 0; j < i + 1; j++)
                 {
                     ns[i][j] = j + 1;
                 }
@@ -649,12 +649,12 @@ namespace PaizaTest4
             string str;
             //StringBuilder sb = new StringBuilder();
 
-            Console.WriteLine( nmootan.GetJoinIntArrayToStrByStr(ns, " ", 0, ms[0] - 1));
+            Console.WriteLine(nmootan.GetJoinIntArrayToStrByStr(ns, " ", 0, ms[0] - 1));
             int sum = ms[0];
-            
+
             for (int i = 1; i < ms.Length; i++)
             {
-                Console.WriteLine( nmootan.GetJoinIntArrayToStrByStr(ns, " ", sum, sum+ ms[i]-1));
+                Console.WriteLine(nmootan.GetJoinIntArrayToStrByStr(ns, " ", sum, sum + ms[i] - 1));
 
                 sum += ms[i];
             }
@@ -696,7 +696,7 @@ namespace PaizaTest4
 
 
 
-            Console.WriteLine(nmootan.GetRoundFloatPointN(strs[0], int.Parse( strs[1])));
+            Console.WriteLine(nmootan.GetRoundFloatPointN(strs[0], int.Parse(strs[1])));
 
         }
 
@@ -728,7 +728,7 @@ namespace PaizaTest4
         /// </summary>
         public void Test50()
         {
-            Console.WriteLine( nmootan.GetFormatWithSpace(Console.ReadLine(), 3));
+            Console.WriteLine(nmootan.GetFormatWithSpace(Console.ReadLine(), 3));
         }
 
 
@@ -738,7 +738,7 @@ namespace PaizaTest4
         public void Test51()
         {
 
-            Console.WriteLine(nmootan.GetFormatWithChar(Console.ReadLine(), 3,'0'));
+            Console.WriteLine(nmootan.GetFormatWithChar(Console.ReadLine(), 3, '0'));
 
         }
 
@@ -822,7 +822,7 @@ namespace PaizaTest4
 
             string str = sb.ToString();
 
-            for (int i = 0; i < nab[0]-1; i++)
+            for (int i = 0; i < nab[0] - 1; i++)
             {
                 sb.Append(", ");
                 sb.Append(str);
@@ -915,7 +915,7 @@ namespace PaizaTest4
         /// </summary>
         public void Test60()
         {
-            int[] ns = new int[int.Parse( Console.ReadLine())];
+            int[] ns = new int[int.Parse(Console.ReadLine())];
             for (int i = 0; i < ns.Length; i++)
             {
                 ns[i] = i + 1;
@@ -1025,7 +1025,7 @@ namespace PaizaTest4
             for (int i = 0; i < nk[0]; i++)
             {
                 foundK = Array.IndexOf(strs[i], "1");
-                if(foundK>=0)
+                if (foundK >= 0)
                 {
                     foundI = i;
                     break;
@@ -1073,7 +1073,7 @@ namespace PaizaTest4
 
             for (int i = 0; i < nk[0]; i++)
             {
-                Console.WriteLine( ns[i].Sum());
+                Console.WriteLine(ns[i].Sum());
 
             }
 
@@ -1115,7 +1115,7 @@ namespace PaizaTest4
             for (int i = 0; i < n; i++)
             {
                 int[] ns = new int[i + 1];
-                for (int j = 0; j < i+1; j++)
+                for (int j = 0; j < i + 1; j++)
                 {
                     ns[j] = j + 1;
                 }
@@ -1288,7 +1288,7 @@ namespace PaizaTest4
                 {
                     if ((i + j) % 3 == 0)
                     {
-                        if((i + j) % 5 == 0)
+                        if ((i + j) % 5 == 0)
                         {
                             Console.WriteLine(STR35);
                         }
@@ -1325,7 +1325,7 @@ namespace PaizaTest4
             {
                 for (int j = 0; j < 100; j++)
                 {
-                    if (i+j<100 && i*i*i+j*j*j< 100000)
+                    if (i + j < 100 && i * i * i + j * j * j < 100000)
                     {
                         results.Add(i * j);
                     }
@@ -1349,11 +1349,11 @@ namespace PaizaTest4
 
             for (int i = 0; i <= xyz[2]; i++)
             {
-                for (int j = 0; j*xyz[0] <= xyz[2]; j++)
+                for (int j = 0; j * xyz[0] <= xyz[2]; j++)
                 {
-                    for (int k = 0; k*xyz[1] <= xyz[2]; k++)
+                    for (int k = 0; k * xyz[1] <= xyz[2]; k++)
                     {
-                        if (i+j*xyz[0]+k*xyz[1]==xyz[2])
+                        if (i + j * xyz[0] + k * xyz[1] == xyz[2])
                         {
                             //Console.WriteLine("{0},{1},{2}",i, j, k);
                             zs.Add(i + j + k);
@@ -1384,7 +1384,7 @@ namespace PaizaTest4
                     {
                         if (i + j + k == n)
                         {
-                            if (i*i==j*j+k*k)
+                            if (i * i == j * j + k * k)
                             {
                                 return "YES";
                             }
@@ -1502,7 +1502,7 @@ namespace PaizaTest4
 
             int index = Array.IndexOf(a, nk[1]);
             if (index == -1) Console.WriteLine("-1");
-            else Console.WriteLine( Array.IndexOf(a, nk[1])+1);
+            else Console.WriteLine(Array.IndexOf(a, nk[1]) + 1);
             //if (index == -1) Console.WriteLine("-1");
             //else Console.WriteLine(a[index]);
 
@@ -1613,7 +1613,7 @@ namespace PaizaTest4
 
             int[] xy = nmootan.GetStdIntSplit().ToArray();
 
-            a = nmootan.GetReplaceMembersInIntArray(a, xy[0]-1, xy[1]-1);
+            a = nmootan.GetReplaceMembersInIntArray(a, xy[0] - 1, xy[1] - 1);
 
             for (int i = 0; i < n; i++)
             {
@@ -1635,7 +1635,7 @@ namespace PaizaTest4
 
             for (int i = 0; i < n; i++)
             {
-                a.Add( int.Parse(Console.ReadLine()));
+                a.Add(int.Parse(Console.ReadLine()));
             }
 
             a.Add(int.Parse(Console.ReadLine()));
@@ -1916,17 +1916,17 @@ namespace PaizaTest4
             //int[] a = new int[n];
             List<int> a = new List<int>();
             string s;
-            string[] t=new string[2];
+            string[] t = new string[2];
             for (int i = 0; i < n; i++)
             {
                 s = Console.ReadLine();
-                if (s=="out")
+                if (s == "out")
                 {
-                    if(a.Count > 0) a.RemoveAt(0);
+                    if (a.Count > 0) a.RemoveAt(0);
                 }
                 else
                 {
-                    t = nmootan.GetStrsSplitByChar(s,' ');
+                    t = nmootan.GetStrsSplitByChar(s, ' ');
                     //Console.WriteLine("t[0]={0}, t[1]={1}", t[0], t[1]);
                     a.Add(int.Parse(t[1]));
                 }
@@ -1956,9 +1956,9 @@ namespace PaizaTest4
             }
 
             a.Sort();
-            int sub=a[1]-a[0];
-            int[] b=new int[2];
-            for (int i = 1; i < a.Count-1; i++)
+            int sub = a[1] - a[0];
+            int[] b = new int[2];
+            for (int i = 1; i < a.Count - 1; i++)
             {
                 if (a[i + 1] - a[i] < sub)
                 {
@@ -2080,7 +2080,7 @@ namespace PaizaTest4
                 switch (q[0])
                 {
                     case "swap":
-                        a = nmootan.GetReplaceMembersInIntList(a, int.Parse(q[1])-1, int.Parse(q[2])-1);
+                        a = nmootan.GetReplaceMembersInIntList(a, int.Parse(q[1]) - 1, int.Parse(q[2]) - 1);
                         break;
                     case "reverse":
                         a.Reverse();
@@ -2113,7 +2113,7 @@ namespace PaizaTest4
         {
             if (nmootan.GetIsLeapYear(int.Parse(Console.ReadLine()))) Console.WriteLine("Yes");
             else Console.WriteLine("No");
-            
+
 
         }
 
@@ -2134,7 +2134,7 @@ namespace PaizaTest4
         {
             int[] ymd = nmootan.GetStdIntSplit().ToArray();
 
-            Console.WriteLine(nmootan.GetGengouFromAD(ymd[0], ymd[1], ymd[2])+"年"+ymd[1]+"月"+ymd[2]+"日");
+            Console.WriteLine(nmootan.GetGengouFromAD(ymd[0], ymd[1], ymd[2]) + "年" + ymd[1] + "月" + ymd[2] + "日");
 
         }
 
@@ -2151,6 +2151,156 @@ namespace PaizaTest4
             Console.WriteLine(nmootan.GetParseADToJPYear(ymd[0], ymd[1], ymd[2]));
 
         }
+
+
+        /// <summary>
+        /// 西暦y年m月の月の日数を計算して表示してください。
+        /// ただし、各月の日数は以下のように決まることに注意してください。
+        /// ・4, 6, 9, 11月は30日
+        /// ・2月は閏年ならば29日、そうでなければ28日
+        /// ・それ以外の月は31日
+        /// </summary>
+        public void Test107()
+        {
+            int[] ym = nmootan.GetStdIntSplit().ToArray();
+
+            Console.WriteLine(nmootan.GetDaysAMonth(ym[0], ym[1]));
+
+        }
+
+
+
+        /// <summary>
+        /// 西暦y年m月d日の次の日を表示してください。
+        /// ただし、各月の日数は以下のように決まることに注意してください。
+        /// ・4, 6, 9, 11月は30日
+        /// ・2月は閏年ならば29日、そうでなければ28日
+        /// ・それ以外の月は31日
+        /// </summary>
+        public void Test108()
+        {
+            int[] ymd = nmootan.GetStdIntSplit().ToArray();
+
+            DateTime dt = nmootan.GetParseToDateTime(ymd[0], ymd[1], ymd[2]);
+
+            dt = dt.AddDays(1);
+
+            Console.WriteLine(dt.Year + " " + dt.Month + " " + dt.Day);
+        }
+
+
+        /// <summary>
+        /// 西暦y年m月d日が何曜日か表示してください。
+        /// ただし、各月の日数は以下のように決まることに注意してください。
+        /// ・4, 6, 9, 11月は30日
+        /// ・2月は閏年ならば29日、そうでなければ28日
+        /// ・それ以外の月は31日
+        /// </summary>
+        public void Test109()
+        {
+            int[] ymd = nmootan.GetStdIntSplit().ToArray();
+            DateTime dt = nmootan.GetParseToDateTime(ymd[0], ymd[1], ymd[2]);
+
+            Console.WriteLine(nmootan.GetTranslateDayOfWeek(dt.DayOfWeek.ToString()) + "曜日");
+
+        }
+
+
+        /// <summary>
+        /// 西暦y年m月d日が何曜日か表示してください。
+        /// ただし、yとして非常に大きな値が与えられる可能性があることに注意してください。
+        /// </summary>
+        public void Test110()
+        {
+            string[] ymd = nmootan.GetStdStrsSplit();
+
+            Console.WriteLine(nmootan.GetExDayOfWeekByZeller(ymd[0], ymd[1], ymd[2])+"曜日");
+            //Console.WriteLine(nmootan.ExMod("10000000000000000007", "4"));
+        }
+
+
+        /// <summary>
+        /// paiza暦y年m月d日が何曜日か表示してください。
+        /// ただし、paiza暦は現実世界で用いられているグレゴリオ暦とは異なる以下のルールで運用されることに注意してください。
+        /// ・1年は12ヶ月からなる
+        /// ・1ヶ月は30日からなる
+        /// ・paiza暦年が閏年の場合は、12月が31日からなる
+        /// ただし、閏年は次のような年のことをいいます。
+        /// ・paiza暦が4で割り切れる年は閏年
+        /// ・ただし、100で割り切れる年は平年
+        /// ・ただし、400で割り切れる年は閏年
+        /// また、曜日には次のルールがあります。
+        /// ・1週間は7日からなり、西暦のカレンダーと同様に"月", "火", "水", "木", "金", "土", "日"の各曜日が順に繰り返される
+        /// ・paiza暦0年1月1日は、"木"曜日である
+        /// 整数yとmとdが次のように、スペース区切りで1行で入力されます。
+        /// </summary>
+        public void Test111()
+        {
+            string[] dw = { "Thursday", "Friday", "Saturday", "Sunday", "Monday", "Tuesday", "Wednesday" };
+            string[] ymd = nmootan.GetStdStrsSplit();
+            bool isLeap = nmootan.ExIsLeapYear(ymd[0]);
+
+            //if (nmootan.ExMod(ymd[0], "4") == "0")
+            //{
+
+            //    if (nmootan.ExMod(ymd[0], "100") == "0")
+            //    {
+            //        if (nmootan.ExMod(ymd[0], "400") == "0")
+            //        {
+            //            isLeap = true;
+            //        }
+            //        else isLeap = false;
+
+            //    }
+            //    else isLeap = true;
+            //}
+
+            int[] sums = new int[13];
+            sums[0] = 0;
+            for (int i = 1; i < 13; i++)
+            {
+                sums[i] = 30 * i;
+            }
+            //if (isLeap) sums[12] = sums[11] + 31;
+/*
+2019 4 9
+489 1530 176529 550800 727329
+*/
+            string div4, div100, div400;
+            nmootan.ExMod(nmootan.ExMinus( ymd[0],"1"), "4", out div4);
+            nmootan.ExMod(nmootan.ExMinus(ymd[0], "1"), "100", out div100);
+            nmootan.ExMod(nmootan.ExMinus(ymd[0], "1"), "400", out div400);
+            string leapCount = nmootan.ExMinus(nmootan.ExPlus(div4, div400), div100);
+
+            string sum = nmootan.ExPlus(nmootan.ExPlus(nmootan.ExPlus( nmootan.ExMultiply(nmootan.ExMinus(ymd[0],leapCount),sums[12].ToString()),nmootan.ExMultiply(leapCount,(sums[12]+1).ToString())), sums[int.Parse(ymd[1]) - 1].ToString()), (int.Parse(ymd[2]) - 1).ToString());
+
+            //Console.WriteLine(nmootan.ExMod("7777777777777777777777777777777776", "7"));
+            //Console.WriteLine("sums[12]={0}", sums[12]);
+            //Console.WriteLine("489*361={0}, 1530*360={1}", nmootan.ExMultiply("489", "361"), nmootan.ExMultiply("1530", "360"));
+            //Console.WriteLine("176529+550800={0}", nmootan.ExPlus("176529", "550800"));
+            //Console.WriteLine("727329+90+8=727427, 727427%7={0}",nmootan.ExMod("727427","7"));
+            //Console.WriteLine("isLeap={0}", isLeap);
+            //Console.WriteLine("nmootan.ExMultiply(ymd[0], sums[12].ToString())={0}", nmootan.ExMultiply(ymd[0], sums[12].ToString()));
+            //Console.WriteLine("int.Parse(ymd[1]) - 1={0}", int.Parse(ymd[1]) - 1);
+            //Console.WriteLine("sum={0}", sum);
+            //Console.WriteLine("nmootan.ExMod={0}", nmootan.ExMod(sum, "7"));
+            //Console.WriteLine("div4={0}, div100={1}, div400={2}", div4, div100, div400);
+            //Console.WriteLine("leapCount={0}, nmootan.ExMinus(ymd[0],leapCount={1}", leapCount, nmootan.ExMinus(ymd[0], leapCount));
+            ////Console.ReadLine();
+            //Console.WriteLine(dw[int.Parse(nmootan.ExMod(sum, "7"))]);
+            Console.WriteLine(nmootan.GetTranslateDayOfWeek(dw[int.Parse(nmootan.ExMod(sum, "7"))]) + "曜日");
+
+        }
+
+
+
+
+        public void Test112()
+        {
+
+            nmootan.GetAutoFill(Console.ReadLine(), Console.ReadLine(), Console.ReadLine());
+        }
+
 
 
 

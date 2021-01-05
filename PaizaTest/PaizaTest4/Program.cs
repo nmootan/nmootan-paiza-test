@@ -14,7 +14,7 @@ namespace PaizaTest4
         {
             Hello hello = new Hello();
 
-            hello.Test106();
+            hello.Test112();
             //nmootan.RegexNormalizeTest();
 
             Console.ReadLine();
@@ -43,7 +43,7 @@ namespace PaizaTest4
     
             Hello hello = new Hello();
     
-            hello.Test106();
+            hello.Test111();
             //Console.WriteLine( hello.Test78());
         }
 
@@ -51,19 +51,68 @@ namespace PaizaTest4
     
     
         /// <summary>
-        /// 西暦年y、月m、日付dが与えられるので、和暦で表示してください。
-        /// ・Gは"明治"、"大正"、"昭和"、"平成"、"令和"のいずれかの元号で、和暦のxは元号の年です。
-        /// ・xは2より大きな整数か、"元"です。和暦が1年になる場合は、元年となることに注意してください。
+        /// paiza暦y年m月d日が何曜日か表示してください。
+        /// ただし、paiza暦は現実世界で用いられているグレゴリオ暦とは異なる以下のルールで運用されることに注意してください。
+        /// ・1年は12ヶ月からなる
+        /// ・1ヶ月は30日からなる
+        /// ・paiza暦年が閏年の場合は、12月が31日からなる
+        /// ただし、閏年は次のような年のことをいいます。
+        /// ・paiza暦が4で割り切れる年は閏年
+        /// ・ただし、100で割り切れる年は平年
+        /// ・ただし、400で割り切れる年は閏年
+        /// また、曜日には次のルールがあります。
+        /// ・1週間は7日からなり、西暦のカレンダーと同様に"月", "火", "水", "木", "金", "土", "日"の各曜日が順に繰り返される
+        /// ・paiza暦0年1月1日は、"木"曜日である
+        /// 整数yとmとdが次のように、スペース区切りで1行で入力されます。
         /// </summary>
-        public void Test106()
+        public void Test111()
         {
-            int[] ymd = nmootan.GetStdIntSplit().ToArray();
+            string[] dw = { "Thursday", "Friday", "Saturday", "Sunday", "Monday", "Tuesday", "Wednesday" };
+            string[] ymd = nmootan.GetStdStrsSplit();
+            bool isLeap = nmootan.ExIsLeapYear(ymd[0]);
 
-            Console.WriteLine(nmootan.GetParseADToJPYear(ymd[0], ymd[1], ymd[2]));
+            //if (nmootan.ExMod(ymd[0], "4") == "0")
+            //{
+
+            //    if (nmootan.ExMod(ymd[0], "100") == "0")
+            //    {
+            //        if (nmootan.ExMod(ymd[0], "400") == "0")
+            //        {
+            //            isLeap = true;
+            //        }
+            //        else isLeap = false;
+
+            //    }
+            //    else isLeap = true;
+            //}
+
+            int[] sums = new int[13];
+            sums[0] = 0;
+            for (int i = 1; i < 13; i++)
+            {
+                sums[i] = 30 * i;
+            }
+            //if (isLeap) sums[12] = sums[11] + 31;
+
+            string div4, div100, div400;
+            nmootan.ExMod(ymd[0], "4", out div4);
+            nmootan.ExMod(ymd[0], "100", out div100);
+            nmootan.ExMod(ymd[0], "400", out div400);
+            string leapCount = nmootan.ExMinus(nmootan.ExPlus(div4, div400), div100);
+
+            string sum = nmootan.ExPlus(nmootan.ExPlus(nmootan.ExPlus( nmootan.ExMultiply(nmootan.ExMinus(ymd[0],leapCount),sums[12].ToString()),nmootan.ExMultiply(leapCount,(sums[12]+1).ToString())), sums[int.Parse(ymd[1]) - 1].ToString()), (int.Parse(ymd[2]) - 1).ToString());
+
+            //Console.WriteLine(nmootan.ExMod("7777777777777777777777777777777776", "7"));
+            //Console.WriteLine("isLeap={0}", isLeap);
+            //Console.WriteLine("nmootan.ExMultiply(ymd[0], sums[12].ToString())={0}", nmootan.ExMultiply(ymd[0], sums[12].ToString()));
+            //Console.WriteLine("int.Parse(ymd[1]) - 1={0}", int.Parse(ymd[1]) - 1);
+            //Console.WriteLine("sum={0}", sum);
+            //Console.WriteLine("nmootan.ExMod={0}", nmootan.ExMod(sum, "7"));
+            //Console.ReadLine();
+            //Console.WriteLine(dw[int.Parse(nmootan.ExMod(sum, "7"))]);
+            Console.WriteLine(nmootan.GetTranslateDayOfWeek(dw[int.Parse(nmootan.ExMod(sum, "7"))]) + "曜日");
 
         }
-
-
 
 
     }
@@ -74,176 +123,260 @@ namespace PaizaTest4
     static class nmootan
     {
     
+    
         /// <summary>
-        /// 西暦から和暦に変換する。
-        /// ・明治は1868年1月25日から1912年7月29日まで
-        /// ・大正は1912年7月30日から1926年12月24日まで
-        /// ・昭和は1926年12月25日から1989年1月7日まで
-        /// ・平成は1989年1月8日から2019年4月30日まで
-        /// ・令和は2019年5月1日から
+        /// 大きな年数のうるう年を判定する。
         /// </summary>
+        /// <param name="year"></param>
         /// <returns></returns>
-        public static string GetParseADToJPYear(int year, int month, int day)
+        public static bool ExIsLeapYear(string year)
         {
-            string gengou = GetGengouFromAD(year, month, day);
-            int y=0;
+            //string[] dw = { "Thursday", "Friday", "Saturday", "Sunday", "Monday", "Tuesday", "Wednesday" };
+            //string[] year = nmootan.GetStdStrsSplit();
+            bool isLeap = false;
 
-            switch (gengou)
+            if (nmootan.ExMod(year, "4") == "0")
             {
-                case "明治":
-                    y = year - 1867;
+
+                if (nmootan.ExMod(year, "100") == "0")
+                {
+                    if (nmootan.ExMod(year, "400") == "0")
+                    {
+                        isLeap = true;
+                    }
+                    else isLeap = false;
+
+                }
+                else isLeap = true;
+            }
+
+            return isLeap;
+        }
+
+    
+        public static int GetParseCharToInt(char ch)
+        {
+
+            return ch - '0';
+        }
+
+    
+        /// <summary>
+        /// 一桁のint型整数値を文字型に変換する。
+        /// </summary>
+        /// <param name="n"></param>
+        /// <returns></returns>
+        public static char GetParseIntToChar(int n)
+        {
+
+            return (char)(48 + n);
+        }
+
+    
+        /// <summary>
+        /// 何桁でも整数値の大小比較を行う。
+        /// </summary>
+        /// <param name="str1"></param>
+        /// <param name="str2"></param>
+        /// <returns></returns>
+        public static int ExCompareTo(string str1, string str2)
+        {
+            //Console.ReadLine();
+            if (str1[0] == '-')
+            {
+                if (str2[0] == '-')
+                {
+                    str1 = str1.Remove(0, 1);
+                    str2 = str2.Remove(0, 1);
+
+                    if (str1.Length > str2.Length) return -1;
+                    else if (str1.Length == str2.Length) return str1.CompareTo(str2) * -1;
+                    else return 1;
+                }
+                else return -1;
+            }
+            else
+            {
+                if (str2[0] == '-') return 1;
+                else
+                {
+                    if (str1.Length > str2.Length) return 1;
+                    else if (str1.Length == str2.Length) return str1.CompareTo(str2);
+                    else return -1;
+                }
+            }
+
+        }
+
+    
+        /// <summary>
+        /// 文字列で与えられた数値の余分な０を消す。（整数値や小数。先頭と末尾の０）
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static string GetFormatZero(string str)
+        {
+            List<char> chs = str.ToList<char>();
+            int length = chs.Count;
+
+            if (JudgeIsFloat(str))
+            {
+                for (int i = 0; i < length; i++)
+                {
+                    if (chs[length - 1 - i] != '0')
+                    {
+                        if (chs[length - 1 - i] == '.') chs.RemoveAt(length - 1 - i);
+                        
+                        break;
+                    }
+                    else chs.RemoveAt(length - 1 - i);
+                }
+
+                //length = chs.Count;
+                int n = 0;
+                if (chs[0] == '-') n = 1;
+                for (int i = n; i < chs.Count; i++)
+                {
+
+                    if (chs[i] != '0') break;
+                    else if (chs[i] == '0' && chs[i + 1] == '.') break;
+                    else
+                    {
+                        chs.RemoveAt(i);
+                        i--;
+                    }
+                }
+            }
+            else
+            {
+                int n = 0;
+                if (chs[0] == '-') n = 1;
+                for (int i = n; i < chs.Count - 1; i++)
+                {
+
+                    if (chs[i] != '0') break;
+                    else if (chs[i] == '0')
+                    {
+                        chs.RemoveAt(i);
+                        i--;
+                    }
+                }
+            }
+
+
+            return new string(chs.ToArray());
+        }
+
+    
+        /// <summary>
+        /// 小数かどうかを判定する。
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static bool JudgeIsFloat(string str)
+        {
+            if (str.Contains(".")) return true;
+            else return false;
+
+        }
+
+
+    
+        public static string GetParseCharListToStr(List<char> chList)
+        {
+
+            return new string(chList.ToArray());
+        }
+
+
+
+    
+        /// <summary>
+        /// 何桁でもその年の日付の曜日を得る。
+        /// </summary>
+        /// <param name="date"></param>
+        /// <returns></returns>
+        public static string GetExDayOfWeek(string year, string month, string day)
+        {
+            string result = "";
+            //Dictionary<int,string> dow = { {0,"" },{1,"" },{2, ""},{3,"" },{4,"" },{5,"" },{6,"" } }
+            string[] dw = { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" };
+
+            int[] dd = { 3, 28, 7, 4, 9, 6, 11, 8, 5, 10, 7, 12 };
+            const string YEAR = "2200";
+            string sub, sub1;
+            int num, num1;
+
+            if (GetExIsLeapYear(year))
+            {
+                dd[0] = 4;
+                dd[1] = 29;
+            }
+            if (ExCompareTo(year, YEAR)>-1)
+            {
+                sub = ExMinus(year, YEAR);
+                sub1= ExMod(sub, "100", out sub);
+                num = 7 - int.Parse( ExMod(sub, "7"));
+
+                num1 = dd[int.Parse(month) - 1];
+                if (int.Parse( day)>=num1)
+                {
+                    num += (int.Parse( day) - num1) % 7;
+                    result = GetTranslateDayOfWeek(dw[num]);
+                }
+                else
+                {
+                    num += (num1 - int.Parse( day)) % 7;
+                    result = GetTranslateDayOfWeek(dw[num]);
+                }
+            }
+            else
+            {
+                DateTime dt = GetParseToDateTime(int.Parse(year), int.Parse(month), int.Parse(day));
+                result = GetTranslateDayOfWeek( dt.DayOfWeek.ToString());
+            }
+
+            return result+"曜日";
+        }
+
+        /// <summary>
+        /// 英語の曜日を日、月、火、水、木、金、土に変換する。
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static string GetTranslateDayOfWeek(string name)
+        {
+            
+            string result = "";
+
+            switch (name)
+            {
+                case "Sunday":
+                    result = "日";
                     break;
-                case "大正":
-                    y = year - 1911;
+                case "Monday":
+                    result = "月";
                     break;
-                case "昭和":
-                    y = year - 1925;
+                case "Tuesday":
+                    result = "火";
                     break;
-                case "平成":
-                    y = year - 1988;
+                case "Wednesday":
+                    result = "水";
                     break;
-                case "令和":
-                    y = year - 2018;
+                case "Thursday":
+                    result = "木";
+                    break;
+                case "Friday":
+                    result = "金";
+                    break;
+                case "Saturday":
+                    result = "土";
                     break;
                 default:
                     break;
             }
 
-            string nen;
-            if (y == 1) nen = "元";
-            else nen = y.ToString();
-
-            return gengou + nen + "年" + month.ToString() + "月" + day.ToString() + "日";
-        }
-
-
-        /// <summary>
-        /// 西暦から和暦元号を得る。
-        /// </summary>
-        /// <param name="year"></param>
-        /// <param name="month"></param>
-        /// <param name="day"></param>
-        /// <returns></returns>
-        public static string GetGengouFromAD(int year, int month, int day)
-        {
-            string gengou = "";
-            
-            if (year>=2019)
-            {
-                if (month>=5)
-                {
-                    gengou = "令和";
-                }
-                else
-                {
-                    gengou = "平成";
-                }
-            }
-            else if (year>=1989)
-            {
-                if (month>=2)
-                {
-                    gengou = "平成";
-                }
-                else if(day>=8)
-                {
-                    gengou = "平成";
-                }
-                else
-                {
-                    gengou = "昭和";
-                }
-            }
-            else if (year>=1926)
-            {
-                if (month==12)
-                {
-                    if (day>=25)
-                    {
-                        gengou = "昭和";
-                    }
-                    else
-                    {
-                        gengou = "大正";
-                    }
-                }
-                else
-                {
-                    gengou = "大正";
-                }
-            }
-            else if (year>=1912)
-            {
-                if (month>=7)
-                {
-                    if (day>=30)
-                    {
-                        gengou = "大正";
-                    }
-                    else
-                    {
-                        gengou = "明治";
-                    }
-                }
-                else
-                {
-                    gengou = "明治";
-                }
-            }
-            else
-            {
-                gengou = "明治";
-            }
-
-            return gengou;
-        }
-
-    
-        /// <summary>
-        /// intリストの指定した２つのインデックス番号の要素を入れ替える。
-        /// </summary>
-        /// <param name="list"></param>
-        /// <param name="index1"></param>
-        /// <param name="index2"></param>
-        /// <returns></returns>
-        public static List<int> GetReplaceMembersInIntList(List<int> list, int index1, int index2)
-        {
-            //int[] xy = { array[index1], array[index2] };
-            //int[] xy = nmootan.GetStdIntSplit().ToArray();
-            List<int> copy = new List<int>();
-            copy.AddRange(list);
-
-            //for (int i = 0; i < copy.Length; i++)
-            //{
-            //    Console.WriteLine(copy[i]);
-            //}
-            //Console.ReadLine();
-
-            copy[index2] = list[index1];
-            copy[index1] = list[index2];
-
-            return copy;
-        }
-
-    
-        /// <summary>
-        /// int配列の指定した２つのインデックス番号の要素を入れ替える。
-        /// </summary>
-        /// <param name="array"></param>
-        /// <param name="index1"></param>
-        /// <param name="index2"></param>
-        /// <returns></returns>
-        public static int[] GetReplaceMembersInIntArray(int[] array, int index1, int index2)
-        {
-            int[] xy = { array[index1], array[index2] };
-            //int[] xy = nmootan.GetStdIntSplit().ToArray();
-            int[] copy = new int[array.Length];
-            array.CopyTo(copy, 0);
-
-            copy[index2] = array[index1];
-            copy[index1] = array[index2];
-
-            return copy;
+            return result;
         }
 
     
@@ -261,6 +394,7 @@ namespace PaizaTest4
             return iList;
         }
 
+    
         public static string[] GetStdStrsSplit()
         {
 
@@ -269,26 +403,723 @@ namespace PaizaTest4
 
     
         /// <summary>
-        /// int型配列の要素を文字列strを挟んでつないで、文字列で返す。
+        /// DateTime型に変換する。
         /// </summary>
-        /// <param name="ints"></param>
+        /// <param name="year"></param>
+        /// <param name="month"></param>
+        /// <param name="day"></param>
         /// <returns></returns>
-        public static string GetJoinIntArrayToStrByStr(int[] ints, string str)
+        public static DateTime GetParseToDateTime(int year, int month, int day)
         {
-            StringBuilder sb = new StringBuilder();
+            string str = year + "/" + month + "/" + day;
 
-            for (int i = 0; i < ints.Length-1; i++)
-            {
-                sb.Append(ints[i]);
-                sb.Append(str);
-            }
-
-            sb.Append(ints[ints.Length - 1]);
-            //sb.Append(Environment.NewLine);
-
-            return sb.ToString().Trim();
+            return DateTime.Parse(str);
         }
 
+    
+        /// <summary>
+        /// 文字列strのi-1番目の一文字を文字列chで置き換える。
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="ch"></param>
+        /// <param name="i"></param>
+        /// <returns></returns>
+        public static string GetReplaceStrNoIChar(string str, string ch, int i)
+        {
+            StringBuilder sb = new StringBuilder(str);
+
+            sb.Remove(i - 1, 1);
+            sb.Insert(i - 1, ch);
+
+            return sb.ToString();
+        }
+
+    
+        public static bool GetExIsLeapYear(string year)
+        {
+            if (ExMod(year,"4")=="0")
+            {
+                if (ExMod(year,"100") == "0")
+                {
+                    if (ExMod( year, "400") == "0")
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+    
+        /// <summary>
+        /// str1をstr2で割った余りを得る。（その商も参照可能。）（未完成）
+        /// </summary>
+        /// <param name="str1"></param>
+        /// <param name="str2"></param>
+        /// <returns></returns>
+        public static string ExMod(string str1, string str2, out string syou)
+        {
+            //StringBuilder sb1 = new StringBuilder(str1);
+            StringBuilder syouSb = new StringBuilder();
+            //StringBuilder strSb = new StringBuilder();
+            StringBuilder subSb = new StringBuilder();
+            string str, subStr, s;
+            syou = "";
+            syouSb.Append(syou);
+
+            str = str1.Substring(0, str1.Length);
+            if (ExCompareTo(str, str2) == -1)
+            {
+                syou = "0";
+                return str;
+            }
+            //Console.WriteLine("str={0}, syou={1}", str, syou);
+
+            for (int i = 0; i < str1.Length; i++)
+            {
+                subStr = subSb.Append(str[i]).ToString();
+                subStr = GetFormatZero(subStr);
+                subSb.Remove(0, subSb.Length);
+
+                //if (i + 1 > str.Length) subStr=str.Substring(0,str.Length);
+                //else subStr = str.Substring(0, i+1);
+                //Console.WriteLine("i={0}, str={1}, syou={2}, subStr={3}", i, str, syou, subStr);
+
+                //if (subStr.CompareTo(str2) == -1)
+                //{
+                //    if (str.Length == str2.Length)
+                //    {
+                //        syouSb.Append("0");
+                //        syou = GetFormatZero(syouSb.ToString());
+                //        Console.WriteLine("syou={0}, str={1}, subStr={2}", syou, str, subStr);
+                //        return str;
+                //    }
+                //    //else subStr = str.Substring(0, str2.Length + 1);
+                //}
+                //else i = -1;
+
+                //str = str.Remove(0, subStr.Length);
+                //Console.WriteLine("str={0}, subStr={1}, i={2}", str, subStr, i);
+                for (int j = 1; ; j++)
+                {
+                    s = ExMultiply1(str2, j);
+                    if (ExCompareTo(subStr, s )==-1)
+                    {
+                        //subStr = ExMinus(subStr, ExMultiply1(str2, j - 1));
+                        
+                        subSb.Append( ExMinus(subStr, ExMultiply1(str2, j - 1)));
+
+                        //str = str.Insert(0, subStr);
+                        //str = GetFormatZero(str);
+                        syouSb.Append(j - 1);
+                        syou = GetFormatZero( syouSb.ToString());
+                        //Console.WriteLine("j-1={0}, syou={1}, str={2}, subStr={3}, i={4}", j - 1, syou,str,subStr,i);
+                        break;
+                    }
+                }
+            }
+
+            //syou = str1;
+
+            return subSb.ToString();
+        }
+
+    
+        /// <summary>
+        /// str1をstr2で割った余りを得る。
+        /// ExMod("1023", "4")="143"
+        /// </summary>
+        /// <param name="str1"></param>
+        /// <param name="str2"></param>
+        /// <returns></returns>
+        public static string ExMod(string str1, string str2)
+        {
+
+            //StringBuilder sb1 = new StringBuilder(str1);
+            //StringBuilder syouSb = new StringBuilder();
+            //StringBuilder strSb = new StringBuilder();
+            StringBuilder subSb = new StringBuilder();
+            string str, subStr, s;
+            //string syou = "";
+            //syouSb.Append(syou);
+
+            str = str1.Substring(0, str1.Length);
+            if (ExCompareTo(str, str2) == -1)
+            {
+                //syou = "0";
+                return str;
+            }
+            //Console.WriteLine("str={0}, syou={1}", str, syou);
+
+            for (int i = 0; i < str1.Length; i++)
+            {
+                subStr = subSb.Append(str[i]).ToString();
+                subStr = GetFormatZero(subStr);
+                subSb.Remove(0, subSb.Length);
+
+                //if (i + 1 > str.Length) subStr=str.Substring(0,str.Length);
+                //else subStr = str.Substring(0, i+1);
+                //Console.WriteLine("i={0}, str={1}, syou={2}, subStr={3}", i, str, syou, subStr);
+
+                //if (subStr.CompareTo(str2) == -1)
+                //{
+                //    if (str.Length == str2.Length)
+                //    {
+                //        syouSb.Append("0");
+                //        syou = GetFormatZero(syouSb.ToString());
+                //        Console.WriteLine("syou={0}, str={1}, subStr={2}", syou, str, subStr);
+                //        return str;
+                //    }
+                //    //else subStr = str.Substring(0, str2.Length + 1);
+                //}
+                //else i = -1;
+
+                //str = str.Remove(0, subStr.Length);
+                //Console.WriteLine("str={0}, subStr={1}, i={2}", str, subStr, i);
+                for (int j = 1; ; j++)
+                {
+                    s = ExMultiply1(str2, j);
+                    if (ExCompareTo(subStr, s) == -1)
+                    {
+                        //subStr = ExMinus(subStr, ExMultiply1(str2, j - 1));
+
+                        subSb.Append(ExMinus(subStr, ExMultiply1(str2, j - 1)));
+
+                        //str = str.Insert(0, subStr);
+                        //str = GetFormatZero(str);
+                        //syouSb.Append(j - 1);
+                        //syou = GetFormatZero(syouSb.ToString());
+                        //Console.WriteLine("j-1={0}, syou={1}, str={2}, subStr={3}, i={4}", j - 1, syou,str,subStr,i);
+                        break;
+                    }
+                }
+            }
+
+            //syou = str1;
+
+            return subSb.ToString();
+            ////StringBuilder sb1 = new StringBuilder(str1);
+            //StringBuilder sb = new StringBuilder();
+            //string str, subStr, s;
+            ////syou = "";
+
+            //str = str1.Substring(0, str1.Length);
+            //for (int i = 0; i < str1.Length; i++)
+            //{
+            //    subStr = str.Substring(0, str2.Length);
+            //    if (subStr.CompareTo(str2) == -1)
+            //    {
+            //        //Console.WriteLine("subStr={0}, str={1}, i={2}", subStr, str,i);
+            //        if (str.Length == str2.Length) return str;
+            //        else subStr = str.Substring(0, str2.Length + 1);
+            //    }
+
+            //    str = str.Remove(0, subStr.Length);
+
+            //    for (int j = 1; j <= 9; j++)
+            //    {
+            //        s = ExMultiply1(str2, j);
+            //        if (ExCompareTo(subStr, s) == -1)
+            //        {
+            //            subStr = ExMinus(subStr, ExMultiply1(str2, j - 1));
+            //            str = str.Insert(0, subStr);
+            //            //Console.WriteLine("j={0}, subStr={1}, str={2}", j, subStr, str);
+            //            //sb.Append(j - 1);
+            //            //syou = sb.ToString();
+            //            break;
+            //        }
+            //    }
+            //}
+
+            ////syou = str1;
+            ////Console.WriteLine("End");
+            //return GetFormatZero( str);
+
+        }
+
+        /// <summary>
+        /// 何桁の整数値でも足し算できる。　
+        /// </summary>
+        /// <param name="str1"></param>
+        /// <param name="str2"></param>
+        /// <returns></returns>
+        public static string ExPlus(string str1, string str2)
+        {
+            //str1 = GetMirrorStr(str1);
+            //str2 = GetMirrorStr(str2);
+
+            char[] chs1 = GetParseStrToCharArray(GetMirrorStr(str1));
+            char[] chs2 = GetParseStrToCharArray(GetMirrorStr(str2));
+            List<char> chsList = new List<char>();
+            int exN = 0;
+            int n = 0;
+
+            if (chs1.Length > chs2.Length)
+            {
+                for (int i = 0; i < chs2.Length; i++)
+                {
+                    n = GetParseCharToInt(chs1[i]) + GetParseCharToInt(chs2[i]) + exN;
+
+                    if (n >= 10)
+                    {
+                        exN = 1;
+                        n -= 10;
+                        chsList.Add(GetParseIntToChar(n));
+                    }
+                    else
+                    {
+                        exN = 0;
+                        chsList.Add(GetParseIntToChar(n));
+                    }
+                }
+
+                for (int i = chs2.Length; i < chs1.Length; i++)
+                {
+                    n = GetParseCharToInt(chs1[i]) + exN;
+
+                    if (n >= 10)
+                    {
+                        exN = 1;
+                        n -= 10;
+                        chsList.Add(GetParseIntToChar(n));
+                    }
+                    else
+                    {
+                        exN = 0;
+                        chsList.Add(GetParseIntToChar(n));
+                    }
+                }
+                if (exN == 1) chsList.Add('1');
+            }
+            if (chs1.Length < chs2.Length)
+            {
+                for (int i = 0; i < chs1.Length; i++)
+                {
+                    n = GetParseCharToInt(chs2[i]) + GetParseCharToInt(chs1[i]) + exN;
+
+                    if (n >= 10)
+                    {
+                        exN = 1;
+                        n -= 10;
+                        chsList.Add(GetParseIntToChar(n));
+                    }
+                    else
+                    {
+                        exN = 0;
+                        chsList.Add(GetParseIntToChar(n));
+                    }
+                }
+
+                for (int i = chs1.Length; i < chs2.Length; i++)
+                {
+                    n = GetParseCharToInt(chs2[i]) + exN;
+
+                    if (n >= 10)
+                    {
+                        exN = 1;
+                        n -= 10;
+                        chsList.Add(GetParseIntToChar(n));
+                    }
+                    else
+                    {
+                        exN = 0;
+                        chsList.Add(GetParseIntToChar(n));
+                    }
+                }
+                if (exN == 1) chsList.Add('1');
+            }
+            if (chs1.Length == chs2.Length)
+            {
+                for (int i = 0; i < chs2.Length; i++)
+                {
+                    n = GetParseCharToInt(chs1[i]) + GetParseCharToInt(chs2[i]) + exN;
+
+                    if (n >= 10)
+                    {
+                        exN = 1;
+                        n -= 10;
+                        chsList.Add(GetParseIntToChar(n));
+                    }
+                    else
+                    {
+                        exN = 0;
+                        chsList.Add(GetParseIntToChar(n));
+                    }
+                }
+
+                if (exN == 1) chsList.Add('1');
+
+            }
+
+            return GetMirrorStr(GetParseCharListToStr(chsList));
+
+
+        }
+
+    
+        /// <summary>
+        /// 何桁の整数値でも掛け算できる。　str:数値の文字列　n:一桁の整数値
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="n"></param>
+        /// <returns></returns>
+        public static string ExMultiply1(string str, int n)
+        {
+            bool isPlus = true;
+            if (str[0] == '-')
+            {
+                str = str.Remove(0, 1);
+                isPlus = false;
+            }
+
+            str = GetMirrorStr(str);
+
+            char[] chs = GetParseStrToCharArray(str);
+            List<char> chList = new List<char>();
+            List<int> intList = new List<int>();
+            int m1 = 0;
+            int m2 = 0;
+
+
+            for (int i = 0; i < chs.Length; i++)
+            {
+                intList.Add(GetParseCharToInt(chs[i]));
+            }
+
+            for (int i = 0; i < chs.Length; i++)
+            {
+                m1 = intList[i] * n + m2;
+                m2 = m1 / 10;
+                chList.Add(GetParseIntToChar(m1 % 10));
+            }
+
+            if (m2 > 0) chList.Add(GetParseIntToChar(m2));
+
+            if (!isPlus) chList.Add('-');
+
+
+            return GetFormatZero(GetMirrorStr(GetParseCharListToStr(chList)));
+        }
+
+    
+        /// <summary>
+        /// 文字列をミラー変換して返す。（文字の並び順を逆さまにする。）
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static string GetMirrorStr(string str)
+        {
+            char[] cs = str.ToCharArray();
+            char[] mirror = new char[cs.Length];
+
+            int i = cs.Length - 1;
+            int length = i;
+            while (i >= 0)
+            {
+                mirror[length - i] = cs[i];
+
+                i--;
+            }
+
+            return new string(mirror);
+        }
+
+    
+        /// <summary>
+        /// 何桁の整数値でも引き算できる。　（未完成）
+        /// </summary>
+        /// <param name="str1"></param>
+        /// <param name="str2"></param>
+        /// <returns></returns>
+        public static string ExMinus(string str1, string str2)
+        {
+            //str1 = GetMirrorStr(str1);
+            //str2 = GetMirrorStr(str2);
+
+            char[] chs1 = GetParseStrToCharArray(GetMirrorStr(str1));
+            char[] chs2 = GetParseStrToCharArray(GetMirrorStr(str2));
+            List<char> chsList = new List<char>();
+            int exN = 0;
+            int n = 0;
+            int num1, num2;
+
+            if (chs1.Length > chs2.Length)
+            {
+                for (int i = 0; i < chs2.Length; i++)
+                {
+                    num1 = GetParseCharToInt(chs1[i]) - exN;
+                    num2 = GetParseCharToInt(chs2[i]);
+                    if (num1 < 0) 
+                    {
+                        num1 = 9;
+                        n = num1 - num2;
+                        chsList.Add(GetParseIntToChar(n));
+                        exN = 1;
+                    } 
+
+                    else if (num1 < num2) 
+                    {
+                        n = 10 + num1 - num2;
+                        chsList.Add(GetParseIntToChar(n));
+                        //n = GetParseCharToInt(chs1[i]) + GetParseCharToInt(chs2[i]) - exN;
+                        exN = 1;
+                    }
+
+                    //if (n >= 10)
+                    //{
+                    //    exN = 1;
+                    //    n -= 10;
+                    //    chsList.Add(GetParseIntToChar(n));
+                    //}
+                    else
+                    {
+                        n = num1 - num2;
+                        chsList.Add(GetParseIntToChar(n));
+                        exN = 0;
+                    }
+                }
+
+                for (int i = chs2.Length; i < chs1.Length; i++)
+                {
+                    num1 = GetParseCharToInt(chs1[i]) - exN;
+                    //num2 = GetParseCharToInt(chs2[i]);
+
+                    if(num1<0)
+                    {
+                        chsList.Add('9');//1000-2=998
+                        exN = 1;
+                    }
+                    else if (num1 == 0)
+                    {
+                        //Console.WriteLine("num1={0}", num1);
+                        exN = 0;
+                        if (i == chs1.Length - 1) break;
+                        else chsList.Add('0');
+                        //break;10010-2=10008 //1000-2=998
+                        //exN = 1;
+                        //n -= 10;
+                        //chsList.RemoveAt(i);
+                    }
+                    else
+                    {
+                        //Console.WriteLine("num1={0}", num1);
+                        exN = 0;
+                        chsList.Add(GetParseIntToChar(num1));
+                    }
+                }
+            }
+            if (chs1.Length < chs2.Length)
+            {
+                int num3, num4;
+                for (int i = 0; i < chs1.Length; i++)
+                {
+                    num3 = GetParseCharToInt(chs2[i]) - exN;
+                    num4 = GetParseCharToInt(chs1[i]);
+                    if (num3 < 0)
+                    {
+                        num3 = 9;
+                        n = num3 - num4;
+                        chsList.Add(GetParseIntToChar(n));
+                        exN = 1;
+                    }
+
+                    else if (num3 < num4)
+                    {
+                        n = 10 + num3 - num4;
+                        chsList.Add(GetParseIntToChar(n));
+                        exN = 1;
+                    }
+
+                    else
+                    {
+                        n = num3 - num4;
+                        chsList.Add(GetParseIntToChar(n));
+                        exN = 0;
+                    }
+                }
+
+                for (int i = chs1.Length; i < chs2.Length; i++)
+                {
+                    num3 = GetParseCharToInt(chs2[i]) - exN;
+                    //num4 = GetParseCharToInt(chs1[i]);
+
+                    if (num3 < 0)
+                    {
+                        chsList.Add('9');//1000-2=998
+                        exN = 1;
+                    }
+                    else if (num3 == 0)
+                    {
+                        exN = 0;
+                        if (i == chs2.Length - 1) break;
+                        else chsList.Add('0');
+                        //break;10010-2=10008 //1000-2=998
+                        //exN = 1;
+                        //n -= 10;
+                        //chsList.RemoveAt(i);
+                    }
+                    else
+                    {
+                        exN = 0;
+                        chsList.Add(GetParseIntToChar(num3));
+                    }
+                }
+
+                chsList.Add('-');
+            }
+            if (chs1.Length == chs2.Length)
+            {
+                if(str1.CompareTo(str2) == 1)
+                {
+
+                    for (int i = 0; i < chs2.Length; i++)
+                    {
+                        num1 = GetParseCharToInt(chs1[i]) - exN;
+                        num2 = GetParseCharToInt(chs2[i]);
+                        if (num1 < 0)
+                        {
+                            num1 = 9;
+                            n = num1 - num2;
+                            chsList.Add(GetParseIntToChar(n));
+                            exN = 1;
+                        }
+
+                        else if (num1 < num2)
+                        {
+                            n = 10 + num1 - num2;
+                            chsList.Add(GetParseIntToChar(n));
+                            //n = GetParseCharToInt(chs1[i]) + GetParseCharToInt(chs2[i]) - exN;
+                            exN = 1;
+                        }
+
+                        else
+                        {
+                            n = num1 - num2;
+                            //if (n == 0 && i == str1.Length - 1) break;
+                            chsList.Add(GetParseIntToChar(n));
+                            exN = 0;
+                        }
+                    }
+
+                }
+                else if (str1.CompareTo(str2)==-1)
+                {
+                    int num3, num4;
+                    for (int i = 0; i < chs1.Length; i++)
+                    {
+                        num3 = GetParseCharToInt(chs2[i]) - exN;
+                        num4 = GetParseCharToInt(chs1[i]);
+                        if (num3 < 0)
+                        {
+                            num3 = 9;
+                            n = num3 - num4;
+                            chsList.Add(GetParseIntToChar(n));
+                            exN = 1;
+                        }
+
+                        else if (num3 < num4)
+                        {
+                            n = 10 + num3 - num4;
+                            chsList.Add(GetParseIntToChar(n));
+                            exN = 1;
+                        }
+
+                        else
+                        {
+                            n = num3 - num4;
+                            chsList.Add(GetParseIntToChar(n));
+                            exN = 0;
+                        }
+                    }
+
+                    chsList.Add('-');
+
+                }
+                else
+                {
+                    chsList.Add('0');
+                }
+
+            }
+
+            return GetFormatZero( GetMirrorStr(GetParseCharListToStr(chsList)));
+
+
+        }
+
+    
+        public static char[] GetParseStrToCharArray(string str)
+        {
+
+            return str.ToCharArray();
+        }
+
+    
+        /// <summary>
+        /// 何桁でも掛け算する。
+        /// 4629375*578765932
+        /// </summary>
+        /// <param name="str1"></param>
+        /// <param name="str2"></param>
+        /// <returns></returns>
+        public static string ExMultiply(string str1, string str2)
+        {
+            int[] nums1 = GetParseStrToIntArray(str1);
+            int[] nums2 = GetParseStrToIntArray(str2);
+            string result = "0";
+            string str3;
+
+            for (int i = 0; i < str2.Length; i++)
+            {
+                str3 = ExMultiply1(str1, nums2[str2.Length- i-1]);
+                for (int j = 0; j < i; j++)
+                {
+                    str3 = ExMultiply10(str3);
+                    //Console.WriteLine("i={0}, j={1}, str3={2}", i, j, str3);
+                }
+                result = ExPlus(result, str3);
+            }
+            //Console.WriteLine("result={0}", result);
+            return GetFormatZero(result);
+        }
+
+    
+        public static int[] GetParseStrToIntArray(string str)
+        {
+            int[] nums = new int[str.Length];
+
+            for (int i = 0; i < str.Length; i++)
+            {
+                nums[i] = int.Parse(str[i].ToString());
+            }
+
+            return nums;
+        }
+
+    /// <summary>
+        /// 何桁でも１０倍する。
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static string ExMultiply10(string str)
+        {
+            StringBuilder sb = new StringBuilder(str);
+
+            return sb.Append('0').ToString();
+
+            //return str.Insert(str.Length - 1, "0");
+        }
 
 
 

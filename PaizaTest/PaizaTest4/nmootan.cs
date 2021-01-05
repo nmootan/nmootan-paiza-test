@@ -153,42 +153,106 @@ namespace PaizaTest4
         /// <returns></returns>
         public static string ExMod(string str1, string str2)
         {
+
             //StringBuilder sb1 = new StringBuilder(str1);
-            StringBuilder sb = new StringBuilder();
+            //StringBuilder syouSb = new StringBuilder();
+            //StringBuilder strSb = new StringBuilder();
+            StringBuilder subSb = new StringBuilder();
             string str, subStr, s;
-            //syou = "";
+            //string syou = "";
+            //syouSb.Append(syou);
 
             str = str1.Substring(0, str1.Length);
+            if (ExCompareTo(str, str2) == -1)
+            {
+                //syou = "0";
+                return str;
+            }
+            //Console.WriteLine("str={0}, syou={1}", str, syou);
+
             for (int i = 0; i < str1.Length; i++)
             {
-                subStr = str.Substring(0, str2.Length);
-                if (subStr.CompareTo(str2) == -1)
-                {
-                    //Console.WriteLine("subStr={0}, str={1}, i={2}", subStr, str,i);
-                    if (str.Length == str2.Length) return str;
-                    else subStr = str.Substring(0, str2.Length + 1);
-                }
+                subStr = subSb.Append(str[i]).ToString();
+                subStr = GetFormatZero(subStr);
+                subSb.Remove(0, subSb.Length);
 
-                str = str.Remove(0, subStr.Length);
+                //if (i + 1 > str.Length) subStr=str.Substring(0,str.Length);
+                //else subStr = str.Substring(0, i+1);
+                //Console.WriteLine("i={0}, str={1}, syou={2}, subStr={3}", i, str, syou, subStr);
 
-                for (int j = 1; j <= 9; j++)
+                //if (subStr.CompareTo(str2) == -1)
+                //{
+                //    if (str.Length == str2.Length)
+                //    {
+                //        syouSb.Append("0");
+                //        syou = GetFormatZero(syouSb.ToString());
+                //        Console.WriteLine("syou={0}, str={1}, subStr={2}", syou, str, subStr);
+                //        return str;
+                //    }
+                //    //else subStr = str.Substring(0, str2.Length + 1);
+                //}
+                //else i = -1;
+
+                //str = str.Remove(0, subStr.Length);
+                //Console.WriteLine("str={0}, subStr={1}, i={2}", str, subStr, i);
+                for (int j = 1; ; j++)
                 {
                     s = ExMultiply1(str2, j);
                     if (ExCompareTo(subStr, s) == -1)
                     {
-                        subStr = ExMinus(subStr, ExMultiply1(str2, j - 1));
-                        str = str.Insert(0, subStr);
-                        //Console.WriteLine("j={0}, subStr={1}, str={2}", j, subStr, str);
-                        //sb.Append(j - 1);
-                        //syou = sb.ToString();
+                        //subStr = ExMinus(subStr, ExMultiply1(str2, j - 1));
+
+                        subSb.Append(ExMinus(subStr, ExMultiply1(str2, j - 1)));
+
+                        //str = str.Insert(0, subStr);
+                        //str = GetFormatZero(str);
+                        //syouSb.Append(j - 1);
+                        //syou = GetFormatZero(syouSb.ToString());
+                        //Console.WriteLine("j-1={0}, syou={1}, str={2}, subStr={3}, i={4}", j - 1, syou,str,subStr,i);
                         break;
                     }
                 }
             }
 
             //syou = str1;
-            //Console.WriteLine("End");
-            return str;
+
+            return subSb.ToString();
+            ////StringBuilder sb1 = new StringBuilder(str1);
+            //StringBuilder sb = new StringBuilder();
+            //string str, subStr, s;
+            ////syou = "";
+
+            //str = str1.Substring(0, str1.Length);
+            //for (int i = 0; i < str1.Length; i++)
+            //{
+            //    subStr = str.Substring(0, str2.Length);
+            //    if (subStr.CompareTo(str2) == -1)
+            //    {
+            //        //Console.WriteLine("subStr={0}, str={1}, i={2}", subStr, str,i);
+            //        if (str.Length == str2.Length) return str;
+            //        else subStr = str.Substring(0, str2.Length + 1);
+            //    }
+
+            //    str = str.Remove(0, subStr.Length);
+
+            //    for (int j = 1; j <= 9; j++)
+            //    {
+            //        s = ExMultiply1(str2, j);
+            //        if (ExCompareTo(subStr, s) == -1)
+            //        {
+            //            subStr = ExMinus(subStr, ExMultiply1(str2, j - 1));
+            //            str = str.Insert(0, subStr);
+            //            //Console.WriteLine("j={0}, subStr={1}, str={2}", j, subStr, str);
+            //            //sb.Append(j - 1);
+            //            //syou = sb.ToString();
+            //            break;
+            //        }
+            //    }
+            //}
+
+            ////syou = str1;
+            ////Console.WriteLine("End");
+            //return GetFormatZero( str);
 
         }
 
@@ -253,7 +317,37 @@ namespace PaizaTest4
                 result = ExPlus(result, str3);
             }
             //Console.WriteLine("result={0}", result);
-            return result;
+            return GetFormatZero(result);
+        }
+
+
+        /// <summary>
+        /// 大きな年数のうるう年を判定する。
+        /// </summary>
+        /// <param name="year"></param>
+        /// <returns></returns>
+        public static bool ExIsLeapYear(string year)
+        {
+            //string[] dw = { "Thursday", "Friday", "Saturday", "Sunday", "Monday", "Tuesday", "Wednesday" };
+            //string[] year = nmootan.GetStdStrsSplit();
+            bool isLeap = false;
+
+            if (nmootan.ExMod(year, "4") == "0")
+            {
+
+                if (nmootan.ExMod(year, "100") == "0")
+                {
+                    if (nmootan.ExMod(year, "400") == "0")
+                    {
+                        isLeap = true;
+                    }
+                    else isLeap = false;
+
+                }
+                else isLeap = true;
+            }
+
+            return isLeap;
         }
 
 
@@ -992,6 +1086,162 @@ namespace PaizaTest4
 
             return DateTime.Parse(str);
         }
+
+
+        /// <summary>
+        /// DateTime型に変換する。
+        /// </summary>
+        /// <param name="year"></param>
+        /// <param name="month"></param>
+        /// <param name="day"></param>
+        /// <returns></returns>
+        public static DateTime GetParseToDateTime(int year, int month, int day)
+        {
+            string str = year + "/" + month + "/" + day;
+
+            return DateTime.Parse(str);
+        }
+
+        /// <summary>
+        /// 英語の曜日を日、月、火、水、木、金、土に変換する。
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static string GetTranslateDayOfWeek(string name)
+        {
+            string result = "";
+
+            switch (name)
+            {
+                case "Sunday":
+                    result = "日";
+                    break;
+                case "Monday":
+                    result = "月";
+                    break;
+                case "Tuesday":
+                    result = "火";
+                    break;
+                case "Wednesday":
+                    result = "水";
+                    break;
+                case "Thursday":
+                    result = "木";
+                    break;
+                case "Friday":
+                    result = "金";
+                    break;
+                case "Saturday":
+                    result = "土";
+                    break;
+                default:
+                    break;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// 何桁でもその年の日付の曜日を得る。
+        /// 9999999992 2 29
+        /// 土曜日
+        /// </summary>
+        /// <param name="year"></param>
+        /// <param name="month"></param>
+        /// <param name="day"></param>
+        /// <returns></returns>
+        public static string GetExDayOfWeekByZeller(string year, string month, string day)
+        {
+            if (month == "1")
+            {
+                month = "13";
+                year = ExMinus(year, "1");
+            }
+            if (month=="2")
+            {
+                month = "14";
+                year = ExMinus(year, "1");
+            }
+
+            string[] dw = { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" };
+            string div4, div100, div400;
+            ExMod(year, "4", out div4);
+            ExMod(year, "100", out div100);
+            ExMod(year, "400", out div400);
+            Console.WriteLine("div4={0}, div100={1}, div400={2}", div4, div100, div400);
+
+            int mod = int.Parse(ExMod(ExPlus(ExPlus(ExPlus(ExMinus(ExPlus(year, div4), div100), div400), ((13 * int.Parse(month) + 8) / 5).ToString()), day), "7"));
+
+
+            return GetTranslateDayOfWeek(dw[mod]);
+        }
+
+
+        /// <summary>
+        /// 何桁でもその年の日付の曜日を得る。（未完成）
+        /// </summary>
+        /// <param name="date"></param>
+        /// <returns></returns>
+        public static string GetExDayOfWeekByDoomsday(string year, string month, string day)
+        {
+            string result = "";
+            //Dictionary<int,string> dow = { {0,"" },{1,"" },{2, ""},{3,"" },{4,"" },{5,"" },{6,"" } }
+            string[] dw = { "Sunday", "Saturday", "Friday", "Thursday", "Wednesday", "Tuesday", "Monday" };
+
+            int[] dd = { 3, 28, 7, 4, 9, 6, 11, 8, 5, 10, 7, 12 };
+            const string YEAR = "2200";
+            string sub, sub1;
+            int num, num1;
+
+            if (GetExIsLeapYear(year))
+            {
+                dd[0] = 4;
+                dd[1] = 29;
+            }
+            if (ExCompareTo(year, YEAR)>-1)
+            {
+                int mod = int.Parse(ExMod(year, "100"));
+                if( mod%2 == 1)
+                {
+                    mod += 11;
+                }
+                mod /= 2;
+                if (mod==1)
+                {
+                    mod += 11;
+                }
+                mod %= 7;
+
+
+                sub = ExMinus(year, YEAR);
+                sub1= ExMod(sub, "100", out sub);
+                Console.WriteLine("sub={0}, ExMod={1}", sub, ExMod(sub, "7"));
+                Console.ReadLine();
+                num = (mod + 7 - int.Parse(ExMod(sub, "7"))) % 7;
+
+                num1 = dd[int.Parse(month) - 1];
+                if (int.Parse( day)>=num1)
+                {
+                    num += (int.Parse( day) - num1) % 7;
+                    num %= 7;
+                    result = GetTranslateDayOfWeek(dw[num]);
+                }
+                else
+                {
+                    num += (num1 - int.Parse( day)) % 7;
+                    num %= 7;
+                    result = GetTranslateDayOfWeek(dw[num]);
+                }
+            }
+            else
+            {
+                DateTime dt = GetParseToDateTime(int.Parse(year), int.Parse(month), int.Parse(day));
+                result = GetTranslateDayOfWeek( dt.DayOfWeek.ToString());
+            }
+
+            return result+"曜日";
+        }
+
 
         /// <summary>
         /// 文字列をミラー変換して返す。（文字の並び順を逆さまにする。）
@@ -2131,6 +2381,34 @@ namespace PaizaTest4
         }
 
 
+        public static bool GetExIsLeapYear(string year)
+        {
+            if (ExMod(year,"4")=="0")
+            {
+                if (ExMod(year,"100") == "0")
+                {
+                    if (ExMod( year, "400") == "0")
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+
+
         /// <summary>
         /// 西暦から和暦元号を得る。
         /// </summary>
@@ -2280,6 +2558,152 @@ namespace PaizaTest4
             else nen = y.ToString();
 
             return gengou + nen + "年" + month.ToString() + "月" + day.ToString() + "日";
+        }
+
+
+        /// <summary>
+        /// 西暦y年m月の月の日数を表示を得る。
+        /// ただし、各月の日数は以下のように決まることに注意してください。
+        /// ・4, 6, 9, 11月は30日
+        /// ・2月は閏年ならば29日、そうでなければ28日
+        /// ・それ以外の月は31日
+        /// </summary>
+        /// <param name="year"></param>
+        /// <param name="month"></param>
+        /// <returns></returns>
+        public static int GetDaysAMonth(int year, int month)
+        {
+            int days = 31;
+            switch (month)
+            {
+                case 2:
+                    if (GetIsLeapYear(year)) days = 29;
+                    else days = 28;
+                    break;
+                case 4:
+                    days = 30;
+                    break;
+                case 6:
+                    days = 30;
+                    break;
+                case 9:
+                    days = 30;
+                    break;
+                case 11:
+                    days = 30;
+                    break;
+                default:
+                    break;
+            }
+
+            return days;
+        }
+
+
+        /// <summary>
+        /// 表のオートフィル
+        /// ・1 行目に、表の行数を表す整数 H と 列数を表す整数 W がこの順で半角スペース区切りで与えられます。
+        /// ・2 行目に、表の 1 行目にある整数の 2 要素 a_ {1, 1}, a_{1, 2}がこの順で半角スペース区切りで与えられます。
+        /// ・3 行目に、表の 2 行目にある整数の 2 要素 a_ {2, 1}, a_{2, 2}がこの順で半角スペース区切りで与えられます。
+        /// </summary>
+        /// <param name="hw"></param>
+        /// <param name="raw1"></param>
+        /// <param name="raw2"></param>
+        public static void GetAutoFill(string hw, string raw1, string raw2)
+        {
+            int[] hws = GetStrSplitToIntList(hw).ToArray();//0:h行、1:w列
+
+            //List<int> raws1 = GetStrSplitToIntList(raw1);
+            //List<int> raws2 = GetStrSplitToIntList(raw2);
+
+            int[] raw1s = GetStrSplitToIntList(raw1).ToArray();
+            int[] raw2s = GetStrSplitToIntList(raw2).ToArray();
+
+            //全ての行列を初期化　raws[h][w] raws[i][j]
+            int[][] raws = new int[hws[0]][];
+            for (int i = 0; i < hws[0]; i++)
+            {
+                for (int j = 0; j < hws[1]; j++)
+                {
+                    raws[i] = new int[hws[1]];
+                }
+            }
+            //初期値を入力
+            raws[0][0]= raw1s[0];
+            raws[0][1]= raw1s[1]; 
+            raws[1][0] = raw2s[0];
+            raws[1][1] = raw2s[1];
+            //公差
+            int[] subsh = new int[hws[0]];//各列の公差（縦方向）
+            int[] subsw = new int[hws[1]];//各行の公差（横方向）
+            subsw[0] = raws[0][1] - raws[0][0];//1行目
+            subsw[1] = raws[1][1] - raws[1][0];//2行目
+
+            //a(n)=(n-1)r+a0
+            //1行目を完成させる
+            //2行目を完成させる
+            for (int i = 0; i < 2; i++)
+            {
+                for (int j = 0; j < hws[1]; j++)
+                {
+                    if (j > 1) raws[i][j] = j * subsw[i] + raws[i][0];
+                }
+            }
+
+            //各列の公差（縦方向）
+            for (int j = 0; j < hws[0]; j++)
+            {
+                subsh[j] = raws[1][j] - raws[0][j];
+            }
+
+            //それぞれの列を完成させる
+            for (int j = 0; j < hws[1]; j++)//列
+            {
+                for (int i = 0; i < hws[0]; i++)//縦方向
+                {
+                    if (i > 1) raws[i][j] = i * subsh[j] + raws[0][j];
+                }
+            }
+
+
+            //raws[0] = GetStrSplitToIntList(raw1).ToArray();
+            //raws[1] = GetStrSplitToIntList(raw2).ToArray();
+
+            //int[] subs = new int[2];
+            //subs[0] = raw2s[0] - raw1s[0];
+            //subs[1] = raw1s[1] - raw1s[0];
+
+            //int[] subs1 = new int[hws[0]];
+            //int[] subs2 = new int[hws[1]];
+
+            //subs2[0] = raws[0][1] - raws[0][0];
+            //subs2[1] = raws[1][1] - raws[1][0];
+
+            //for (int i = 0; i < 2; i++)
+            //{
+            //    for (int j = 0; j < hws[1]; j++)
+            //    {
+            //        if(j>1) raws[i][j] = j * subs[1] + i * subs1[i] + raws[i][j];
+            //    }
+            //}
+
+            ////subs[0] = raws1[1] - raws1[0];
+            ////subs[1] = raws2[1] - raws2[0];
+            ////a(n)=(n-1)r+a0
+
+            //for (int i = 0; i < hws[0]; i++)
+            //{
+            //    for (int j = 0; j < hws[1]; j++)
+            //    {
+            //        if (i > 1 || j > 1) raws[i][j] = j*subs[1] + i * subs[0] + raws[0][0];
+            //    }
+            //}
+
+            for (int i = 0; i < hws[0]; i++)
+            {
+                Console.WriteLine(GetJoinIntArrayToStrByStr(raws[i], " "));
+            }
+
         }
 
 
