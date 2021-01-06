@@ -2400,13 +2400,535 @@ namespace PaizaTest4
             //マトリックスを表示する
             for (int i = 0; i < n; i++)
             {
-                Console.WriteLine(nmootan.GetJoinIntArrayToStrByStr(matrix[i], " "));
+                Console.WriteLine(nmootan.GetJoinIntArrayToStrByStr(matrix[i], "\n"));
             }
 
 
         }
 
 
+        /// <summary>
+        /// 選挙
+        /// </summary>
+        public void Test113()
+        {
+            /*
+            Paiza 国の選挙シーズンがやってきました。 今回の選挙では M 人の立候補者と N 人の有権者がいます。
+            Paiza 国の人々は政治に無関心なので、最初、すべての有権者はどの立候補者も支持していません。
+
+            Paiza 国には大きな広場が一つあります。 選挙活動の期間中、立候補者たちはこの広場で一人ずつ演説をします。
+            （同じ人が複数回演説することもあれば、1 回も演説しないこともあります。）
+
+            演説が終わるたびに、「他のそれぞれの立候補者の支持者から 1 人ずつ」および「誰も支持していない有権者から 1 人」が演説をした人を支持するようになります。
+
+            次の図は支持者の人数の変化の一例を表しています。
+            この例では 3 人の立候補者 (A、B、C とする) と 3 人の有権者がおり、A → A → B → C の順に計 4 回の演説が行われます。
+            M N K
+a_1
+a_2
+...
+a_K
+
+            1 行目には 3 つの整数 M, N, K が入力されます。 M は立候補者の人数を、N は有権者の人数を、K は演説が行われる回数を表します。
+続く K 行には、誰がどの順番で演説したかを表す整数 a_1, ..., a_K が入力されます。 これは、i 番目の演説が a_i 番目の立候補者によってされたことを表しています。
+
+ここで、M 人の立候補者は 1, 2, ..., M と番号づけられているものとします。
+
+            すべての演説が終わった後、最も支持者が多い立候補者の番号を出力してください。
+そのような立候補者が複数いる場合は、それらを番号の小さい順に改行区切りですべて出力してください。
+
+            */
+
+            //M は立候補者の人数を、N は有権者の人数を、K は演説が行われる回数を表します。
+            int[] mnk = nmootan.GetStdIntSplit().ToArray();
+
+            //i 番目の演説が a_i 番目の立候補者によってされた （a_i[i]番目の立候補者） M 人の立候補者は 1, 2, ..., M と番号づけられている
+            int[] a_i = new int[mnk[2]];
+            for (int i = 0; i < mnk[2]; i++)
+            {
+                a_i[i] = int.Parse(Console.ReadLine());
+            }
+            //Console.WriteLine("a_i=" + nmootan.GetJoinIntArrayToStrByStr(a_i," "));
+            //Console.ReadLine();
+
+            //演説が終わるたびに、「他のそれぞれの立候補者の支持者から 1 人ずつ」および「誰も支持していない有権者から 1 人」が演説をした人を支持するようになります。(インデックス番号０の要素には、誰も支持していないグループの人数が入っている)
+            int[] sijisya = new int[mnk[0]+1]; //立候補者iの支持者の人数 sijisya[i] (0<=i<=M)  M 人の立候補者は 1, 2, ..., M と番号づけられている
+
+            //インデックス番号0の要素には、誰も支持していないグループの人数が入っている
+            sijisya[0] = mnk[1]; //N:nmk[1] N は有権者の人数  M:nmk[0]
+
+            //すべての演説が終わった後、最も支持者が多い立候補者の番号を出力してください。
+            //そのような立候補者が複数いる場合は、それらを番号の小さい順に改行区切りですべて出力してください。
+
+            //演説が終わるたびに、「他のそれぞれの立候補者の支持者から 1 人ずつ」および「誰も支持していない有権者から 1 人」が演説をした人を支持するようになります。
+            //a_i番目の立候補者（1 <= a_i <= M）と立候補者iの支持者の人数 sijisya[i] (0 <= i <= M)  
+            //誰も支持していない有権者のグループを架空の立候補者（0番目の立候補者i=0）とする
+
+            for (int i = 0; i < mnk[2]; i++)
+            {
+                sijisya = GetSijisyaNum(sijisya, a_i[i]);
+            }
+
+            //Console.WriteLine("sijisya=" + nmootan.GetJoinIntArrayToStrByStr(sijisya, " "));
+            //Console.ReadLine();
+
+            //List<int> sortSijisya = sijisya.ToList();
+            //sortSijisya.RemoveAt(0);
+
+            //Dictionary<int, int> sijiDic = new Dictionary<int, int>();
+            //for (int i = 1; i < mnk[2]; i++)
+            //{
+            //    sijiDic.Add(i, sijisya[i]);
+            //}
+            List<int> sijiMax = sijisya.ToList();
+            sijiMax.RemoveAt(0);
+
+            int max = sijiMax.Max();
+            //Console.WriteLine("max=" + max);
+            //Console.ReadLine();
+
+            List<int> result = new List<int>();
+            for (int i = 1; i < mnk[0]+1; i++)
+            {
+                if (sijisya[i]==max)
+                {
+                    result.Add(i);
+                }
+            }
+
+            Console.WriteLine(nmootan.GetJoinIntArrayToStrByStr(result.ToArray(), " "));
+
+
+        }
+
+        public static int[] GetSijisyaNum(int[] sijisya, int enzetusya)
+        {
+            //指定した支持者グループ配列の人数を足し引きして返す（演説者番号も指定する）
+            //演説が終わるたびに、「他のそれぞれの立候補者の支持者から 1 人ずつ」および「誰も支持していない有権者から 1 人」が演説をした人を支持する
+            //演説者以外の支持者の人数から１ずつ引いて、引いた合計を演説者の支持者の人数に足す。（支持者が０の要素からは、１引けない（カウントにプラスされない））
+            int sum = 0; //演説者以外の支持者の人数から１ずつ引いて得た合計
+            for (int i = 0; i < sijisya.Length; i++)
+            {
+                int sijiNum = sijisya[i];
+                if (i!=enzetusya) 
+                {
+                    if (sijiNum!=0)
+                    {
+                        sijisya[i] -= 1;
+                        sum += 1;
+                    }
+                }
+
+            }
+
+            sijisya[enzetusya] += sum; //演説者の支持者の人数に、引いた合計を足す
+
+            return sijisya;
+        }
+
+
+        /// <summary>
+        /// 毎年 5 月 1 日に、自分が運営している会社の社員一覧表を作成しています。表は年度ごとに更新され、社員の名前と年齢が載っています。
+        /// ところで、会社のメンバーは昨年度から全く変わらず、社員の誕生日は全員 7 月 7 日だったので、前年度の一覧表の年齢欄をそれぞれ +1 するだけで今年度の表が作れることにパイザ君は気づきました。
+        /// 昨年度の一覧表が与えられるので、今年度の一覧表を出力してください。
+        /// 1 行目には社員の数を表す整数 N が与えられ、2 行目 〜 (N + 1) 行目の各行では、社員の名前を表す文字列 s_i とその社員の昨年度の年齢を表す整数 a_i が半角スペース区切りで与えられます（1 ≤ i ≤ N）。
+        /// </summary>
+        public void Test114()
+        {
+            int n = int.Parse(Console.ReadLine());
+
+            string[] strs = nmootan.GetStdNRaws(n);
+
+            int old = 0;
+            string[][] meibo = new string[n][];
+            for (int i = 0; i < n; i++)
+            {
+                meibo[i] = nmootan.GetStrsSplitByChar(strs[i], ' ');
+                old = int.Parse(meibo[i][1]);
+                old++;
+                meibo[i][1] = old.ToString();
+            }
+
+            for (int i = 0; i < n; i++)
+            {
+                Console.WriteLine(nmootan.GetJoinStrArrayToStrByStr(meibo[i], " "));
+            }
+
+
+        }
+
+
+        /// <summary>
+        /// 文字 a と文字列 S が与えられるので、 S に a が含まれているかどうか判定し、含まれている場合には “YES” を、そうでない場合には “NO” を出力してください。
+        /// 1 行目に文字 a が、 2 行目に文字列 S が与えられます。
+        /// </summary>
+        public void Test115()
+        {
+            string str1 = Console.ReadLine();
+            string str2 = Console.ReadLine();
+
+            bool b = str2.Contains(str1);
+
+            if (b)
+            {
+                Console.WriteLine("YES");
+            }
+            else Console.WriteLine("NO");
+
+        }
+
+
+        /// <summary>
+        /// 0 ~ 9 の数字が 4 つ並んだ文字列 S が与えられます。
+        /// 左から 1 番目の数と 4 番目の数を足し合わせたものを a とし、 2 番目の数と 3 番目の数を足し合わせたものを b とします。
+        /// 文字列としての a の末尾に文字列としての b を結合したものを出力してください。
+        /// 1 行目に文字列 S が与えられます。
+        /// </summary>
+        public void Test116()
+        {
+            string str = Console.ReadLine();
+
+            int[] nums = new int[4];
+            int a, b;
+            for (int i = 0; i < 4; i++)
+            {
+
+            }
+            a = int.Parse(str[0].ToString())+int.Parse(str[3].ToString());
+            b = int.Parse(str[1].ToString()) + int.Parse(str[2].ToString());
+
+            StringBuilder sb = new StringBuilder(a.ToString());
+            sb.Append(b.ToString());
+
+            Console.WriteLine(sb.ToString());
+
+        }
+
+
+        /// <summary>
+        /// 0 ~ 999 の整数 n が与えられます。 n が 3 桁の数である場合には n をそのまま出力し、 n が 2 桁の数である場合には n の先頭に 0 をひとつ、 1 桁の数である場合には n の先頭に 0 をふたつ加えたものを出力してください。
+        /// 1 行目に整数 n が与えられます。
+        /// </summary>
+        public void Test117()
+        {
+            string str = Console.ReadLine();
+
+            if (str.Length < 3) str = nmootan.GetFormatWithChar(str, 3, '0');
+
+            Console.WriteLine(str);
+        }
+
+
+        /// <summary>
+        /// 時刻を表す長さ 5 の文字列 S が “XX:XX” の形式で与えられます。入力された時刻を時と分に分け、時、分の順番で改行区切りで出力してください。
+        /// </summary>
+        public void Test118()
+        {
+            string str = Console.ReadLine();
+
+            string[] h_m = nmootan.GetStrsSplitByChar(str, ':');
+            h_m[0] = nmootan.GetFormatZero(h_m[0]);
+            h_m[1] = nmootan.GetFormatZero(h_m[1]);
+
+            Console.WriteLine(nmootan.GetJoinStrArrayToStrByStr(h_m, "\n"));
+        }
+
+
+        /// <summary>
+        /// タクシー運賃
+        /// </summary>
+        public void Test119()
+        {
+            /*
+            PAIZAタウンでは、公共交通の手段としてタクシーが発達しています。
+            様々な料金のタクシーがあるため、初乗りが安くても最終的な運賃が高いタクシーを拾ってしまうかもしれません。
+
+            タクシーの運賃は初乗り距離と初乗り運賃、加算距離、加算運賃で決まります。
+            タクシーの乗車距離が初乗り距離未満の場合は、初乗り運賃だけで移動することができます。
+            初乗り距離と同じ距離だけ乗車した段階で、運賃に加算運賃が追加され、以後加算距離を移動する毎に加算運賃が追加されていきます。
+
+            あなたは今いる場所から X メートル離れた場所へ、 1 台のタクシーで移動しようとしています。
+            利用可能なタクシー N 台の料金のパラメータが与えられるので、タクシーで X メートル移動した際の最安値と最高値を計算してください。
+
+            例えば、 入力例 1 の場合は以下のように 600円 が最安値となり、 800円 が最高値となります。
+            1 番目のタクシーは初乗り距離以上なので加算距離 1 つ分が追加され 600円 かかります。
+            2 番目のタクシーは初乗り距離までで到着するので、初乗り運賃のみで 800円 かかります。
+
+            N X
+a_1 b_1 c_1 d_1
+a_2 b_2 c_2 d_2
+...
+a_N b_N c_N d_N
+
+            ・1 行目にタクシーの種類数 N、目的地までの距離 X がこの順に整数で半角スペース区切りで与えられます。
+・2 行目から続く N 行には i 番目 (1 ≦ i ≦ N) のタクシーの 初乗り距離 a_i、 初乗り運賃 b_i、 加算距離 c_i、 加算運賃 d_i が整数でこの順にスペース区切りで与えられます。
+・入力は合計 N + 1 行であり、最終行の末尾に改行が1つ入ります。
+
+            */
+
+            //タクシーの種類数 N、目的地までの距離 X
+            int[] nx = nmootan.GetStdIntSplit().ToArray();
+
+            int[][] matrix = nmootan.GetParseStdStrToMatrix(nx[0]);
+
+            //利用可能なタクシー N 台の料金のパラメータが与えられるので、タクシーで X メートル移動した際の最安値と最高値を計算してください。
+
+            //運賃の式
+            //int count = nx[1]/
+            int[] wage = new int[nx[0]]; //タクシーiの運賃
+
+            for (int i = 0; i < nx[0]; i++)
+            {    
+                //初乗り距離まで
+                if (nx[1] < matrix[i][0])
+                {
+                    wage[i] = matrix[i][1];
+                }
+                //初乗り以降
+                else
+                {
+                    int count = (nx[1] - matrix[i][0]) / matrix[i][2] + 1;
+                    wage[i] = matrix[i][3] * count + matrix[i][1];
+                }
+            }
+
+            int[] min_max =new int[2];
+
+            min_max[0] = wage.Min();
+            min_max[1] = wage.Max();
+
+            Console.WriteLine(nmootan.GetJoinIntArrayToStrByStr(min_max, " "));
+
+        }
+
+
+        /// <summary>
+        /// 時刻を表す長さ 5 の文字列 S が “XX:XX” の形式で与えられます。与えられた時刻の 30 分後の時刻を同じ形式で出力してください。
+        /// </summary>
+        public void Test120()
+        {
+            string time = Console.ReadLine();
+
+            DateTime dt = DateTime.Parse(time);
+
+            TimeSpan timeSpan = new TimeSpan(0,30,0);
+
+            dt += timeSpan;
+
+            Console.WriteLine(dt.ToString("HH:mm"));
+        }
+
+
+        /// <summary>
+        /// パイザ君の家の前では毎週日曜日に工事が行われます。この先 N 週間、工事が日曜日の何時に始まり、どれくらいの時間続くのかは分かっています。パイザ君は工事の間は家を離れようと思っているので、それぞれの日に工事が何時に終わるのかを知りたいと思いました。
+        /// 工事が N 週間続くとして、各週日曜日の工事が始まる時刻と、工事が何時間何分続くのかに関する情報が与えられるので、工事が終わる時刻を 00:00 から 23:59 までの 24 時間表記で出力してください（ここで「工事が終わる時刻」とは、工事が h 時間 m 分続くとした場合、工事が始まった時刻の h 時間 m 分後を指します）。
+        /// 1 行目には工事が続く週の数を表す正整数 N が与えられ、 2 行目から (N + 1) 行目には工事が始まる時刻と、工事がどれくらい続くのかについての情報が、 "t_i h_i m_i" という形式で与えられます（1 ≤ i ≤ N）。これは時刻 t_i に工事が始まり、 h_i 時間 m_i 分工事が続くことを意味しています。t_i, h_i, m_i は各行において半角スペース区切りで与えられます。
+        /// t_i は 24 時間表記で時刻を表す文字列で、 "AB:XY" という形をしており、これは AB 時 XY 分を表します。ただし、今回は 00:00 から 23:59 までの 24 時間表記を採用し、時・分を表す数字が 1 桁の場合には十の位を 0 で埋めます。
+        /// </summary>
+        public void Test121()
+        {
+            int n = int.Parse(Console.ReadLine());
+
+            string[][] matrix = new string[n][];
+
+            matrix = nmootan.GetStdMatrix(n);
+            DateTime dt = new DateTime();
+            for (int i = 0; i < n; i++)
+            {
+                dt = DateTime.Parse(matrix[i][0]);
+                TimeSpan timeSpan = new TimeSpan(int.Parse(matrix[i][1]), int.Parse(matrix[i][2]), 0);
+
+                dt += timeSpan;
+
+                Console.WriteLine(dt.ToString("HH:mm"));
+            }
+
+        }
+
+
+
+        public void Test122()
+        {
+            /*
+            あなたの友人がまたつまらないゲームを作りました。そのゲームは次のような内容です。
+
+            ・2d + 1 個のブロックが直線上に並び
+            　便宜上、中央のブロックを0 として、-d, -d + 1, ..., -1, 0, 1, ..., d - 1, d のようにブロックに番号が振られています。
+            ・最初は、0 のブロックにうなぎが立っています。
+            ・以下の操作をn 回繰り返します。
+            　1. 画面に1 以上の整数a が表示されるので、右か左の同一方向に連続してa 個のブロック分だけうなぎを動かします。
+            　2. -d のブロックからさらに左に進むか、もしくはd のブロックからさらに右に進むと、うなぎはブロックから落下し蒲焼きになります。
+            　3. 蒲焼きになると強制的にゲームは終了し、あなたの負けです。
+            ・上記操作のあと、うなぎが蒲焼きになっていなければあなたの勝ちです。
+            そこで、d とn、およびn 個のa が与えられるので、うなぎを蒲焼きにしない操作を求めるプログラムを作成してください。
+ただし、そのような操作が複数ある場合はそのうちのひとつを出力してください。
+            d n　　　#ブロックの長さ2d+1のd ,うなぎを操作する回数 n
+a_1　　　#1回目の操作 a_1
+a_2　　　#2回目の操作 a_2
+...
+a_n　　　#n回目の操作 a_n
+
+            答えとなる操作を表す文字列を一行に出力してください。
+その文字列は'L' または'R' のみを含む長さn の文字列で、i 文字目はa_i の数字が与えられたときの操作に対応する文字です。
+'L' はうなぎを左に動かすことを、'R' はうなぎを右に動かすことを表します。
+            2 3
+1
+1
+4
+            RRL
+
+            */
+
+            int[] dn = nmootan.GetStdIntSplit().ToArray();
+
+            //操作の配列
+            int[] sousa = new int[dn[1]];
+            for (int i = 0; i < dn[1]; i++)
+            {
+                sousa[i] = int.Parse(Console.ReadLine());
+            }
+
+            //初期位置
+            int result = 0;
+
+            //真：R　偽：L
+            //bool[] lr = new bool[dn[1]];
+            //1：R　-1：L
+            int[] lr = new int[dn[1]];
+            Random randam = new Random();
+
+            //Console.WriteLine("dn[0]=" + dn[0] + ", dn[1]=" + dn[1]);
+            while (true)
+            {
+                int count = 0;
+                result = 0;
+                for (int i = 0; i < dn[1]; i++)
+                {
+                    while (true)
+                    {
+                        lr[i] = randam.Next(-1, 2);
+                        if (lr[i] != 0) break;
+                    }
+
+                }
+                for (int i = 0; i < dn[1]; i++)
+                {
+                    result += sousa[i] * lr[i];
+                    if (result < -dn[0] || result > dn[0]) break;
+                    count++;
+                }
+                //Console.WriteLine("count=" + count);
+                //Console.ReadLine();
+                if (count == dn[1]) break;
+                //if (result < -dn[0] || result > dn[0]) break;
+            }
+
+            for (int i = 0; i < dn[1]; i++)
+            {
+                if (lr[i] == -1) Console.Write("L");
+                else if (lr[i] == 1) Console.Write("R");
+            }
+            Console.WriteLine();
+
+        }
+
+
+
+        public void Test122()
+        {
+            /*
+            あなたの友人がまたつまらないゲームを作りました。そのゲームは次のような内容です。
+
+            ・2d + 1 個のブロックが直線上に並び
+            　便宜上、中央のブロックを0 として、-d, -d + 1, ..., -1, 0, 1, ..., d - 1, d のようにブロックに番号が振られています。
+            ・最初は、0 のブロックにうなぎが立っています。
+            ・以下の操作をn 回繰り返します。
+            　1. 画面に1 以上の整数a が表示されるので、右か左の同一方向に連続してa 個のブロック分だけうなぎを動かします。
+            　2. -d のブロックからさらに左に進むか、もしくはd のブロックからさらに右に進むと、うなぎはブロックから落下し蒲焼きになります。
+            　3. 蒲焼きになると強制的にゲームは終了し、あなたの負けです。
+            ・上記操作のあと、うなぎが蒲焼きになっていなければあなたの勝ちです。
+            そこで、d とn、およびn 個のa が与えられるので、うなぎを蒲焼きにしない操作を求めるプログラムを作成してください。
+ただし、そのような操作が複数ある場合はそのうちのひとつを出力してください。
+            d n　　　#ブロックの長さ2d+1のd ,うなぎを操作する回数 n
+a_1　　　#1回目の操作 a_1
+a_2　　　#2回目の操作 a_2
+...
+a_n　　　#n回目の操作 a_n
+
+            答えとなる操作を表す文字列を一行に出力してください。
+その文字列は'L' または'R' のみを含む長さn の文字列で、i 文字目はa_i の数字が与えられたときの操作に対応する文字です。
+'L' はうなぎを左に動かすことを、'R' はうなぎを右に動かすことを表します。
+            2 3
+1
+1
+4
+            RRL
+
+            */
+
+            int[] dn = nmootan.GetStdIntSplit().ToArray();
+
+            //操作の配列
+            int[] sousa = new int[dn[1]];
+            for (int i = 0; i < dn[1]; i++)
+            {
+                sousa[i] = int.Parse(Console.ReadLine());
+            }
+
+            //初期位置
+            int result = 0;
+
+            //真：R　偽：L
+            //bool[] lr = new bool[dn[1]];
+            //1：R　-1：L
+            int[] lr = new int[dn[1]];
+            //Random randam = new Random();
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < dn[1]; i++)
+            {
+                sb.Append('1');
+            }
+            string bitStr = sb.ToString(); //2進数文字列
+            int max = Convert.ToInt32(bitStr, 2); //最大値
+
+            //Console.WriteLine("dn[0]=" + dn[0] + ", dn[1]=" + dn[1]);
+            int increment = 0;
+            while (increment<=max)
+            {
+                int count = 0;
+                result = 0;
+                //n桁の2進数をインクリメントして、0を-1に変換して、lr[]に転写する
+                //incrementを2進数文字列bitStrに変換する
+                bitStr = Convert.ToString(increment, 2);
+
+                //bitStrからlr[]に-1,1を転写する
+                for (int i = 0; i < dn[1]; i++)
+                {
+                    if (bitStr[i] == '0') lr[i] = -1;
+                    else lr[i] = 1;
+                }
+                //操作による合計値を出す
+                for (int i = 0; i < dn[1]; i++)
+                {
+                    result += sousa[i] * lr[i];
+                    if (result < -dn[0] || result > dn[0]) break; //途中で±dの範囲外になったらループ中断
+                    count++;
+                }
+                //Console.WriteLine("count=" + count);
+                //Console.ReadLine();
+                if (count == dn[1]) break; //全ての操作が実行されたらループ終了」
+                //if (result < -dn[0] || result > dn[0]) break;
+                increment++;
+            }
+
+            for (int i = 0; i < dn[1]; i++)
+            {
+                if (lr[i] == -1) Console.Write("L");
+                else if (lr[i] == 1) Console.Write("R");
+            }
+            Console.WriteLine();
+
+        }
 
 
     }

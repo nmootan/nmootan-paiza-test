@@ -11,168 +11,281 @@ namespace PaizaTest5
         static void Main(string[] args)
         {
 
+            int[] dn = nmootan.GetStdIntSplit().ToArray();
 
-            int n = int.Parse(Console.ReadLine());
-            int[][] matrix = new int[n][];
-            //n行n列のマトリックスをn行の入力から作成
-            for (int i = 0; i < n; i++)
+            //操作の配列
+            int[] sousa = new int[dn[1]];
+            for (int i = 0; i < dn[1]; i++)
             {
-                matrix[i] = nmootan.GetStdIntSplit().ToArray();
+                sousa[i] = int.Parse(Console.ReadLine());
             }
 
-            //2か所の0を特定する　（iとjを得る）文字列a[2]: a[0]= "i j"; a[1]="i j";
-            string[] a = new string[2];
-            int count = 0;
-            for (int i = 0; i < n; i++)
+            //初期位置
+            int result = 0;
+
+            //真：R　偽：L
+            //bool[] lr = new bool[dn[1]];
+            //1：R　-1：L
+            int[] lr = new int[dn[1]];
+            //Random randam = new Random();
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < dn[1]; i++)
             {
-                for (int j = 0; j < n; j++)
+                sb.Append('1');
+            }
+            string bitStr = sb.ToString(); //2進数文   字列
+            int max = Convert.ToInt32(bitStr, 2); //最大値
+
+            //Console.WriteLine("dn[0]=" + dn[0] + ", dn[1]=" + dn[1]);
+            int increment = 0;
+            while (increment <= max)
+            {
+                int count = 0;
+                result = 0;
+                //n桁の2進数をインクリメントして、0を-1に変換して、lr[]に転写する
+                //incrementを2進数文字列bitStrに変換する
+                bitStr = Convert.ToString(increment, 2).PadLeft(dn[1], '0');
+
+                //bitStrからlr[]に-1,1を転写する
+                for (int i = 0; i < dn[1]; i++)
                 {
-                    if (matrix[i][j] == 0)
-                    {
-                        a[count] = i + " " + j;
-                        count++;
-                    }
-
+                    if (bitStr[i] == '0') lr[i] = -1;
+                    else lr[i] = 1;
                 }
+                //操作による合計値を出す
+                for (int i = 0; i < dn[1]; i++)
+                {
+                    result += sousa[i] * lr[i];
+                    if (result < -dn[0] || result > dn[0]) break; //途中で±dの範囲外になったらループ中断
+                    count++;
+                }
+                //Console.WriteLine("count=" + count);
+                //Console.ReadLine();
+                if (count == dn[1]) break; //全ての操作が実行されたらループ終了」
+                //if (result < -dn[0] || result > dn[0]) break;
+                increment++;
             }
-            //2行2列のマトリックスに変換する
-            int[][] a22 = new int[2][];
-            a22[0] = nmootan.GetStrSplitToIntList(a[0]).ToArray();//a22[0][0]=i1 a22[0][1]=j1
-            a22[1] = nmootan.GetStrSplitToIntList(a[1]).ToArray();//a22[1][0]=i2 a22[1][1]=j2
-            //Console.WriteLine("a22[0][0]=" + a22[0][0] + ", a22[1][0]=" + a22[1][0]);
 
-            //2か所の塗りつぶしが同一の行でないとき
-            if (a22[0][0] != a22[1][0])
+            for (int i = 0; i < dn[1]; i++)
             {
-                //塗りつぶし以外の行の合計を得る
-                int sum = 0;
+                if (lr[i] == -1) Console.Write("L");
+                else if (lr[i] == 1) Console.Write("R");
+            }
+            Console.WriteLine();
+
+
+
+
+        }
+
+
+
+
+        static class nmootan
+        {
+
+            public static string[][] GetStdMatrix(int n)
+            {
+                string[][] strs = new string[n][];
+
                 for (int i = 0; i < n; i++)
                 {
-                    if (i != a22[0][0])
+                    strs[i] = nmootan.GetStdStrsSplit();
+                }
+
+                //nmootan.MatrixStrArrayFormat(strs, " ", "");
+                //for (int i = 0; i < n; i++)
+                //{
+                //    Console.WriteLine(nmootan.GetJoinStrArrayToStrByStr(strs[i], " "));
+                //}
+
+
+                return strs;
+            }
+
+            public static int[][] GetParseStdStrToMatrix(int n)
+            {
+
+                /*
+                N
+                m_{1, 1} m_{1, 2} ... m_{1, N}
+                m_{2, 1} m_{2, 2} ... m_{2, N}
+                ...
+                m_{N, 1} m_{N, 2} ... m_{N, N}
+
+                            */
+
+                //int n = int.Parse(Console.ReadLine());
+                int[][] matrix = new int[n][];
+                //n行x列のマトリックスをn行の入力から作成
+                for (int i = 0; i < n; i++)
+                {
+                    matrix[i] = GetStdIntSplit().ToArray();
+                }
+
+
+                return matrix;
+            }
+
+
+            public static bool JudgeIsFloat(string str)
+            {
+                if (str.Contains(".")) return true;
+                else return false;
+
+            }
+
+            public static string GetFormatZero(string str)
+            {
+                List<char> chs = str.ToList<char>();
+                int length = chs.Count;
+
+                if (JudgeIsFloat(str))
+                {
+                    for (int i = 0; i < length; i++)
                     {
-                        if (i != a22[1][0])
+                        if (chs[length - 1 - i] != '0')
                         {
-                            sum = matrix[i].Sum();
+                            if (chs[length - 1 - i] == '.') chs.RemoveAt(length - 1 - i);
+
                             break;
+                        }
+                        else chs.RemoveAt(length - 1 - i);
+                    }
+
+                    //length = chs.Count;
+                    int n = 0;
+                    if (chs[0] == '-') n = 1;
+                    for (int i = n; i < chs.Count; i++)
+                    {
+
+                        if (chs[i] != '0') break;
+                        else if (chs[i] == '0' && chs[i + 1] == '.') break;
+                        else
+                        {
+                            chs.RemoveAt(i);
+                            i--;
                         }
                     }
                 }
-                //Console.WriteLine("sum={0}", sum);
-                //塗りつぶしのある2行の合計をそれぞれ得る
-                int[] bugSums = new int[2];
-                bugSums[0] = matrix[a22[0][0]].Sum();
-                bugSums[1] = matrix[a22[1][0]].Sum();
-                //Console.WriteLine("bugSums[0]={0}, bugSums[1]=", bugSums[0], bugSums[1]);
-
-                //2か所の塗りつぶし部分の数字を書き換える
-                matrix[a22[0][0]][a22[0][1]] = sum - bugSums[0];
-                matrix[a22[1][0]][a22[1][1]] = sum - bugSums[1];
-
-            }
-            //2か所の塗りつぶしが同一の行のとき
-            else
-            {
-                //塗りつぶし以外の行の合計を得る
-                int sum = 0;
-                for (int i = 0; i < n; i++)
+                else
                 {
-                    if (i != a22[0][0])
+                    int n = 0;
+                    if (chs[0] == '-') n = 1;
+                    for (int i = n; i < chs.Count - 1; i++)
                     {
-                        sum = matrix[i].Sum();
-                        break;
+
+                        if (chs[i] != '0') break;
+                        else if (chs[i] == '0')
+                        {
+                            chs.RemoveAt(i);
+                            i--;
+                        }
                     }
                 }
 
-                //塗りつぶしのある2列の合計をそれぞれ得る
-                int[] bugSums = new int[2];
-                //bugSums[0] = matrix[a22[0][0]].Sum();
-                //bugSums[1] = matrix[a22[1][0]].Sum();
-                bugSums[0] = 0;
-                bugSums[1] = 0;
-                for (int i = 0; i < n; i++)
+
+                return new string(chs.ToArray());
+            }
+
+
+            public static string GetFormatWithChar(string str, int n, char ch)
+            {
+                int m = n - str.Length;
+                for (int i = 0; i < m; i++)
                 {
-                    bugSums[0] += matrix[i][a22[0][1]];
-                    bugSums[1] += matrix[i][a22[1][1]];
+                    str = str.Insert(0, ch.ToString());
                 }
 
-                //2か所の塗りつぶし部分の数字を書き換える
-                matrix[a22[0][0]][a22[0][1]] = sum - bugSums[0];
-                matrix[a22[1][0]][a22[1][1]] = sum - bugSums[1];
-
+                return str;
             }
 
-            //マトリックスを表示する
-            for (int i = 0; i < n; i++)
+            public static string GetJoinStrArrayToStrByStr(string[] strs, string str)
             {
-                Console.WriteLine(nmootan.GetJoinIntArrayToStrByStr(matrix[i], " "));
+                StringBuilder sb = new StringBuilder();
+
+                for (int i = 0; i < strs.Length - 1; i++)
+                {
+                    sb.Append(strs[i]);
+                    sb.Append(str);
+                }
+
+                sb.Append(strs[strs.Length - 1]);
+                //sb.Append(Environment.NewLine);
+
+                return sb.ToString();
             }
 
-
-
-            Console.ReadLine();
-
-
-        }
-
-    }
-
-
-
-
-    static class nmootan
-    {
-
-        public static List<int> GetStdIntSplit()
-        {
-            string[] strs = GetStdStrsSplit();
-
-            List<int> iList = new List<int>();
-
-            for (int i = 0; i < strs.Length; i++)
+            public static string[] GetStrsSplitByChar(string str, char ch)
             {
-                iList.Add(int.Parse(strs[i]));
+
+                return str.Trim().Split(ch);
             }
 
-            return iList;
-        }
-
-
-        public static string[] GetStdStrsSplit()
-        {
-
-            return System.Console.ReadLine().Trim().Split(' ');
-        }
-
-        public static List<int> GetStrSplitToIntList(string str)
-        {
-            string[] strs = str.Trim().Split(' ');
-
-            List<int> iList = new List<int>();
-
-            for (int i = 0; i < strs.Length; i++)
+            public static string[] GetStdNRaws(int n)
             {
-                iList.Add(int.Parse(strs[i]));
+                string[] strs = new string[n];
+
+                for (int i = 0; i < n; i++)
+                {
+                    strs[i] = Console.ReadLine();
+                }
+
+                return strs;
             }
 
-            return iList;
-        }
-
-        public static string GetJoinIntArrayToStrByStr(int[] ints, string str)
-        {
-            StringBuilder sb = new StringBuilder();
-
-            for (int i = 0; i < ints.Length - 1; i++)
+            public static List<int> GetStdIntSplit()
             {
-                sb.Append(ints[i]);
-                sb.Append(str);
+                string[] strs = GetStdStrsSplit();
+
+                List<int> iList = new List<int>();
+
+                for (int i = 0; i < strs.Length; i++)
+                {
+                    iList.Add(int.Parse(strs[i]));
+                }
+
+                return iList;
             }
 
-            sb.Append(ints[ints.Length - 1]);
-            //sb.Append(Environment.NewLine);
 
-            return sb.ToString().Trim();
+            public static string[] GetStdStrsSplit()
+            {
+
+                return System.Console.ReadLine().Trim().Split(' ');
+            }
+
+            public static List<int> GetStrSplitToIntList(string str)
+            {
+                string[] strs = str.Trim().Split(' ');
+
+                List<int> iList = new List<int>();
+
+                for (int i = 0; i < strs.Length; i++)
+                {
+                    iList.Add(int.Parse(strs[i]));
+                }
+
+                return iList;
+            }
+
+            public static string GetJoinIntArrayToStrByStr(int[] ints, string str)
+            {
+                StringBuilder sb = new StringBuilder();
+
+                for (int i = 0; i < ints.Length - 1; i++)
+                {
+                    sb.Append(ints[i]);
+                    sb.Append(str);
+                }
+
+                sb.Append(ints[ints.Length - 1]);
+                //sb.Append(Environment.NewLine);
+
+                return sb.ToString().Trim();
+            }
+
+
         }
-
-
     }
 }

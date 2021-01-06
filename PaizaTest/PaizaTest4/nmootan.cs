@@ -352,6 +352,23 @@ namespace PaizaTest4
 
 
         /// <summary>
+        /// 指定した年yearの前年までのうるう年をカウントする
+        /// </summary>
+        /// <param name="year"></param>
+        /// <returns></returns>
+        public static string ExLeapCount(string year)
+        {
+            string div4, div100, div400;
+            ExMod(nmootan.ExMinus(year, "1"), "4", out div4);
+            ExMod(nmootan.ExMinus(year, "1"), "100", out div100);
+            ExMod(nmootan.ExMinus(year, "1"), "400", out div400);
+            string leapCount = nmootan.ExMinus(nmootan.ExPlus(div4, div400), div100);
+
+            return leapCount;
+        }
+
+
+        /// <summary>
         /// 何桁の整数値でも掛け算できる。　str:数値の文字列　n:一桁の整数値
         /// </summary>
         /// <param name="str"></param>
@@ -1832,8 +1849,103 @@ namespace PaizaTest4
                 Console.WriteLine(strs[i * 2 + 1]);
             }
 
+        }
 
 
+        /// <summary>
+        /// 行数nを指定して、続けて下記文字列をn行標準入力して、マトリックスに変換する
+        /// m_{1, 1} m_{1, 2} ... m_{1, N}
+        /// m_{2, 1} m_{2, 2} ... m_{2, N}
+        /// ...
+        /// m_{N, 1} m_{N, 2} ... m_{N, N}
+        /// </summary>
+        /// <param name="n"></param>
+        /// <returns></returns>
+        public static int[][] GetParseStdStrToMatrix(int n)
+        {
+            
+            /*
+            N
+            m_{1, 1} m_{1, 2} ... m_{1, N}
+            m_{2, 1} m_{2, 2} ... m_{2, N}
+            ...
+            m_{N, 1} m_{N, 2} ... m_{N, N}
+
+                        */
+
+            //int n = int.Parse(Console.ReadLine());
+            int[][] matrix = new int[n][];
+            //n行x列のマトリックスをn行の入力から作成
+            for (int i = 0; i < n; i++)
+            {
+                matrix[i] = GetStdIntSplit().ToArray();
+            }
+
+
+            return matrix;
+        }
+
+
+        /// <summary>
+        /// 下記文字列の形式の文字列配列を、マトリックスに変換する
+        /// m_{1, 1} m_{1, 2} ... m_{1, N}
+        /// m_{2, 1} m_{2, 2} ... m_{2, N}
+        /// ...
+        /// m_{N, 1} m_{N, 2} ... m_{N, N}
+        /// </summary>
+        /// <param name="strs"></param>
+        /// <returns></returns>
+        public static int[][] GetParseStdStrToMatrix(string[] strs)
+        {
+
+            /*
+            m_{1, 1} m_{1, 2} ... m_{1, N}
+            m_{2, 1} m_{2, 2} ... m_{2, N}
+            ...
+            m_{N, 1} m_{N, 2} ... m_{N, N}
+
+                        */
+
+            int[][] matrix = new int[strs.Length][];
+            //n行x列のマトリックスをn行の文字列から作成
+            for (int i = 0; i < strs.Length; i++)
+            {
+                matrix[i] = GetStrSplitToIntList(strs[i]).ToArray();
+            }
+
+            return matrix;
+        }
+
+
+        /// <summary>
+        /// 指定したマトリックスを、スペース区切りで標準出力する
+        /// </summary>
+        /// <param name="matrix"></param>
+        public static void ShowMatrix(int[][] matrix)
+        {
+            //マトリックスを表示する
+            for (int i = 0; i < matrix.Length; i++)
+            {
+                Console.WriteLine(GetJoinIntArrayToStrByStr(matrix[i], " ") + "\n");
+            }
+        }
+
+
+        /// <summary>
+        /// 指定したマトリックスのインデックス番号rawIndex列の合計を得る（縦方向の合計）
+        /// </summary>
+        /// <param name="matrix"></param>
+        /// <returns></returns>
+        public static int GetRawSumInMatrix(int[][] matrix, int rawIndex)
+        {
+            //塗りつぶしのある2列の合計をそれぞれ得る
+            int sum = 0;
+            for (int i = 0; i < matrix.Length; i++)
+            {
+                sum += matrix[i][rawIndex];
+            }
+
+            return sum;
         }
 
 
@@ -2011,6 +2123,24 @@ namespace PaizaTest4
         }
 
 
+        /// <summary>
+        /// n行の標準入力を得る
+        /// </summary>
+        /// <param name="n"></param>
+        /// <returns></returns>
+        public static string[] GetStdNRaws(int n)
+        {
+            string[] strs = new string[n];
+
+            for (int i = 0; i < n; i++)
+            {
+                strs[i] = Console.ReadLine();
+            }
+
+            return strs;
+        }
+
+
         public static List<int> GetStdIntSplit()
         {
             string[] strs = GetStdStrsSplit();
@@ -2101,6 +2231,7 @@ namespace PaizaTest4
             return strs;
         }
 
+
         /// <summary>
         /// n行の標準入力から、マトリックスを得る。
         /// </summary>
@@ -2124,6 +2255,44 @@ namespace PaizaTest4
 
             return ns;
         }
+
+
+        /// <summary>
+        /// 文字列の長さで昇順に並び替える
+        /// </summary>
+        /// <param name="strs"></param>
+        /// <returns></returns>
+        public static string[] GetSortStrArrayByLength(string[] strs)
+        {
+            //並び替えを行う配列
+            //string[] strs = new string[] { "b", "aaaaa", "cc" };
+
+            //並び替えの対象となる配列を作成
+            int[] keys = new int[strs.Length];
+            for (int i = 0; i < keys.Length; i++)
+            {
+                //文字列の長さを格納する
+                keys[i] = strs[i].Length;
+            }
+
+            //keysに基づいて、strsの並び替えを行う
+            Array.Sort(keys, strs);
+
+            return strs;
+        }
+
+
+        /// <summary>
+        /// 文字の出現回数をカウント
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="c"></param>
+        /// <returns></returns>
+        public static int GetCountCharInStr(string s, char c)
+        {
+            return s.Length - s.Replace(c.ToString(), "").Length;
+        }
+
 
         /// <summary>
         /// マトリックスの逆行列を得る。
