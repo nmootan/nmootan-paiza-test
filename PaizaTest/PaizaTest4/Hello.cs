@@ -2834,7 +2834,7 @@ a_n　　　#n回目の操作 a_n
 
 
 
-        public void Test122()
+        public void Test123()
         {
             /*
             あなたの友人がまたつまらないゲームを作りました。そのゲームは次のような内容です。
@@ -2930,6 +2930,259 @@ a_n　　　#n回目の操作 a_n
 
         }
 
+
+        /// <summary>
+        /// n 個の数 a_1, ..., a_n が与えられます。与えられた数を大きい順に改行区切りで出力してください。
+        /// 1 行目に正整数 n が、 2 行目から (n + 1) 行目には整数 a_1, ..., a_n が改行区切りで与えられます。
+        /// </summary>
+        public void Test124()
+        {
+            int n = int.Parse(Console.ReadLine());
+
+            int[] nArray = new int[n];
+            for (int i = 0; i < n; i++)
+            {
+                nArray[i] = int.Parse(Console.ReadLine());
+            }
+
+            Array.Sort(nArray);
+            Array.Reverse(nArray);
+
+            Console.WriteLine(nmootan.GetJoinIntArrayToStrByStr(nArray, "\n"));
+
+        }
+
+
+        /// <summary>
+        /// 正整数 n が与えられ、数のペアが n 個与えられます。各ペアの最初の数はりんごの個数を、その次の数はバナナの個数を表しています。これらの数のペアを以下の規則に従って、偉い順に並び替えてください。
+        /// 1. ふたつのペアのりんごの数が異なる場合、りんごの数が多い方が偉い（この際、バナナの数は関係ない）。
+        /// 2. りんごの数が同じである場合、バナナの数が多い方が偉い。
+        /// </summary>
+        public void Test125()
+        {
+            int n = int.Parse(Console.ReadLine());
+
+            //Dictionary<int, int> pairsTable = new Dictionary<int, int>(n);
+
+            int[][] matrix = nmootan.GetParseStdStrToMatrix(n);
+            //List<int> keys = new List<int>();
+            //List<int> vals = new List<int>();
+            //for (int i = 0; i < n; i++)
+            //{
+            //    keys.Add(matrix[i][0]);
+            //    vals.Add(matrix[i][1]);
+            //    //pairsTable[matrix[i][0]] = matrix[i][1];
+            //    //pairsTable.Add(matrix[i][0], matrix[i][1]);
+            //}
+            int[] keys = new int[n];
+            int[] vals = new int[n];
+            for (int i = 0; i < n; i++)
+            {
+                keys[i] = matrix[i][0];
+                vals[i] = matrix[i][1];
+            }
+            //keys.con
+            Array.Sort(keys, vals);
+            Array.Reverse(keys);
+            Array.Reverse(vals);
+            //List<int> list = new List<int>();
+            //Array.Sort()    
+            //pairsTable= pairsTable.OrderBy(p => p.Key);
+            //SortedDictionary<int, int> sortedPairs = new SortedDictionary<int, int>(pairsTable);
+
+            //foreach (var item in sortedPairs)
+            //{
+            //    Console.WriteLine(item.Key.ToString(), item.Value);
+            //}
+            
+
+            //foreach (var item in pairsTable)
+            //{
+            //    Console.WriteLine(item.Key.ToString(), item.Value);
+            //}
+
+            //Console.WriteLine(sortedPairs);
+            for (int i = 0; i < n; i++)
+            {
+                Console.WriteLine(keys[i] + " " + vals[i]);
+            }
+        }
+
+
+
+        public void Test126()
+        {
+            /*
+            あなたは、今度新しく建設される美術館の設計を任されました。
+
+            美術館の床は縦 H メートル、横 W メートルの長方形の形をしています。美術館には M 台の監視カメラが取り付けられており、各監視カメラがカバーできる範囲は、監視カメラの位置を中心とした扇形で表されます。
+
+            入力例 2 に対応した図を下に示します。
+
+            今、美術品を置く位置の候補が N 箇所あります。盗難を防ぐため、美術品を置く位置は監視カメラで見張られていなければいけません。
+
+そこで、N 箇所の位置それぞれに対して、その位置が少なくとも 1 台の監視カメラでカバーされているかどうかを判定するプログラムを書きましょう。なお設置する美術品に対して監視カメラのがカバーする範囲は十分に大きいため、美術品はこの美術館の床において幅を持たない点とみなして良いものとします。
+
+美術館の床における特定の位置は (x, y) という形式で表します。これは美術館の床の左下の端点から右方向に x メートル、上方向に y メートル進んだ位置を表します。美術館の高さ方向の位置は考慮する必要はありません。
+
+            W H M N
+x_1 y_1 t_1 d_1 r_1
+x_2 y_2 t_2 d_2 r_2
+...
+x_M y_M t_M d_M r_M
+a_1 b_1
+a_2 b_2
+...
+a_N b_N
+
+            ・1 行目には整数 W, H, M, N がこの順に半角スペース区切りで入力されます。W と H は美術館の床の横幅と縦幅 (メートル) を、M は監視カメラの台数を、N は美術品を置く位置の候補の数をそれぞれ表しています。
+
+・続く M 行のうち i 行目 (1 ≦ i ≦ M) には、監視カメラの位置とカバーできる範囲に関する情報を表す整数 x_i, y_i, t_i, d_i, r_i がこの順に半角スペース区切りで与えられます。これは、i 番目の監視カメラが位置 (x_i, y_i) に向き t_i 度(美術館の右方向となす角) で取り付けられており、その視野角が d_i 度、見ることのできる距離の上限が r_i であることを表しています。(下の図を参照)
+
+・続く N 行のうち j 行目 (1 ≦ j ≦ N) には、美術品を置く位置の j 番目の候補を表す整数 a_j, b_j がこの順に半角スペース区切りで与えられます。これは、j 番目の候補が位置 (a_j, b_j) であることを表しています。
+
+・入力は合計で M + N + 1 行となり、入力最終行の末尾に改行が 1 つ入ります。
+
+            美術品を置く位置の各候補が監視カメラでカバーできているかどうかを以下の形式で出力してください。
+            c_1
+c_2
+...
+c_N
+
+            ・期待する出力は N 行からなります。
+・続く N 行のうち j 行目 (1 ≦ j ≦ N) に美術品を置く位置の候補 j が監視カメラでカバーできているかどうかを表す文字列 c_j を出力してください。その位置が少なくとも 1 台の監視カメラでカバーできている場合 c_j は "yes"、そうでない場合は "no" となります。
+・出力の最後に改行を 1 つ入れ、余計な文字、空行を含んではいけません。
+            ・1 ≦ W, H, N ≦ 100
+・1 ≦ M ≦ 10
+・各 i (1 ≦ i ≦ M) について
+　・0 ≦ x_i ≦ W
+　・0 ≦ y_i ≦ H
+　・0 ≦ t_i < 360
+　・1 ≦ d_i < 180
+　・1 ≦ r_i ≦ 100
+・各 j (1 ≦ j ≦ N) について
+　・0 ≦ a_j ≦ W
+　・0 ≦ b_j ≦ H
+　・(a_j, b_j) は監視カメラのカバーできる範囲 (扇形) の境界上にはない
+
+            10 10 1 4
+5 5 90 90 3
+5 7
+5 9
+5 3
+2 4
+            yes
+no
+no
+no
+
+            30 10 3 4
+0 0 30 30 15
+15 5 210 30 15
+30 10 270 45 5
+7 2
+7 8
+30 9
+30 0
+
+            yes
+no
+yes
+no
+
+            */
+
+            int[] whmn = nmootan.GetStdIntSplit().ToArray();
+
+            int[][] cams = nmootan.GetParseStdStrToMatrix(whmn[2]);
+            int[][] a = nmootan.GetParseStdStrToMatrix(whmn[3]);
+            bool[] isCovered = new bool[whmn[3]]; //カバーチェック
+            for (int i = 0; i < whmn[3]; i++)
+            {
+                isCovered[i] = false; //初期値
+            }
+
+            double[][] b = new double[whmn[2]][]; //各カメラの傾き
+            for (int i = 0; i < whmn[2]; i++)
+            {
+                b[i] = new double[2];
+                b[i][0] = Math.Tan(0.0174444444 * (cams[i][2] - (cams[i][3] / 2.0)));
+                b[i][1] = Math.Tan(0.0174444444 * (cams[i][2] + (cams[i][3] / 2.0)));
+                for (int j = 0; j < whmn[3]; j++) //各美術品のチェック
+                {
+                    int r2 = (a[j][0] - cams[i][0]) * (a[j][0] - cams[i][0]) + (a[j][1] - cams[i][1]) * (a[j][1] - cams[i][1]);
+                    if (a[j][0] - cams[i][0] == 0)
+                    {
+                        if (a[j][1] - cams[i][1] > 0)
+                        {
+                            if (cams[i][2] - (cams[i][3] / 2.0) < 90)
+                            {
+                                if (cams[i][2] + (cams[i][3] / 2.0) > 90)
+                                {
+                                    if (r2 < cams[i][4] * cams[i][4]) //距離のチェック
+                                    {
+                                        isCovered[j] = true;
+                                    }
+                                }
+                            }
+                        }
+                        else if (a[j][1] - cams[i][1] < 0)
+                        {
+
+                            if (cams[i][2] - (cams[i][3] / 2.0) < 270)
+                            {
+                                if (cams[i][2] + (cams[i][3] / 2.0) > 270)
+                                {
+                                    if (r2 < cams[i][4] * cams[i][4]) //距離のチェック
+                                    {
+                                        isCovered[j] = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+
+                        double d = (double)(a[j][1] - cams[i][1]) / (double)(a[j][0] - cams[i][0]);
+                        if (b[i][0] < d) //範囲のチェック
+                        {
+                            if (b[i][1] > d)
+                            {
+                                if (r2 < cams[i][4] * cams[i][4]) //距離のチェック
+                                {
+                                    isCovered[j] = true;
+                                }
+                            }
+
+                        }
+                        else if (b[i][0] > d)
+                        {
+                            if (b[i][1] < d)
+                            {
+                                if (r2 < cams[i][4] * cams[i][4]) //距離のチェック
+                                {
+                                    isCovered[j] = true;
+                                }
+
+                            }
+                        }
+                        //Console.WriteLine("d=" + (a[j][1] - cams[i][1]) + " / " + (a[j][0] - cams[i][0]));
+                        //Console.WriteLine("tan-=" + b[i][0] + " tan+=" + b[i][1] + " d=" + d.ToString());
+                        //Console.ReadLine();
+                    }
+                }
+            }
+
+            for (int i = 0; i < whmn[3]; i++)
+            {
+                if (isCovered[i]) Console.WriteLine("yes");
+                else Console.WriteLine("no");
+            }
+
+
+
+        }
 
     }
 }

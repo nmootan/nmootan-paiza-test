@@ -2876,5 +2876,19 @@ namespace PaizaTest4
         }
 
 
+        /// <summary>
+        /// 扇形の視界に対象物が入っているかどうか
+        /// </summary>
+        /// <param name="situations"></param>
+        /// <returns></returns>
+        public static bool GetIsCaughtInSite(int[] situations)
+        {
+
+
+
+            return 
+        }
+
+
     }
 }

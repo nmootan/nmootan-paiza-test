@@ -11,67 +11,93 @@ namespace PaizaTest5
         static void Main(string[] args)
         {
 
-            int[] dn = nmootan.GetStdIntSplit().ToArray();
+            int[] whmn = nmootan.GetStdIntSplit().ToArray();
 
-            //操作の配列
-            int[] sousa = new int[dn[1]];
-            for (int i = 0; i < dn[1]; i++)
+            int[][] cams = nmootan.GetParseStdStrToMatrix(whmn[2]);
+            int[][] a = nmootan.GetParseStdStrToMatrix(whmn[3]);
+            bool[] isCovered = new bool[whmn[3]]; //カバーチェック
+            for (int i = 0; i < whmn[3]; i++)
             {
-                sousa[i] = int.Parse(Console.ReadLine());
+                isCovered[i] = false; //初期値
             }
 
-            //初期位置
-            int result = 0;
-
-            //真：R　偽：L
-            //bool[] lr = new bool[dn[1]];
-            //1：R　-1：L
-            int[] lr = new int[dn[1]];
-            //Random randam = new Random();
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < dn[1]; i++)
+            double[][] b = new double[whmn[2]][]; //各カメラの傾き
+            for (int i = 0; i < whmn[2]; i++)
             {
-                sb.Append('1');
-            }
-            string bitStr = sb.ToString(); //2進数文   字列
-            int max = Convert.ToInt32(bitStr, 2); //最大値
-
-            //Console.WriteLine("dn[0]=" + dn[0] + ", dn[1]=" + dn[1]);
-            int increment = 0;
-            while (increment <= max)
-            {
-                int count = 0;
-                result = 0;
-                //n桁の2進数をインクリメントして、0を-1に変換して、lr[]に転写する
-                //incrementを2進数文字列bitStrに変換する
-                bitStr = Convert.ToString(increment, 2).PadLeft(dn[1], '0');
-
-                //bitStrからlr[]に-1,1を転写する
-                for (int i = 0; i < dn[1]; i++)
+                b[i] = new double[2];
+                b[i][0] = Math.Tan(0.0174444444 * (cams[i][2] - (cams[i][3] / 2.0)));
+                b[i][1] = Math.Tan(0.0174444444 * (cams[i][2] + (cams[i][3] / 2.0)));
+                for (int j = 0; j < whmn[3]; j++) //各美術品のチェック
                 {
-                    if (bitStr[i] == '0') lr[i] = -1;
-                    else lr[i] = 1;
+                    int r2 = (a[j][0] - cams[i][0]) * (a[j][0] - cams[i][0]) + (a[j][1] - cams[i][1]) * (a[j][1] - cams[i][1]);
+                    if (a[j][0] - cams[i][0]==0)
+                    {
+                        if (a[j][1] - cams[i][1]>0)
+                        {
+                            if (cams[i][2] - (cams[i][3] / 2.0)<90)
+                            {
+                                if (cams[i][2] + (cams[i][3] / 2.0)>90)
+                                {
+                                    if (r2 < cams[i][4] * cams[i][4]) //距離のチェック
+                                    {
+                                        isCovered[j] = true;
+                                    }
+                                }
+                            }
+                        }
+                        else if (a[j][1] - cams[i][1]<0)
+                        {
+
+                            if (cams[i][2] - (cams[i][3] / 2.0) < 270)
+                            {
+                                if (cams[i][2] + (cams[i][3] / 2.0) > 270)
+                                {
+                                    if (r2 < cams[i][4] * cams[i][4]) //距離のチェック
+                                    {
+                                        isCovered[j] = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+
+                        double d = (double)(a[j][1] - cams[i][1]) / (double)(a[j][0] - cams[i][0]);
+                        if (b[i][0] < d) //範囲のチェック
+                        {
+                            if (b[i][1] > d)
+                            {
+                                if (r2 < cams[i][4] * cams[i][4]) //距離のチェック
+                                {
+                                    isCovered[j] = true;
+                                }
+                            }
+
+                        }
+                        else if (b[i][0] > d)
+                        {
+                            if (b[i][1] < d)
+                            {
+                                if (r2 < cams[i][4] * cams[i][4]) //距離のチェック
+                                {
+                                    isCovered[j] = true;
+                                }
+
+                            }
+                        }
+                        //Console.WriteLine("d=" + (a[j][1] - cams[i][1]) + " / " + (a[j][0] - cams[i][0]));
+                        //Console.WriteLine("tan-=" + b[i][0] + " tan+=" + b[i][1] + " d=" + d.ToString());
+                        //Console.ReadLine();
+                    }
                 }
-                //操作による合計値を出す
-                for (int i = 0; i < dn[1]; i++)
-                {
-                    result += sousa[i] * lr[i];
-                    if (result < -dn[0] || result > dn[0]) break; //途中で±dの範囲外になったらループ中断
-                    count++;
-                }
-                //Console.WriteLine("count=" + count);
-                //Console.ReadLine();
-                if (count == dn[1]) break; //全ての操作が実行されたらループ終了」
-                //if (result < -dn[0] || result > dn[0]) break;
-                increment++;
             }
 
-            for (int i = 0; i < dn[1]; i++)
+            for (int i = 0; i < whmn[3]; i++)
             {
-                if (lr[i] == -1) Console.Write("L");
-                else if (lr[i] == 1) Console.Write("R");
+                if (isCovered[i]) Console.WriteLine("yes");
+                else Console.WriteLine("no");
             }
-            Console.WriteLine();
 
 
 
